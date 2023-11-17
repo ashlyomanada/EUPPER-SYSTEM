@@ -77,9 +77,9 @@
               />
               <span>Phone Number</span>
             </label>
+            <input type="file" @change="handleFileChange" />
           </div>
         </div>
-        <input type="file" @change="handleFileChange" />
         <!-- Add this input to your form -->
 
         <button type="submit" class="submit" style="color: white">

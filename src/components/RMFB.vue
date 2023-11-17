@@ -31,6 +31,7 @@
                 min="1900"
                 max="2100"
                 step="1"
+                placeholder="Year"
               />
               <button class="find"><i class="bx bx-search"></i>Find</button>
             </div>

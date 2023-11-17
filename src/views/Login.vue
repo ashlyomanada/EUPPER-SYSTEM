@@ -35,12 +35,14 @@
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
       email: "",
       password: "",
       loginError: null,
+      isLoading: false,
     };
   },
   methods: {
@@ -49,19 +51,51 @@ export default {
         email: this.email,
         password: this.password,
       };
+
+      // Log loginData for debugging
+      console.log("Login Data:", loginData);
+
+      // Clear previous error message
+      this.loginError = null;
+
+      // Form validation
+      if (!this.email || !this.password) {
+        this.loginError = "Email and password are required";
+        return;
+      }
+
+      this.isLoading = true;
+
       axios
         .post("/login", loginData)
         .then((response) => {
           if (response.data.success) {
-            this.$router.push("/home");
+            this.$router.replace("/home");
           } else {
             this.loginError = "Invalid email or password";
-            console.error("Login failed");
+            console.error("Login failed:", response.data.message);
           }
         })
         .catch((error) => {
           this.loginError = "An error occurred during login. Please try again.";
-          console.error(error);
+          console.error("Login error:", error);
+          // ...
+
+          // Log additional details if available
+          if (error.response) {
+            console.error("Response status:", error.response.status);
+            console.error("Response data:", error.response.data);
+          } else if (error.request) {
+            console.error(
+              "No response received. Request details:",
+              error.request
+            );
+          } else {
+            console.error("Error details:", error.message);
+          }
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },

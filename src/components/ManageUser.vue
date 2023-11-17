@@ -2,7 +2,7 @@
   <div class="table-data">
     <div class="order">
       <div class="head">
-        <h3>Manage User</h3>
+        <h3>List of Users</h3>
         <i class="bx bx-search"></i>
         <i class="bx bx-filter"></i>
       </div>
@@ -25,10 +25,22 @@
             <td>{{ UsersInfo.office }}</td>
             <td>{{ UsersInfo.phone_no }}</td>
             <td>{{ UsersInfo.email }}</td>
-            <td>Status</td>
-            <td><button>Enable</button></td>
-            <td><button>Update</button></td>
-            <td><button>Contact</button></td>
+            <td>Enable</td>
+            <td class="td-btn">
+              <button class="users-btn">
+                <i class="fa-solid fa-power-off fa-lg"></i>
+              </button>
+            </td>
+            <td class="td-btn">
+              <button class="pen-btn">
+                <i class="fa-solid fa-pen fa-lg"></i>
+              </button>
+            </td>
+            <td class="td-btn">
+              <button class="users-btn">
+                <i class="fa-solid fa-phone fa-lg"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -61,4 +73,17 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.td-btn {
+  text-align: center;
+}
+.fa-solid {
+  font-weight: 600;
+}
+.users-btn {
+  color: rgb(47, 212, 47);
+}
+.pen-btn {
+  color: rgb(233, 70, 70);
+}
+</style>

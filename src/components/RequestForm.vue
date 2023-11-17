@@ -4,10 +4,23 @@
       <div class="head">
         <h3>Request Form</h3>
       </div>
-      <form class="form" id="form">
-        <input type="text" placeholder="Username" class="input" />
-        <input type="text" placeholder="Sender" class="input" />
-        <textarea placeholder="Type message"></textarea>
+      <form class="form" @submit.prevent="submitForm">
+        <input
+          v-model="formData.username"
+          type="text"
+          placeholder="Username"
+          class="input"
+        />
+        <input
+          v-model="formData.sender"
+          type="text"
+          placeholder="Sender"
+          class="input"
+        />
+        <textarea
+          v-model="formData.message"
+          placeholder="Type message"
+        ></textarea>
         <button type="submit">Submit</button>
       </form>
     </div>
@@ -15,7 +28,42 @@
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      formData: {
+        username: "",
+        sender: "",
+        message: "",
+      },
+    };
+  },
+  methods: {
+    submitForm() {
+      // Send form data to server
+      console.log("Form data:", this.formData);
+      axios
+        .post("/sendEmail", this.formData, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          this.formData = {
+            username: "",
+            sender: "",
+            message: "",
+          };
+        })
+        .catch((error) => {
+          console.error("Error sending email:", error);
+        });
+    },
+  },
+};
 </script>
 
 <style>
