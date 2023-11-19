@@ -102,8 +102,7 @@ public function generateExcel()
     $writer->save('php://output');
     
 }
-
-    public function upload()
+public function upload()
 {
     $request = $this->request;
 
@@ -143,6 +142,7 @@ public function generateExcel()
     // Redirect back to the form with a success message
     return redirect()->to('/')->with('success', 'Registration successful!');
 }
+
 
 public function sendEmail()
 {
