@@ -103,6 +103,77 @@ public function generateExcel()
     
 }
 
+    public function upload()
+{
+    $request = $this->request;
+
+    // Debugging to check what data is received
+    log_message('debug', print_r($request->getPost(), true));
+    log_message('debug', print_r($_FILES, true));
+    // Get the file
+    $file = $request->getFile('file');
+
+    // Move the file to the writable/uploads directory
+    $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
+
+    // Check if the directory exists, if not, create it
+    if (!is_dir($uploadsDirectory)) {
+        mkdir($uploadsDirectory, 0777, true);
+    }
+
+    $file->move($uploadsDirectory);
+
+    // Insert the user information into the database
+    $filePath = 'uploads/' . $file->getName();
+    
+    $userData = [
+        'username' => $request->getPost('username'),
+        'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
+        'confirmpassword' => $request->getPost('confirmpassword'),
+        'office' => $request->getPost('office'),
+        'phone_no' => $request->getPost('phone_no'),
+        'email' => $request->getPost('email'),
+        'image' => $filePath,
+    ];
+
+    // Assuming you have a model named MainModel, you can use it to insert data into the database
+    $main = new MainModel();
+    $main->insert($userData);
+
+    // Redirect back to the form with a success message
+    return redirect()->to('/')->with('success', 'Registration successful!');
+}
+
+public function sendEmail()
+{
+    try {
+        // Get JSON data from the request
+        $formData = $this->request->getJSON();
+
+        // Load the email library
+        $email = \Config\Services::email();
+
+        // Set email parameters
+        $email->setTo('ashlyomanada@gmail.com');
+        $email->setFrom($formData->sender);
+        $email->setSubject('Request Form');
+        $message = 'This is a request form from username: ' . $formData->username;
+        $email->setMessage($message);
+
+        // Send email
+        if ($email->send()) {
+            return $this->response->setJSON(['message' => 'Email sent successfully.']);
+        } else {
+            log_message('error', 'Email failed to send. Error: ' . $email->printDebugger(['headers']));
+            return $this->response->setJSON(['error' => 'Email failed to send.']);
+        }
+    } catch (\Exception $e) {
+        // Log other exceptions
+        log_message('error', 'Exception: ' . $e->getMessage());
+        return $this->response->setJSON(['error' => 'Internal Server Error']);
+    }
+}
+
 
 
 }
