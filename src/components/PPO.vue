@@ -9,7 +9,8 @@
           </div>
           <div class="date-options">
             <div>
-              Select Month:<select class="month" name="month">
+              Select Month:
+              <select class="month" name="month">
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -36,7 +37,10 @@
               <button class="find"><i class="bx bx-search"></i>Find</button>
             </div>
             <button class="generate" @click="generateExcel">
-              Generate Report
+              Generate Excel Report
+            </button>
+            <button class="generate" @click="generatePdf">
+              Generate Pdf Report
             </button>
           </div>
         </div>
@@ -132,6 +136,31 @@ export default {
           // Handle errors, e.g., show an error message to the user
         });
     },
+    generatePdf() {
+      fetch("http://localhost:8080/generatePdf", {
+        method: "GET", // Use GET instead of POST if you're not sending any data
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "output.pdf");
+          document.body.appendChild(link);
+          link.click();
+        })
+        .catch((error) => {
+          console.error("Error generating or loading PDF:", error);
+        });
+    },
   },
 };
 </script>
@@ -153,6 +182,15 @@ option {
 .generate {
   border: 1px solid black;
   padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+}
+.generate {
+  background: green;
+  color: white;
+}
+.find {
+  background: var(--blue);
+  color: white;
 }
 .head-options {
   display: flex;

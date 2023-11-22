@@ -60,7 +60,7 @@
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('User_Ratings')">
+          <a href="#" @click="showComponent('Ratings')">
             <i class="bx bxs-group"></i>
             <span class="text">User Ratings</span>
           </a>
@@ -79,7 +79,7 @@
         </a>
       </li>
       <li>
-        <a href="#" @click="showComponent('')">
+        <a href="https://mail.google.com/" target="blank">
           <i class="bx bxs-group"></i>
           <span class="text">Your Gmail</span>
         </a>

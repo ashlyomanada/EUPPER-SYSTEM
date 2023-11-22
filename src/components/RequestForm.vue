@@ -14,15 +14,18 @@
         <input
           v-model="formData.sender"
           type="text"
-          placeholder="Sender"
+          placeholder="Email"
           class="input"
         />
         <textarea
           v-model="formData.message"
           placeholder="Type message"
         ></textarea>
-        <button type="submit">Submit</button>
+        <button type="submit">Submit Request</button>
       </form>
+      <div v-if="showAlert" class="alert">
+        {{ alertMessage }}
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +41,8 @@ export default {
         sender: "",
         message: "",
       },
+      showAlert: false,
+      alertMessage: "",
     };
   },
   methods: {
@@ -57,10 +62,22 @@ export default {
             sender: "",
             message: "",
           };
+          this.showAlertMessage("Form submitted successfully!");
         })
         .catch((error) => {
           console.error("Error sending email:", error);
+          this.showAlertMessage("Error submitting the form. Please try again.");
         });
+    },
+    showAlertMessage(message) {
+      this.showAlert = true;
+      this.alertMessage = message;
+
+      // Hide the alert after a certain duration (e.g., 5 seconds)
+      setTimeout(() => {
+        this.showAlert = false;
+        this.alertMessage = "";
+      }, 5000);
     },
   },
 };

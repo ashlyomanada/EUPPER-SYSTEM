@@ -35,7 +35,10 @@
               />
               <button class="find"><i class="bx bx-search"></i>Find</button>
             </div>
-            <button class="generate">Generate Report</button>
+            <button class="generate">Generate Excel Report</button>
+            <button class="generate" @click="generatePdf">
+              Generate Pdf Report
+            </button>
           </div>
         </div>
       </div>

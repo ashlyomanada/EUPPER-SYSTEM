@@ -23,7 +23,7 @@
           <input required type="password" class="inputs" v-model="password" />
           <span>Password</span>
         </label>
-        <button type="submit" class="submit">Login</button>
+        <button type="submit" class="submit" style="color: white">Login</button>
         <p class="signin">
           Don't have an account? <router-link to="/">Sign up</router-link>
         </p>

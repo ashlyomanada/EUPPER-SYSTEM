@@ -88,6 +88,20 @@
         <p class="signin">
           Already have an acount ? <router-link to="/login">Signin</router-link>
         </p>
+        <div
+          v-if="registrationStatus"
+          :class="[
+            registrationStatus === 'success'
+              ? 'success-message'
+              : 'error-message',
+          ]"
+        >
+          {{
+            registrationStatus === "success"
+              ? "Registration successful!"
+              : "Registration failed. Please try again."
+          }}
+        </div>
       </form>
     </div>
   </div>
@@ -108,6 +122,7 @@ export default {
         phone_no: "",
         file: null,
       },
+      registrationStatus: null,
     };
   },
   methods: {
@@ -142,11 +157,16 @@ export default {
             phone_no: "",
             file: null,
           };
+          this.registrationStatus = "success";
         })
         .catch((error) => {
           console.error(error.response.data);
+          this.registrationStatus = "error";
           // Handle error, e.g., show an error message
         });
+      setTimeout(() => {
+        this.registrationStatus = null;
+      }, 5000);
     },
     handleFileChange(event) {
       this.formData.file = event.target.files[0];
@@ -342,7 +362,7 @@ export default {
     display: none;
   }
   .register {
-    width: 80vw;
+    width: 100vw;
   }
 }
 </style>

@@ -18,19 +18,19 @@
       </li>
       <div v-show="showButtons" class="li-div">
         <li>
-          <a href="#" @click="showComponent('PPO')">
+          <a href="#" @click="showComponent('UserPPO')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">PPO CPO Level</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('RMFB')">
+          <a href="#" @click="showComponent('UserRMFB')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">RMFB PMFC Level</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('MPS')">
+          <a href="#" @click="showComponent('UserMPS')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">MPS CPS Level</span>
           </a>
@@ -48,19 +48,19 @@
       </li>
       <div v-show="showButtons2" class="li-div">
         <li>
-          <a href="#" @click="showComponent('Users')">
+          <a href="#" @click="showComponent('UserPPO')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">PPO CPO Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('User_Ratings')">
+          <a href="#" @click="showComponent('UserRMFB')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">RMFB PMFC Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('AdminGmail')">
+          <a href="#" @click="showComponent('UserMPS')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">MPS CPS Ratings</span>
           </a>
@@ -79,7 +79,7 @@
         </a>
       </li>
       <li>
-        <a href="#" @click="showComponent('UserGmail')">
+        <a href="https://mail.google.com/" target="blank">
           <i class="bx bxs-group"></i>
           <span class="text">Your Gmail</span>
         </a>
@@ -124,6 +124,9 @@
     <!-- MAIN -->
     <main id="usermain">
       <Uper v-if="selectedComponent === 'Uper'" />
+      <UserPPO v-if="selectedComponent === 'UserPPO'" />
+      <UserRMFB v-if="selectedComponent === 'UserRMFB'" />
+      <UserMPS v-if="selectedComponent === 'UserMPS'" />
       <ViewRatings v-if="selectedComponent === 'ViewRatings'" />
       <UserProfile v-if="selectedComponent === 'UserProfile'" />
       <RequestForm v-if="selectedComponent === 'RequestForm'" />
@@ -140,10 +143,22 @@ import ViewRatings from "../components/ViewRatings.vue";
 import UserProfile from "../components/UserProfile.vue";
 import RequestForm from "../components/RequestForm.vue";
 import UserGmail from "../components/UserGmail.vue";
+import UserPPO from "../components/UserPPO.vue";
+import UserRMFB from "../components/UserRMFB.vue";
+import UserMPS from "../components/UserMPS.vue";
 
 // Components
 export default defineComponent({
-  components: { Uper, ViewRatings, UserProfile, RequestForm, UserGmail },
+  components: {
+    Uper,
+    ViewRatings,
+    UserProfile,
+    RequestForm,
+    UserGmail,
+    UserPPO,
+    UserRMFB,
+    UserMPS,
+  },
   data() {
     return {
       selectedComponent: "Uper",
