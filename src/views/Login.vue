@@ -27,7 +27,7 @@
         <p class="signin">
           Don't have an account? <router-link to="/">Sign up</router-link>
         </p>
-        <p v-if="loginError" class="error-message">{{ loginError }}</p>
+        <p class="error-message">{{ errorMessage }}</p>
       </form>
     </div>
   </div>
@@ -35,73 +35,43 @@
 
 <script>
 import axios from "axios";
-
+import router from "@/router";
 export default {
   data() {
     return {
       email: "",
       password: "",
-      loginError: null,
-      isLoading: false,
+      errorMessage: "",
     };
   },
   methods: {
     login() {
-      const loginData = {
+      const data = {
         email: this.email,
         password: this.password,
       };
 
-      // Log loginData for debugging
-      console.log("Login Data:", loginData);
-
-      // Clear previous error message
-      this.loginError = null;
-
-      // Form validation
-      if (!this.email || !this.password) {
-        this.loginError = "Email and password are required";
-        return;
-      }
-
-      this.isLoading = true;
-
       axios
-        .post("/login", loginData)
+        .post("/login", JSON.stringify(data), {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
-          if (response.data.success) {
-            this.$router.replace("/home");
-          } else {
-            this.loginError = "Invalid email or password";
-            console.error("Login failed:", response.data.message);
+          if (response.data.message === "Login successful") {
+            sessionStorage.setItem("token", response.data.token);
+            sessionStorage.setItem("id", response.data.id);
+            router.push("/home");
           }
         })
         .catch((error) => {
-          this.loginError = "An error occurred during login. Please try again.";
-          console.error("Login error:", error);
-          // ...
-
-          // Log additional details if available
-          if (error.response) {
-            console.error("Response status:", error.response.status);
-            console.error("Response data:", error.response.data);
-          } else if (error.request) {
-            console.error(
-              "No response received. Request details:",
-              error.request
-            );
-          } else {
-            console.error("Error details:", error.message);
-          }
-        })
-        .finally(() => {
-          this.isLoading = false;
+          console.error(error);
+          this.errorMessage = "Invalid email or password, try again!";
         });
     },
   },
 };
 </script>
-
 <style>
 .login-title {
   white-space: nowrap;

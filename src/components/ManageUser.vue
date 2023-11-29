@@ -3,8 +3,16 @@
     <div class="order">
       <div class="head">
         <h3>List of Users</h3>
-        <i class="bx bx-search"></i>
-        <i class="bx bx-filter"></i>
+        <button class="find" @click="changeAllUserStatus">
+          <i class="fa-solid fa-power-off"></i>
+          Change All User Status
+        </button>
+        <div>
+          <button class="find" @click="filterUsers">
+            <i class="bx bx-search"></i>Find
+          </button>
+          <input v-model="searchText" type="text" class="year" />
+        </div>
       </div>
       <table>
         <thead>
@@ -20,15 +28,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="UsersInfo in UsersInfo" :key="UsersInfo.user_id">
+          <tr v-for="UsersInfo in UsersInfo" :key="UsersInfo.id">
             <td>{{ UsersInfo.username }}</td>
             <td>{{ UsersInfo.office }}</td>
             <td>{{ UsersInfo.phone_no }}</td>
             <td>{{ UsersInfo.email }}</td>
-            <td>Enable</td>
+            <td>{{ UsersInfo.status }}</td>
             <td class="td-btn">
-              <button class="users-btn">
-                <i class="fa-solid fa-power-off fa-lg"></i>
+              <button class="users-btn" @click="toggleUserStatus(UsersInfo.id)">
+                <i
+                  class="fa-solid fa-power-off fa-lg"
+                  :class="{
+                    'green-btn': UsersInfo.status === 'Enable',
+                    'red-btn': UsersInfo.status === 'Disable',
+                  }"
+                ></i>
               </button>
             </td>
             <td class="td-btn">
@@ -54,6 +68,7 @@ export default {
   data() {
     return {
       UsersInfo: [],
+      searchText: "",
     };
   },
 
@@ -63,10 +78,72 @@ export default {
   methods: {
     async getUsersInfo() {
       try {
-        const UsersInfo = await axios.get("getUsers");
+        const UsersInfo = await axios.get("getUsersInfo");
         this.UsersInfo = UsersInfo.data;
       } catch (e) {
         console.log(e);
+      }
+    },
+
+    async changeAllUserStatus() {
+      try {
+        const response = await axios.post("/changeAllUserStatus");
+        if (response.status === 200) {
+          const responseData = response.data;
+
+          if (responseData && responseData.success) {
+            console.log(responseData.message);
+            this.getUsersInfo(); // Refresh the user list after the status change
+          } else {
+            console.error("Status change failed:", responseData.message);
+          }
+        } else {
+          console.error(`Unexpected response status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error changing all user status:", error);
+      }
+    },
+
+    async toggleUserStatus(userInfo) {
+      console.log("userInfo:", userInfo);
+
+      try {
+        const response = await axios.post("/toggleUserStatus/", {
+          userId: userInfo,
+        });
+        console.log("Server response:", response);
+        if (response.status === 200) {
+          const responseData = response.data;
+
+          if (responseData && responseData.success) {
+            console.log(responseData.message);
+            this.getUsersInfo(); // Refresh the user list after the status change
+          } else {
+            console.error("Status change failed:", responseData.message);
+          }
+        } else {
+          console.error(`Unexpected response status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error changing user status:", error);
+      }
+    },
+
+    async filterUsers() {
+      try {
+        const response = await axios.post("/filterUsers", {
+          searchText: this.searchText,
+        });
+        console.log(this.searchText);
+        if (response.status === 200) {
+          this.UsersInfo = response.data;
+          console.log(response.data);
+        } else {
+          console.error("Error filtering users:", response.data);
+        }
+      } catch (error) {
+        console.error("Error filtering users:", error);
       }
     },
   },
@@ -83,7 +160,13 @@ export default {
 .users-btn {
   color: rgb(47, 212, 47);
 }
+.green-btn {
+  color: rgb(47, 212, 47);
+}
 .pen-btn {
+  color: rgb(233, 70, 70);
+}
+.red-btn {
   color: rgb(233, 70, 70);
 }
 </style>

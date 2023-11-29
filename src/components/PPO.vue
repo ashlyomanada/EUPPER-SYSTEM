@@ -180,7 +180,6 @@ option {
 .year,
 .find,
 .generate {
-  border: 1px solid black;
   padding: 0.2rem 0.5rem;
   border-radius: 0.4rem;
 }

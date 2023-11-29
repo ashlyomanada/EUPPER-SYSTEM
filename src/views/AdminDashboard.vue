@@ -184,6 +184,9 @@ export default {
 };
 </script>
 <style>
+#main {
+  position: relative;
+}
 .admin-logo {
   display: flex;
   align-items: center;
