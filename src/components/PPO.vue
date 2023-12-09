@@ -29,7 +29,7 @@
                 type="number"
                 class="year"
                 name="year"
-                min="1900"
+                min="2000"
                 max="2100"
                 step="1"
                 placeholder="Year"

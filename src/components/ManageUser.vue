@@ -46,7 +46,7 @@
               </button>
             </td>
             <td class="td-btn">
-              <button class="pen-btn">
+              <button class="pen-btn" @click="openForm(UsersInfo)">
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
@@ -60,6 +60,40 @@
       </table>
     </div>
   </div>
+  <form
+    class="form"
+    id="modal-form"
+    :style="{ display: formVisible ? 'block' : 'none' }"
+  >
+    <input
+      v-model="selectedUser.username"
+      type="text"
+      placeholder="Username"
+      class="input"
+    />
+    <input
+      v-model="selectedUser.office"
+      type="text"
+      placeholder="Office"
+      class="input"
+    />
+    <input
+      v-model="selectedUser.email"
+      type="text"
+      placeholder="Email"
+      class="input"
+    />
+    <input
+      v-model="selectedUser.phone_no"
+      type="text"
+      placeholder="Phone No."
+      class="input"
+    />
+    <div class="modal-buttons">
+      <button @click.prevent="saveUser">Save</button>
+      <button @click.prevent="closeForm">Close</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -69,6 +103,14 @@ export default {
     return {
       UsersInfo: [],
       searchText: "",
+      formVisible: false,
+      selectedUser: {
+        id: null,
+        username: "",
+        office: "",
+        phone_no: "",
+        email: "",
+      },
     };
   },
 
@@ -83,6 +125,37 @@ export default {
       } catch (e) {
         console.log(e);
       }
+    },
+
+    openForm(UsersInfo) {
+      this.selectedUser = { ...UsersInfo };
+      this.formVisible = true;
+    },
+
+    async saveUser() {
+      try {
+        const response = await axios.post("/api/saveUser", this.selectedUser);
+
+        if (response.status === 200) {
+          const responseData = response.data;
+
+          if (responseData && responseData.success) {
+            console.log(responseData.message);
+            this.formVisible = false;
+            this.getUsersInfo();
+          } else {
+            console.error("Save failed:", responseData.message);
+          }
+        } else {
+          console.error(`Unexpected response status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error saving admin:", error);
+      }
+    },
+
+    closeForm() {
+      this.formVisible = false;
     },
 
     async changeAllUserStatus() {
@@ -132,13 +205,11 @@ export default {
 
     async filterUsers() {
       try {
-        const response = await axios.post("/filterUsers", {
-          searchText: this.searchText,
-        });
-        console.log(this.searchText);
+        const response = await axios.get("/filterUsers/" + this.searchText);
+        //console.log(this.searchText);
         if (response.status === 200) {
           this.UsersInfo = response.data;
-          console.log(response.data);
+          console.log(this.UsersInfo);
         } else {
           console.error("Error filtering users:", response.data);
         }
@@ -151,6 +222,21 @@ export default {
 </script>
 
 <style>
+#modal-form {
+  position: absolute;
+  width: 50%;
+  top: 15%;
+  left: 25%;
+  display: none;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  gap: 1rem;
+  padding-top: 1rem;
+}
 .td-btn {
   text-align: center;
 }

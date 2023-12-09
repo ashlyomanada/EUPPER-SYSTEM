@@ -4,7 +4,7 @@
     <ul class="side-menu top">
       <div class="admin-logo2">
         <img src="./img/logo.png" alt="" id="logo2" />
-        <h1 id="adminName2">User</h1>
+        <h1 id="adminName2">{{ userName }}</h1>
       </div>
       <li class="active">
         <a href="#" id="btn" @click="toggleButtons">
@@ -18,7 +18,7 @@
       </li>
       <div v-show="showButtons" class="li-div">
         <li>
-          <a href="#" @click="showComponent('UserPPO')">
+          <a href="#" @click="showComponent('PPORatingSheet')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">PPO CPO Level</span>
           </a>
@@ -105,10 +105,6 @@
       <div class="nav-items">
         <input type="checkbox" id="switch-mode" hidden />
         <label for="switch-mode" class="switch-mode"></label>
-        <a href="#" class="notification">
-          <i class="bx bxs-bell"></i>
-          <span class="num">8</span>
-        </a>
         <a
           href="#"
           class="profile"
@@ -123,6 +119,7 @@
 
     <!-- MAIN -->
     <main id="usermain">
+      <PPORatingSheet v-if="selectedComponent === 'PPORatingSheet'" />
       <Uper v-if="selectedComponent === 'Uper'" />
       <UserPPO v-if="selectedComponent === 'UserPPO'" />
       <UserRMFB v-if="selectedComponent === 'UserRMFB'" />
@@ -146,7 +143,8 @@ import UserGmail from "../components/UserGmail.vue";
 import UserPPO from "../components/UserPPO.vue";
 import UserRMFB from "../components/UserRMFB.vue";
 import UserMPS from "../components/UserMPS.vue";
-
+import PPORatingSheet from "../components/PPORatingSheet.vue";
+import axios from "axios";
 // Components
 export default defineComponent({
   components: {
@@ -158,16 +156,46 @@ export default defineComponent({
     UserPPO,
     UserRMFB,
     UserMPS,
+    PPORatingSheet,
   },
   data() {
     return {
-      selectedComponent: "Uper",
+      selectedComponent: "PPORatingSheet",
       showButtons: false,
       showButtons2: false,
+      userId: null,
+      userName: "",
+      officeLocation: "",
+      phoneNumber: "",
+      email: "",
     };
   },
   async created() {
     await this.loadScripts(["/userscript.js"]);
+  },
+  mounted() {
+    // Retrieve user information from session storage
+    const storedUserId = sessionStorage.getItem("id");
+
+    // Check if the user is logged in
+    if (storedUserId) {
+      // Make an Axios request to fetch user data based on session ID
+      axios
+        .get(`/getUserData/${storedUserId}`)
+        .then((response) => {
+          // Update the component's data with the fetched user data
+          const userData = response.data;
+          this.userId = userData.id;
+          this.userName = userData.username;
+          this.officeLocation = userData.office;
+          this.phoneNumber = userData.phone_no;
+          this.email = userData.email;
+          console.log(userData);
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
   },
   methods: {
     showComponent(componentName) {

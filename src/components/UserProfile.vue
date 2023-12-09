@@ -5,31 +5,171 @@
     </div>
     <div class="img-container">
       <div class="img-left">
-        <img src="./img/logo.png" alt="" id="profile-pic" />
-        <h2 class="name">JOHN DOE HIDDLESTONE</h2>
+        <img
+          :src="`http://localhost:8080/${profilePic}`"
+          alt=""
+          id="profile-pic"
+        />
+        <h2 class="name">{{ userName }}</h2>
       </div>
       <div class="img-right">
-        <button class="edit-profile-btn">
+        <button class="edit-profile-btn" @click.prevent="openForm">
           <i class="fa-solid fa-pencil fa-lg"></i>Edit profile
         </button>
       </div>
     </div>
     <div class="profile-description-container">
-      <p><i class="fa-solid fa-briefcase fa-sm"></i>Office: Oriental Mindoro</p>
-      <p><i class="fa-solid fa-phone fa-sm"></i>Phone No. 09546437378</p>
       <p>
-        <i class="fa-solid fa-envelope fa-sm"></i>Email:
-        johndoehiddlestone@gmail.com
+        <i class="fa-solid fa-briefcase fa-sm"></i>Office: {{ officeLocation }}
       </p>
+      <p><i class="fa-solid fa-phone fa-sm"></i>Phone No. {{ phoneNumber }}</p>
+      <p><i class="fa-solid fa-envelope fa-sm"></i>Email: {{ email }}</p>
     </div>
   </div>
+  <form
+    class="form"
+    id="modal-form2"
+    :style="{ display: formVisible ? 'block' : 'none' }"
+  >
+    <input
+      v-model="selectedUser.username"
+      type="text"
+      placeholder="Username"
+      class="input"
+    />
+    <input
+      v-model="selectedUser.office"
+      type="text"
+      placeholder="Office"
+      class="input"
+    />
+    <input
+      v-model="selectedUser.email"
+      type="text"
+      placeholder="Email"
+      class="input"
+    />
+    <input
+      v-model="selectedUser.phone_no"
+      type="text"
+      placeholder="Phone No."
+      class="input"
+    />
+    <div class="modal-buttons">
+      <button @click.prevent="saveUser">Save</button>
+      <button @click.prevent="closeForm">Close</button>
+    </div>
+  </form>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+
+export default {
+  data() {
+    return {
+      userId: null,
+      userName: "",
+      profilePic: "",
+      officeLocation: "",
+      phoneNumber: "",
+      email: "",
+      formVisible: false,
+      selectedUser: {
+        userId: null,
+        username: "",
+        office: "",
+        phone_no: "",
+        email: "",
+      },
+    };
+  },
+  mounted() {
+    // Retrieve user information from session storage
+    const storedUserId = sessionStorage.getItem("id");
+
+    // Check if the user is logged in
+    if (storedUserId) {
+      // Make an Axios request to fetch user data based on session ID
+      axios
+        .get(`/getUserData/${storedUserId}`)
+        .then((response) => {
+          // Update the component's data with the fetched user data
+          const userData = response.data;
+          this.userId = userData.id;
+          this.userName = userData.username;
+          this.officeLocation = userData.office;
+          this.phoneNumber = userData.phone_no;
+          this.email = userData.email;
+          this.profilePic = userData.image;
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    }
+  },
+  methods: {
+    openForm() {
+      // When the "Edit profile" button is clicked, set the formVisible to true
+      this.formVisible = true;
+
+      // Populate the form fields with the current user's data
+      this.selectedUser = {
+        userId: this.userId,
+        username: this.userName,
+        office: this.officeLocation,
+        phone_no: this.phoneNumber,
+        email: this.email,
+      };
+    },
+    closeForm() {
+      this.formVisible = false;
+    },
+    async saveUser() {
+      try {
+        const response = await axios.post(
+          "/api/saveProfile",
+          this.selectedUser
+        );
+
+        if (response.status === 200) {
+          const responseData = response.data;
+
+          if (responseData && responseData.success) {
+            console.log(responseData.message);
+            this.formVisible = false;
+            //this.getUsersInfo();
+          } else {
+            console.error("Save failed:", responseData.message);
+          }
+        } else {
+          console.error(`Unexpected response status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error saving admin:", error);
+      }
+    },
+  },
+};
 </script>
 
 <style>
+#modal-form2 {
+  position: absolute;
+  width: 50%;
+  top: 25%;
+  left: 25%;
+  display: none;
+  z-index: 2;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: end;
+  width: 100%;
+  gap: 1rem;
+  padding-top: 1rem;
+}
 .profile-container {
   height: 91vh;
   width: 100%;

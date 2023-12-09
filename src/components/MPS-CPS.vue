@@ -78,7 +78,7 @@ export default {
 .year,
 .find,
 .generate {
-  border: 1px solid black;
+  border: 1px solid var(--dark);
   padding: 0.2rem 0.5rem;
 }
 .head-options {
