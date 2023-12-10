@@ -13,7 +13,7 @@ class PpoModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['office','do','didm','di','dpcr','dl','dhrdd','dprm','dictm','dpl','dc','drd'];
+    protected $allowedFields    = ['userid','month','year','office','do','didm','di','dpcr','dl','dhrdd','dprm','dictm','dpl','dc','drd','operational','administrative','total'];
 
     // Dates
     protected $useTimestamps = false;
@@ -44,4 +44,33 @@ class PpoModel extends Model
     {
         return $this->findAll();
     }
+
+    public function getForeignId($userId)
+    {
+        try {
+            return $this->where('userid', $userId)->get();
+        } catch (\Exception $e) {
+            log_message('error', 'Database error: ' . $e->getMessage());
+            return null; // Or handle the error in a way that makes sense for your application
+        }
+    }
+
+    public function getFilteredData($userId, $tableId)
+{
+    $tableName = $this->getTableNameFromId($tableId);
+    $this->table = $tableName;
+    return $this->where(['userid' => $userId])->findAll();
+}
+
+private function getTableNameFromId($tableId)
+{
+    $tableMappings = [
+        '1' => 'ppo_tbl',
+        '2' => 'table_name_2',
+        '3' => 'table_name_3',
+    ];
+    return $tableMappings[$tableId] ?? 'ppo_tbl';
+}
+
+
 }

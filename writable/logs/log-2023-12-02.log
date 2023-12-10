@@ -1,0 +1,2 @@
+ERROR - 2023-12-02 14:33:28 --> Exception in getUserData: Undefined property: App\Controllers\MainController::$session
+ERROR - 2023-12-02 14:33:54 --> Exception in getUserData: Undefined property: App\Controllers\MainController::$session

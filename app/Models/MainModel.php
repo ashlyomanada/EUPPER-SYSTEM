@@ -13,7 +13,7 @@ class MainModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['username','password','confirmpassword','office','phone_no','email'];
+    protected $allowedFields    = ['username','password','confirmpassword','office','phone_no','email','image','status'];
 
     // Dates
     protected $useTimestamps = false;
@@ -38,4 +38,11 @@ class MainModel extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    public function getUserById($userId)
+    {
+        return $this->find($userId);
+    }
+
+   
 }

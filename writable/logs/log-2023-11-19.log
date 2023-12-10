@@ -1,0 +1,14 @@
+CRITICAL - 2023-11-19 06:20:08 --> Call to undefined method App\Models\PpoModel::getAllData()
+in APPPATH\Controllers\MainController.php on line 182.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->generatePdf()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2023-11-19 08:32:17 --> Non-static method App\Models\PpoModel::getData() cannot be called statically
+in APPPATH\Controllers\MainController.php on line 182.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->generatePdf()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

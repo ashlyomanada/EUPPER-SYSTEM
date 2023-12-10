@@ -1,0 +1,47 @@
+CRITICAL - 2023-11-28 11:46:50 --> Undefined array key "status"
+in APPPATH\Controllers\AdminController.php on line 172.
+ 1 APPPATH\Controllers\AdminController.php(172): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "status"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 172)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->toggleUserStatus()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2023-11-28 11:48:14 --> Undefined array key "status"
+in APPPATH\Controllers\AdminController.php on line 172.
+ 1 APPPATH\Controllers\AdminController.php(172): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "status"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 172)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->toggleUserStatus()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2023-11-28 11:49:03 --> Undefined array key "status"
+in APPPATH\Controllers\AdminController.php on line 172.
+ 1 APPPATH\Controllers\AdminController.php(172): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "status"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 172)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->toggleUserStatus()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2023-11-28 11:57:07 --> Too few arguments to function App\Controllers\AdminController::toggleUserStatus(), 0 passed in C:\laragon\www\projectbackend\system\CodeIgniter.php on line 919 and exactly 1 expected
+in APPPATH\Controllers\AdminController.php on line 161.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->toggleUserStatus()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2023-11-28 12:20:02 --> Undefined array key "status"
+in APPPATH\Controllers\AdminController.php on line 172.
+ 1 APPPATH\Controllers\AdminController.php(172): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "status"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 172)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->toggleUserStatus()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2023-11-28 12:22:06 --> Undefined array key "status"
+in APPPATH\Controllers\AdminController.php on line 172.
+ 1 APPPATH\Controllers\AdminController.php(172): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "status"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 172)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->toggleUserStatus()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
