@@ -173,5 +173,85 @@ public function update($id = null)
         return $this->fail('Admin update failed', 500);
     }
 }
+public function insertRating()
+{
+    $json = $this->request->getJSON();
+    $sixtypercent = ($json->Do + $json->Didm + $json->Di + $json->Dpcr) / 600 * 60;
+    $fortypercent = ($json->Dl + $json->Dhrdd + $json->Dprm + $json->Dictm + $json->Dpl + $json->Dc + $json->Drd) / 400 * 40;
 
+    $ratingModel = new PpoModel();
+    $data = [
+        'userid'   => $json->storedUserId,
+        'month'    => $json->Month,
+        'year'     => $json->Year,
+        'office'   => $json->Office,
+        'do'       => $json->Do,
+        'didm'     => $json->Didm,
+        'di'       => $json->Di,
+        'dpcr'     => $json->Dpcr,
+        'dl'       => $json->Dl,
+        'dhrdd'    => $json->Dhrdd,
+        'dprm'     => $json->Dprm,
+        'dictm'    => $json->Dictm,
+        'dpl'      => $json->Dpl,
+        'dc'       => $json->Dc,
+        'drd'      =>$json->Drd,
+        'operational'   => $sixtypercent,
+        'administrative'  => $fortypercent,
+        'total'    => $sixtypercent + $fortypercent,
+    ];
+
+    $ratingModel->insert($data);
+
+    return $this->respond(['message' => 'Rating inserted successfully']);
+}
+
+public function getUserData($userId)
+{
+    $main = new MainModel();
+    $userData = $main->getUserById($userId);
+    if ($userData) {
+        return $this->response->setJSON($userData);
+    } else {
+        return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+    }
+}
+
+public function getUserRatings(){
+    $main = new PpoModel();
+    $data = $main->findall();
+    return $this->respond($data,200);
+}
+
+public function saveProfile()
+{
+    $data = $this->request->getJSON();
+    $model = new MainModel();
+
+    if ($data->userId) {
+        // Update existing admin
+        $model->update($data->userId, $data);
+        $message = 'User updated successfully';
+    } else {
+        // Insert new admin
+        $model->insert($data);
+        $message = 'User saved successfully';
+    }
+
+    return $this->respond(['success' => true, 'message' => $message]);
+}
+
+
+public function viewUserRatings($userId)
+{
+    $main = new PpoModel();
+    $userData = $main->getForeignId($userId);
+    if (count($userData->getResult()) > 0) {
+        return $this->response->setJSON($userData->getResult());
+    } else {
+        return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+    }
+}
+
+}
 
