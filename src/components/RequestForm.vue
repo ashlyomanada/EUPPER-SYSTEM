@@ -43,6 +43,12 @@ export default {
       },
       showAlert: false,
       alertMessage: "",
+      userId: null,
+      userName: "",
+      profilePic: "",
+      officeLocation: "",
+      phoneNumber: "",
+      email: "",
     };
   },
   methods: {
@@ -78,6 +84,29 @@ export default {
         this.showAlert = false;
         this.alertMessage = "";
       }, 5000);
+    },
+    async fetchUserData() {
+      const storedUserId = sessionStorage.getItem("id");
+
+      if (storedUserId) {
+        try {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
+
+          if (response.status === 200) {
+            const userData = response.data;
+            this.userId = userData.user_id;
+            this.userName = userData.username;
+            this.officeLocation = userData.office;
+            this.phoneNumber = userData.phone_no;
+            this.email = userData.email;
+            this.profilePic = userData.image;
+          } else {
+            console.error(`Unexpected response status: ${response.status}`);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
     },
   },
 };

@@ -28,7 +28,11 @@
           </tr>
           <tr v-for="rating in userRatings" :key="rating.id">
             <td class="td-btn">
-              <button class="pen-btn" @click="openForm(rating)">
+              <button
+                class="pen-btn"
+                @click="openForm(rating)"
+                v-if="UsersInfo[0]?.status === 'Enable'"
+              >
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
@@ -161,7 +165,7 @@ import axios from "axios";
 export default {
   data() {
     return {
-      UsersInfo: [],
+      UsersInfo: "",
       dataFetched: false,
       userRatings: [],
       formVisible: false,
@@ -193,8 +197,8 @@ export default {
     async getUsersInfo() {
       try {
         const UsersInfo = await axios.get("getUsersInfo");
-        //console.log("UsersInfo:", UsersInfo);
         this.UsersInfo = UsersInfo.data;
+        console.log("UsersInfo:", this.UsersInfo); // Log the entire UsersInfo object
       } catch (e) {
         console.error("Error fetching UsersInfo:", e);
       }
@@ -221,6 +225,32 @@ export default {
     openForm(UserRatings) {
       this.selectedRatings = { ...UserRatings };
       this.formVisible = true;
+    },
+
+    async saveUserRates() {
+      try {
+        const response = await axios.post(
+          "/api/saveUserRates",
+          this.selectedRatings
+        );
+
+        if (response.status === 200) {
+          const responseData = response.data;
+
+          if (responseData && responseData.success) {
+            //  console.log(responseData.message);
+            this.formVisible = false;
+            this.fetchData();
+            this.getUsersInfo();
+          } else {
+            console.error("Save failed:", responseData.message);
+          }
+        } else {
+          console.error(`Unexpected response status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error("Error saving admin:", error);
+      }
     },
 
     closeForm() {

@@ -76,7 +76,7 @@ export default {
       email: "",
       formVisible: false,
       selectedUser: {
-        userId: null,
+        user_id: null,
         username: "",
         office: "",
         phone_no: "",
@@ -85,37 +85,40 @@ export default {
     };
   },
   mounted() {
-    // Retrieve user information from session storage
-    const storedUserId = sessionStorage.getItem("id");
-
-    // Check if the user is logged in
-    if (storedUserId) {
-      // Make an Axios request to fetch user data based on session ID
-      axios
-        .get(`/getUserData/${storedUserId}`)
-        .then((response) => {
-          // Update the component's data with the fetched user data
-          const userData = response.data;
-          this.userId = userData.id;
-          this.userName = userData.username;
-          this.officeLocation = userData.office;
-          this.phoneNumber = userData.phone_no;
-          this.email = userData.email;
-          this.profilePic = userData.image;
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
+    this.fetchUserData();
   },
   methods: {
+    async fetchUserData() {
+      const storedUserId = sessionStorage.getItem("id");
+
+      if (storedUserId) {
+        try {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
+
+          if (response.status === 200) {
+            const userData = response.data;
+            this.userId = userData.user_id;
+            this.userName = userData.username;
+            this.officeLocation = userData.office;
+            this.phoneNumber = userData.phone_no;
+            this.email = userData.email;
+            this.profilePic = userData.image;
+          } else {
+            console.error(`Unexpected response status: ${response.status}`);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    },
+
     openForm() {
       // When the "Edit profile" button is clicked, set the formVisible to true
       this.formVisible = true;
 
       // Populate the form fields with the current user's data
       this.selectedUser = {
-        userId: this.userId,
+        user_id: this.userId,
         username: this.userName,
         office: this.officeLocation,
         phone_no: this.phoneNumber,
@@ -127,18 +130,15 @@ export default {
     },
     async saveUser() {
       try {
-        const response = await axios.post(
-          "/api/saveProfile",
-          this.selectedUser
-        );
+        const response = await axios.post("/api/saveUser", this.selectedUser);
 
         if (response.status === 200) {
           const responseData = response.data;
 
           if (responseData && responseData.success) {
-            console.log(responseData.message);
+            //console.log(responseData.message);
             this.formVisible = false;
-            //this.getUsersInfo();
+            this.fetchUserData();
           } else {
             console.error("Save failed:", responseData.message);
           }
