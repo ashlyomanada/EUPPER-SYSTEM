@@ -1,4 +1,21 @@
-public function index(){
+<?php
+
+namespace App\Controllers;
+
+use App\Controllers\BaseController;
+use CodeIgniter\RestFul\ResourceController;
+use CodeIgniter\API\ResponseTrait;
+use App\Models\MainModel;
+use App\Models\AdminModel;
+use App\Models\PpoModel;
+use App\Models\RatingModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Mpdf\Mpdf;
+
+class MainController extends ResourceController
+{
+    public function index(){
         return view('upload');
     }
     
@@ -156,3 +173,5 @@ public function update($id = null)
         return $this->fail('Admin update failed', 500);
     }
 }
+
+
