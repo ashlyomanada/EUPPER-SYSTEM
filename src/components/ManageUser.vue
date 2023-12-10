@@ -8,10 +8,15 @@
           Change All User Status
         </button>
         <div>
-          <button class="find" @click="filterUsers">
+          <button class="find" @click="findData">
             <i class="bx bx-search"></i>Find
           </button>
-          <input v-model="searchText" type="text" class="year" />
+          <input
+            v-model="searchText"
+            type="text"
+            class="year"
+            id="searchText"
+          />
         </div>
       </div>
       <table>
@@ -28,14 +33,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="UsersInfo in UsersInfo" :key="UsersInfo.id">
+          <tr v-for="UsersInfo in UsersInfo" :key="UsersInfo.user_id">
             <td>{{ UsersInfo.username }}</td>
             <td>{{ UsersInfo.office }}</td>
             <td>{{ UsersInfo.phone_no }}</td>
             <td>{{ UsersInfo.email }}</td>
             <td>{{ UsersInfo.status }}</td>
             <td class="td-btn">
-              <button class="users-btn" @click="toggleUserStatus(UsersInfo.id)">
+              <button
+                class="users-btn"
+                @click="toggleUserStatus(UsersInfo.user_id)"
+              >
                 <i
                   class="fa-solid fa-power-off fa-lg"
                   :class="{
@@ -165,7 +173,7 @@ export default {
           const responseData = response.data;
 
           if (responseData && responseData.success) {
-            console.log(responseData.message);
+            // console.log(responseData.message);
             this.getUsersInfo(); // Refresh the user list after the status change
           } else {
             console.error("Status change failed:", responseData.message);
@@ -179,18 +187,18 @@ export default {
     },
 
     async toggleUserStatus(userInfo) {
-      console.log("userInfo:", userInfo);
+      //console.log("userInfo:", userInfo);
 
       try {
         const response = await axios.post("/toggleUserStatus/", {
           userId: userInfo,
         });
-        console.log("Server response:", response);
+        //console.log("Server response:", response);
         if (response.status === 200) {
           const responseData = response.data;
 
           if (responseData && responseData.success) {
-            console.log(responseData.message);
+            //console.log(responseData.message);
             this.getUsersInfo(); // Refresh the user list after the status change
           } else {
             console.error("Status change failed:", responseData.message);
@@ -203,19 +211,16 @@ export default {
       }
     },
 
-    async filterUsers() {
-      try {
-        const response = await axios.get("/filterUsers/" + this.searchText);
-        //console.log(this.searchText);
-        if (response.status === 200) {
-          this.UsersInfo = response.data;
-          console.log(this.UsersInfo);
-        } else {
-          console.error("Error filtering users:", response.data);
-        }
-      } catch (error) {
-        console.error("Error filtering users:", error);
+    findData() {
+      const searchText = document.querySelector("#searchText").value;
+
+      if (searchText === "") {
+        this.getUsersInfo();
+        return;
       }
+      this.UsersInfo = this.UsersInfo.filter((item) => {
+        return item.username === searchText;
+      });
     },
   },
 };

@@ -8,16 +8,25 @@
         </div>
         <div class="table-options">
           <div class="options-control">
-            Select User:<select class="month" name="month">
-              <option value="1">R1</option>
+            Select User:
+            <select v-model="selectedUserId" class="month" name="month">
+              <option
+                v-for="user in users"
+                :key="user.user_id"
+                :value="user.user_id"
+              >
+                {{ user.username }}
+              </option>
             </select>
             Select Table:
-            <select class="month" name="month">
+            <select v-model="selectedTable" class="month" name="month">
               <option value="1">PPO CPO LEVEL</option>
               <option value="2">RMFB PMFC LEVEL</option>
               <option value="3">MPS CPS LEVEL</option>
             </select>
-            <button class="find"><i class="bx bx-search"></i>Find</button>
+            <button @click="findData" class="find">
+              <i class="bx bx-search"></i>Find
+            </button>
           </div>
         </div>
       </div>
@@ -65,59 +74,103 @@
   </div>
   <form
     class="form"
-    id="modal-form"
+    id="rating-form-edit"
     :style="{ display: formVisible ? 'block' : 'none' }"
   >
-    <input
-      v-model="selectedRatings.month"
-      type="text"
-      placeholder="Month"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.year"
-      type="text"
-      placeholder="Year"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.occi"
-      type="text"
-      placeholder="Occidental Mindoro"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.ormin"
-      type="text"
-      placeholder="Oriental Mindoro"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.marin"
-      type="text"
-      placeholder="Marinduque"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.rom"
-      type="text"
-      placeholder="Romblon"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.pal"
-      type="text"
-      placeholder="Palawan"
-      class="input"
-    />
-    <input
-      v-model="selectedRatings.puertop"
-      type="text"
-      placeholder="Puerto Princesa"
-      class="input"
-    />
+    <div class="form-edit">
+      <label for="">Office:</label>
+      <input
+        v-model="selectedRatings.office"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">do:</label>
+      <input
+        v-model="selectedRatings.do"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">didm:</label>
+      <input
+        v-model="selectedRatings.didm"
+        type="text"
+        placeholder=" Mindoro"
+        class="input"
+      />
+    </div>
+    <div class="form-edit">
+      <label for="">di:</label>
+      <input
+        v-model="selectedRatings.di"
+        type="text"
+        placeholder=" Mindoro"
+        class="input"
+      />
+      <label for="">dpcr:</label>
+      <input
+        v-model="selectedRatings.dpcr"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">dl:</label>
+      <input
+        v-model="selectedRatings.dl"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+    </div>
+    <div class="form-edit">
+      <label for="">dhrdd:</label>
+      <input
+        v-model="selectedRatings.dhrdd"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">dprm:</label>
+      <input
+        v-model="selectedRatings.dprm"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">dictm:</label>
+      <input
+        v-model="selectedRatings.dictm"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+    </div>
+    <div class="form-edit">
+      <label for="">dpl:</label>
+      <input
+        v-model="selectedRatings.dpl"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">dc:</label>
+      <input
+        v-model="selectedRatings.dc"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+      <label for="">drd:</label>
+      <input
+        v-model="selectedRatings.drd"
+        type="text"
+        placeholder=""
+        class="input"
+      />
+    </div>
     <div class="modal-buttons">
-      <button @click.prevent="saveAdmin">Save</button>
+      <button @click.prevent="saveUserRates">Save</button>
       <button @click.prevent="closeForm">Close</button>
     </div>
   </form>
@@ -129,23 +182,32 @@ export default {
   data() {
     return {
       UserRatings: [],
+      users: [],
+      selectedUser: null,
+      selectedUserId: "",
+      selectedTable: 1,
       formVisible: false,
       selectedRatings: {
         id: null,
-        month: "",
-        year: "",
-        occi: "",
-        ormin: "",
-        marin: "",
-        rom: "",
-        pal: "",
-        puertop: "",
+        office: "",
+        do: "",
+        didm: "",
+        di: "",
+        dpcr: "",
+        dl: "",
+        dhrdd: "",
+        dprm: "",
+        dictm: "",
+        dpl: "",
+        dc: "",
+        drd: "",
       },
     };
   },
 
   created() {
     this.getUserRatings();
+    this.getUsers();
   },
 
   methods: {
@@ -158,14 +220,21 @@ export default {
       }
     },
 
-    openForm(UserRatings) {
-      this.selectedRatings = { ...UserRatings };
-      this.formVisible = true;
+    async getUsers() {
+      try {
+        const response = await axios.get("/getUsers"); // Replace with your actual endpoint
+        this.users = response.data;
+      } catch (error) {
+        console.error("Error fetching users data:", error);
+      }
     },
 
-    async saveAdmin() {
+    async saveUserRates() {
       try {
-        const response = await axios.post("/api/saveAdmin", this.selectedAdmin);
+        const response = await axios.post(
+          "/api/saveUserRates",
+          this.selectedRatings
+        );
 
         if (response.status === 200) {
           const responseData = response.data;
@@ -173,7 +242,7 @@ export default {
           if (responseData && responseData.success) {
             console.log(responseData.message);
             this.formVisible = false;
-            this.getAdminsInfo();
+            this.getUserRatings();
           } else {
             console.error("Save failed:", responseData.message);
           }
@@ -185,14 +254,46 @@ export default {
       }
     },
 
+    openForm(UserRatings) {
+      this.selectedRatings = { ...UserRatings };
+      this.formVisible = true;
+    },
+
     closeForm() {
       this.formVisible = false;
+    },
+
+    async findData() {
+      try {
+        // Make a request to fetch filtered data based on selected user and table
+        const response = await axios.get(
+          `/findData/${this.selectedUserId}/${this.selectedTable}`
+        );
+        this.UserRatings = response.data;
+      } catch (error) {
+        console.error("Error fetching filtered data:", error);
+      }
     },
   },
 };
 </script>
 
 <style>
+label {
+  width: 1.3rem;
+}
+#rating-form-edit {
+  position: absolute;
+  width: 80%;
+  top: 15%;
+  left: 10%;
+  display: none;
+}
+.form-edit {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
 .evaluation-ratings {
   display: flex;
   align-items: center;

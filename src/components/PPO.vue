@@ -11,18 +11,18 @@
             <div>
               Select Month:
               <select class="month" name="month">
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
               </select>
               Select Year:
               <input
@@ -34,7 +34,9 @@
                 step="1"
                 placeholder="Year"
               />
-              <button class="find"><i class="bx bx-search"></i>Find</button>
+              <button class="find" @click="findData">
+                <i class="bx bx-search"></i>Find
+              </button>
             </div>
             <button class="generate" @click="generateExcel">
               Generate Excel Report
@@ -137,12 +139,18 @@ export default {
         });
     },
     generatePdf() {
-      fetch("http://localhost:8080/generatePdf", {
-        method: "GET", // Use GET instead of POST if you're not sending any data
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      const selectedMonth = document.querySelector(".month").value;
+      const selectedYear = document.querySelector(".year").value;
+
+      fetch(
+        `http://localhost:8080/generatePdf/${selectedMonth}/${selectedYear}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -160,6 +168,17 @@ export default {
         .catch((error) => {
           console.error("Error generating or loading PDF:", error);
         });
+    },
+
+    findData() {
+      // Get selected month and year
+      const selectedMonth = document.querySelector(".month").value;
+      const selectedYear = document.querySelector(".year").value;
+
+      // Filter data based on selected month and year
+      this.PpoInfo = this.PpoInfo.filter((item) => {
+        return item.month === selectedMonth && item.year === selectedYear;
+      });
     },
   },
 };
