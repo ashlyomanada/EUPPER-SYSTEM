@@ -173,6 +173,8 @@ public function update($id = null)
         return $this->fail('Admin update failed', 500);
     }
 }
+
+
 public function insertRating()
 {
     $json = $this->request->getJSON();
@@ -254,4 +256,6 @@ public function viewUserRatings($userId)
 }
 
 }
+    
 
+    

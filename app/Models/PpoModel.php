@@ -72,5 +72,22 @@ private function getTableNameFromId($tableId)
     return $tableMappings[$tableId] ?? 'ppo_tbl';
 }
 
+public function searchData($year)
+{
+    return $this->db->table('login_info')
+    ->like('year', $year)
+    ->get()
+    ->getResultArray();
+}
 
+// Modify the getMonthlyRatings method to accept a year parameter
+public function getMonthlyRatings($year)
+{
+    return $this->where('year', $year)->findAll();
+}
+
+public function getDistinctMonths($selectedYear)
+    {
+        return $this->distinct()->select('month')->where('year', $selectedYear)->findAll();
+    }
 }

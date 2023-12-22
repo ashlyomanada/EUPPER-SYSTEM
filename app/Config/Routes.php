@@ -40,3 +40,4 @@ $routes->post('/insertRating', 'MainController::insertRating');
 $routes->get('/viewUserRatings/(:num)', 'MainController::viewUserRatings/$1');
 $routes->get('/countUserRatings', 'AdminController::countUserRatings');
 $routes->get('/countUser', 'AdminController::countUser');
+$routes->get('/calculateRatings/(:num)', 'AdminController::calculateRatings/$1');

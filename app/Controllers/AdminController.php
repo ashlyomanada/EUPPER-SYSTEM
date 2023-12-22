@@ -370,6 +370,76 @@ public function filterUsers($searchTerm)
             return $this->respond(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function filterData($year)
+    {
+        $model = new PpoModel();
+        $users = $model->searchData($year);
+        return json_encode($users);
+    }
+
+    public function calculateRatings($selectedYear)
+    {
+        try {
+            $ratingModel = new PpoModel();
+    
+            // Pass the selected year to the getMonthlyRatings method
+            $monthlyRatings = $ratingModel->getMonthlyRatings($selectedYear);
+            $distinctMonths = $ratingModel->getDistinctMonths($selectedYear);
+    
+            // Extract the 'total' values from the database result
+            $ratingsArray = array_column($monthlyRatings, 'total');
+            $months = array_column($distinctMonths, 'month');
+    
+            // Calculate the total rating for the year
+            $totalRatingForYear = array_sum($ratingsArray);
+    
+            // Calculate the percentage of each month's rating in the total
+            $percentages = array_map(function ($rating) use ($totalRatingForYear) {
+                return ($rating / $totalRatingForYear) * 100;
+            }, $ratingsArray);
+    
+            // Format percentages with two decimal places
+            $formattedPercentages = array_map(function ($percent) {
+                return (int) number_format($percent, 2);
+            }, $percentages);
+    
+            // Combine months and formatted percentages into an array of tuples
+            $combinedData = array_map(null, $months, $formattedPercentages);
+    
+            // Sort the data based on months
+            usort($combinedData, function ($a, $b) use ($distinctMonths) {
+                $indexA = array_search($a[0], array_column($distinctMonths, 'month'));
+                $indexB = array_search($b[0], array_column($distinctMonths, 'month'));
+
+                return $indexA - $indexB;
+            });
+
+            
+            
+            
+    
+            // Unpack the sorted data
+            list($sortedMonths, $sortedFormattedPercentages) = array_map(null, ...$combinedData);
+    
+            // Return JSON data
+            return $this->response->setJSON([
+                'totalRatingForYear' => $totalRatingForYear,
+                'months' => $sortedMonths,
+                'ratingsArray' => $ratingsArray,
+                'backgroundColor' => ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF5733', '#33FF57', '#5733FF', '#FF3366', '#33FFA5', '#A533FF'],
+                'hoverBackgroundColor' => ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF5733', '#33FF57', '#5733FF', '#FF3366', '#33FFA5', '#A533FF'],
+                'formattedPercentages' => $sortedFormattedPercentages,
+            ]);
+        } catch (\Exception $e) {
+            // Log the exception
+            error_log($e->getMessage());
+    
+            // Return an error response if needed
+            return $this->response->setJSON(['error' => 'Internal Server Error'])->setStatusCode(500);
+        }
+    }
+
     
 }
 
