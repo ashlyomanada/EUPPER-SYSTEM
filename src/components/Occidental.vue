@@ -1,62 +1,120 @@
 <template>
-  <div class="table-data">
-    <div class="order">
-      <div class="rating-header">
-        <div>
-          <h3>Occidental Mindoro PPO Ratings</h3>
-          <h4 class="head-subtitle">PPO / CPO Level</h4>
-        </div>
-      </div>
-      <div class="oriental-container">
-        <form action="" id="oriental-form" @submit.prevent="save">
-          <div class="rate-date-container">
-            <h1>Operational Ratings</h1>
-            <div class="date-container">
-              Month:
-              <select class="month" v-model="Month" required>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-              </select>
-              <input
-                type="number"
-                class="year"
-                name="year"
-                min="2000"
-                max="2100"
-                step="1"
-                placeholder="Year"
-                v-model="Year"
-                required
-              />
-            </div>
+  <div v-if="visible">
+    <div class="table-data">
+      <div class="order">
+        <div class="rating-header">
+          <div>
+            <h3>Occidental Mindoro PPO Ratings</h3>
+            <h4 class="head-subtitle">PPO / CPO Level</h4>
           </div>
-          <div class="operational-container">
-            <table>
-              <tr>
-                <th>DO / 167</th>
-                <th>DIDM / 166</th>
-                <th>DI / 167</th>
-                <th>DPCR / 100</th>
-              </tr>
-              <tbody>
+        </div>
+        <div class="oriental-container">
+          <form action="" id="oriental-form" @submit.prevent="save">
+            <div class="rate-date-container">
+              <h1>Operational Ratings</h1>
+              <div class="date-container">
+                Month:
+                <select class="month" v-model="Month" required>
+                  <option value="January">January</option>
+                  <option value="February">February</option>
+                  <option value="March">March</option>
+                  <option value="April">April</option>
+                  <option value="May">May</option>
+                  <option value="June">June</option>
+                  <option value="July">July</option>
+                  <option value="August">August</option>
+                  <option value="September">September</option>
+                  <option value="October">October</option>
+                  <option value="November">November</option>
+                  <option value="December">December</option>
+                </select>
+                <input
+                  type="number"
+                  class="year"
+                  name="year"
+                  min="2000"
+                  max="2100"
+                  step="1"
+                  placeholder="Year"
+                  v-model="Year"
+                  required
+                />
+              </div>
+            </div>
+            <div class="operational-container">
+              <table>
+                <tr>
+                  <th>DO / 167</th>
+                  <th>DIDM / 166</th>
+                  <th>DI / 167</th>
+                  <th>DPCR / 100</th>
+                </tr>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input
+                        type="number"
+                        name=""
+                        class="ratings"
+                        placeholder="DO"
+                        v-model="Do"
+                        required
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name=""
+                        class="ratings"
+                        placeholder="DIDM"
+                        v-model="Didm"
+                        required
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name=""
+                        class="ratings"
+                        placeholder="DI"
+                        v-model="Di"
+                        required
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="number"
+                        name=""
+                        class="ratings"
+                        placeholder="DPCR"
+                        v-model="Dpcr"
+                        required
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h1>Administrative Ratings</h1>
+            <div class="administrative-container">
+              <table>
+                <tr>
+                  <th>Dl / 80</th>
+                  <th>Dhrdd / 80</th>
+                  <th>Dprm / 80</th>
+                  <th>Dictm / 80</th>
+                  <th>Dpl / 35</th>
+                  <th>Dc / 25</th>
+                  <th>Drd / 20</th>
+                </tr>
                 <tr>
                   <td>
                     <input
                       type="number"
                       name=""
                       class="ratings"
-                      placeholder="DO"
-                      v-model="Do"
+                      placeholder="Dl"
+                      v-model="Dl"
                       required
                     />
                   </td>
@@ -65,8 +123,8 @@
                       type="number"
                       name=""
                       class="ratings"
-                      placeholder="DIDM"
-                      v-model="Didm"
+                      placeholder="Dhrdd"
+                      v-model="Dhrdd"
                       required
                     />
                   </td>
@@ -75,8 +133,8 @@
                       type="number"
                       name=""
                       class="ratings"
-                      placeholder="DI"
-                      v-model="Di"
+                      placeholder="Dprm"
+                      v-model="Dprm"
                       required
                     />
                   </td>
@@ -85,112 +143,61 @@
                       type="number"
                       name=""
                       class="ratings"
-                      placeholder="DPCR"
-                      v-model="Dpcr"
+                      placeholder="Dictm"
+                      v-model="Dictm"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="Dpl"
+                      v-model="Dpl"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="Dc"
+                      v-model="Dc"
+                      required
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="Drd"
+                      v-model="Drd"
                       required
                     />
                   </td>
                 </tr>
-              </tbody>
-            </table>
-          </div>
-          <h1>Administrative Ratings</h1>
-          <div class="administrative-container">
-            <table>
-              <tr>
-                <th>Dl / 80</th>
-                <th>Dhrdd / 80</th>
-                <th>Dprm / 80</th>
-                <th>Dictm / 80</th>
-                <th>Dpl / 35</th>
-                <th>Dc / 25</th>
-                <th>Drd / 20</th>
-              </tr>
-              <tr>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Dl"
-                    v-model="Dl"
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Dhrdd"
-                    v-model="Dhrdd"
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Dprm"
-                    v-model="Dprm"
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Dictm"
-                    v-model="Dictm"
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Dpl"
-                    v-model="Dpl"
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Dc"
-                    v-model="Dc"
-                    required
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="Drd"
-                    v-model="Drd"
-                    required
-                  />
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="rating-footer">
-            <button type="submit" class="submitRate">Submit</button>
-          </div>
-        </form>
+              </table>
+            </div>
+            <div class="rating-footer">
+              <button class="returnRate" @click="selectRating">Return</button>
+              <button type="submit" class="submitRate">Submit</button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+    <PpoRatingSheet></PpoRatingSheet>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import PpoRatingSheet from "../components/PPORatingSheet.vue";
 
 export default {
   data() {
@@ -210,13 +217,20 @@ export default {
       Drd: "",
       Office: "Occidental Mindoro PPO",
       storedUserId: null,
+      visible: true,
     };
+  },
+  components: {
+    PpoRatingSheet,
   },
   mounted() {
     // Retrieve user information from session storage
     this.storedUserId = sessionStorage.getItem("id");
   },
   methods: {
+    selectRating() {
+      this.visible = false;
+    },
     async save() {
       try {
         const ins = await axios.post("insertRating", {

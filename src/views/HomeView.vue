@@ -23,18 +23,6 @@
             <span class="text">PPO CPO Level</span>
           </a>
         </li>
-        <li>
-          <a href="#" @click="showComponent('UserRMFB')">
-            <i class="bx bxs-shopping-bag-alt"></i>
-            <span class="text">RMFB PMFC Level</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" @click="showComponent('UserMPS')">
-            <i class="bx bxs-shopping-bag-alt"></i>
-            <span class="text">MPS CPS Level</span>
-          </a>
-        </li>
       </div>
       <li>
         <a href="#" id="btn2" @click="toggleButtons2">
@@ -51,18 +39,6 @@
           <a href="#" @click="showComponent('UserPPO')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">PPO CPO Ratings</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" @click="showComponent('UserRMFB')">
-            <i class="bx bxs-shopping-bag-alt"></i>
-            <span class="text">RMFB PMFC Ratings</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" @click="showComponent('UserMPS')">
-            <i class="bx bxs-shopping-bag-alt"></i>
-            <span class="text">MPS CPS Ratings</span>
           </a>
         </li>
       </div>
