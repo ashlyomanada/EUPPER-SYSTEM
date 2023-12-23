@@ -19,23 +19,33 @@ class MainController extends ResourceController
         return view('upload');
     }
     
-    public function login(){
+    public function login()
+    {
         $json = $this->request->getJSON();
-
+    
         if (isset($json->email) && isset($json->password)) {
             $email = $json->email;
             $password = $json->password;
-
-        $userModel = new MainModel();
-           $data = $user = $userModel->where('email', $email)->first();
-
-            if($data)
-            {
+    
+            $userModel = new MainModel();
+            $data = $user = $userModel->where('email', $email)->first();
+    
+            if ($data) {
                 $pass = $data['password'];
                 $auth = password_verify($password, $pass);
-                if($auth){
-                    return $this->respond(['message' => 'Login successful', 'id' => $data['user_id']], 200);                }
-             else {
+    
+                if ($auth) {
+                    // Check user role and send appropriate response
+                    $role = $data['role'];
+                    if ($role === 'user') {
+                        return $this->respond(['message' => 'Login successful', 'id' => $data['user_id'], 'role' => $role], 200);
+                    } elseif ($role === 'admin') {
+                        return $this->respond(['message' => 'Login successful', 'id' => $data['user_id'], 'role' => $role], 200);
+                    }
+                } else {
+                    return $this->respond(['message' => 'Invalid email or password'], 401);
+                }
+            } else {
                 return $this->respond(['message' => 'Invalid email or password'], 401);
             }
         } else {
@@ -43,50 +53,7 @@ class MainController extends ResourceController
         }
     }
     
-    }
     
-    public function login2()
-{
-    $json = $this->request->getJSON();
-
-    if (isset($json->email) && isset($json->password)) {
-        $email = $json->email;
-        $password = $json->password;
-
-        $userModel = new MainModel();
-        $data = $user = $userModel->where('email', $email)->first();
-
-        if ($data) {
-            $pass = $data['password'];
-            $auth = password_verify($password, $pass);
-
-            if ($auth) {
-                // Generate a token (you might want to use a proper library for this)
-                $token = bin2hex(random_bytes(32));
-
-                // Update the user's token in the database (assuming you have a column for it)
-                $userModel->where('user_id', $data['user_id'])->set('token', $token)->update();
-
-                return $this->respond([
-                    'message' => 'Login successful',
-                    'id' => $data['user_id'],
-                    'token' => $token,
-                ], 200);
-            } else {
-                return $this->respond(['message' => 'Invalid email or password'], 401);
-            }
-        } else {
-            return $this->respond(['message' => 'Invalid email or password'], 401);
-        }
-    } else {
-        return $this->respond(['message' => 'Invalid JSON data'], 400);
-    }
-}
-
-
-
-
-
 public function upload()
 {
     $request = $this->request;
@@ -119,6 +86,7 @@ public function upload()
         'email' => $request->getPost('email'),
         'image' => $filePath,
         'status' => 'Enable',
+        'role' => 'user',
     ];
 
     // Assuming you have a model named MainModel, you can use it to insert data into the database
