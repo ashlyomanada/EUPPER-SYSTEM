@@ -21,37 +21,40 @@ class MainController extends ResourceController
     
     public function login()
     {
-        $json = $this->request->getJSON();
+        try {
+            $json = $this->request->getJSON();
     
-        if (isset($json->email) && isset($json->password)) {
-            $email = $json->email;
-            $password = $json->password;
+            if (isset($json->email) && isset($json->password)) {
+                $email = $json->email;
+                $password = $json->password;
     
-            $userModel = new MainModel();
-            $data = $user = $userModel->where('email', $email)->first();
+                $userModel = new MainModel();
+                $data = $userModel->where('email', $email)->first();
     
-            if ($data) {
-                $pass = $data['password'];
-                $auth = password_verify($password, $pass);
+                if ($data) {
+                    $pass = $data['password'];
+                    $auth = password_verify($password, $pass);
     
-                if ($auth) {
-                    // Check user role and send appropriate response
-                    $role = $data['role'];
-                    if ($role === 'user') {
+                    if ($auth) {
+                        // Check user role and send appropriate response
+                        $role = $data['role'];
                         return $this->respond(['message' => 'Login successful', 'id' => $data['user_id'], 'role' => $role], 200);
-                    } elseif ($role === 'admin') {
-                        return $this->respond(['message' => 'Login successful', 'id' => $data['user_id'], 'role' => $role], 200);
+                    } else {
+                        return $this->respond(['message' => 'Invalid email or password'], 401);
                     }
                 } else {
                     return $this->respond(['message' => 'Invalid email or password'], 401);
                 }
             } else {
-                return $this->respond(['message' => 'Invalid email or password'], 401);
+                return $this->respond(['message' => 'Invalid JSON data'], 400);
             }
-        } else {
-            return $this->respond(['message' => 'Invalid JSON data'], 400);
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+            log_message('error', 'Exception in login: ' . $e->getMessage());
+            return $this->respond(['message' => 'Internal Server Error'], 500);
         }
     }
+    
     
     
 public function upload()
