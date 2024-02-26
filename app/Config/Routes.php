@@ -37,7 +37,29 @@ $routes->get('/getUserData/(:num)', 'MainController::getUserData/$1');
 $routes->get('/getUserRatings', 'MainController::getUserRatings');
 
 $routes->post('/insertRating', 'MainController::insertRating');
+$routes->post('/insertMps', 'MainController::insertMps');
+
 $routes->get('/viewUserRatings/(:num)', 'MainController::viewUserRatings/$1');
+$routes->get('/viewUserPPO/(:num)', 'MainController::viewUserPPO/$1');
 $routes->get('/countUserRatings', 'AdminController::countUserRatings');
 $routes->get('/countUser', 'AdminController::countUser');
 $routes->get('/calculateRatings/(:num)', 'AdminController::calculateRatings/$1');
+
+$routes->post('/savePPORate', 'UserController::savePPORate');
+$routes->post('/saveRMFBRate', 'UserController::saveRMFBRate');
+$routes->post('/saveMunOcciRate', 'UserController::saveMunOcciRate');
+$routes->post('/saveMunOrientalRate', 'UserController::saveMunOrientalRate');
+$routes->post('/saveMunPalawanRate', 'UserController::saveMunPalawanRate');
+$routes->post('/saveMunMarinduqueRate', 'UserController::saveMunMarinduqueRate');
+$routes->post('/saveMunRomblonRate', 'UserController::saveMunRomblonRate');
+$routes->post('/saveMunPuertoRate', 'UserController::saveMunPuertoRate');
+
+$routes->get('/viewUserPPORates/(:num)', 'UserController::viewUserPPORates/$1');
+$routes->get('/viewUserRMFBRates/(:num)', 'UserController::viewUserRMFBRates/$1');
+
+$routes->get('/viewUserOcciRates/(:num)', 'UserController::viewUserOcciRates/$1');
+$routes->get('/viewUserOrienRates/(:num)', 'UserController::viewUserOrienRates/$1');
+$routes->get('/viewUserMarinRates/(:num)', 'UserController::viewUserMarinRates/$1');
+$routes->get('/viewUserRombRates/(:num)', 'UserController::viewUserRombRates/$1');
+$routes->get('/viewUserPalRates/(:num)', 'UserController::viewUserPalRates/$1');
+$routes->get('/viewUserPuertoRates/(:num)', 'UserController::viewUserPuertoRates/$1');

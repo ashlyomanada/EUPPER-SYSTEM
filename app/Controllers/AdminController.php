@@ -188,11 +188,11 @@ class AdminController extends ResourceController
     public function saveAdmin()
     {
         $data = $this->request->getJSON();
-        $model = new AdminModel();
+        $model = new MainModel();
 
-        if ($data->admin_id) {
+        if ($data->user_id) {
             // Update existing admin
-            $model->update($data->admin_id, $data);
+            $model->update($data->user_id, $data);
             $message = 'Admin updated successfully';
         } else {
             // Insert new admin

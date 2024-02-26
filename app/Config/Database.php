@@ -26,10 +26,10 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'https://e-upper.online/backend/',
-        'username'     => 'u602620830_Hostingyarn',
-        'password'     => 'Parasahosting@gmail123',
-        'database'     => 'u602620830_Hostingyarn',
+        'hostname'     => 'localhost',
+        'username'     => 'root',
+        'password'     => '',
+        'database'     => 'project',
         'DBDriver'     => 'MySQLi',
         'DBPrefix'     => '',
         'pConnect'     => false,

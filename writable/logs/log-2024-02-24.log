@@ -1,0 +1,33 @@
+CRITICAL - 2024-02-24 12:41:01 --> Undefined property: stdClass::$UserId
+in APPPATH\Controllers\UserController.php on line 213.
+ 1 APPPATH\Controllers\UserController.php(213): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$UserId', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 213)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveMunPuertoRate()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-24 12:41:32 --> Undefined property: stdClass::$UserId
+in APPPATH\Controllers\UserController.php on line 213.
+ 1 APPPATH\Controllers\UserController.php(213): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$UserId', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 213)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveMunPuertoRate()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-24 14:04:14 --> Array to string conversion
+in APPPATH\Controllers\UserController.php on line 229.
+ 1 APPPATH\Controllers\UserController.php(229): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 229)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->viewUserPPORates('42')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-24 14:04:51 --> Array to string conversion
+in APPPATH\Controllers\UserController.php on line 229.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 229)
+ 2 APPPATH\Controllers\UserController.php(229): implode([...])
+ 3 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->viewUserPPORates('42')
+ 4 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 5 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 6 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 7 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

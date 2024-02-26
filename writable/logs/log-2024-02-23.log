@@ -1,0 +1,60 @@
+CRITICAL - 2024-02-23 12:00:27 --> Undefined property: stdClass::$PuertoPrinsesa
+in APPPATH\Controllers\UserController.php on line 51.
+ 1 APPPATH\Controllers\UserController.php(51): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$PuertoPrinsesa', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 51)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveRMFBRate()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-02-23 12:13:14 --> mysqli_sql_exception: Unknown column 'balacbac' in 'field list' in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('INSERT INTO `pa...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pa...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pa...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(2308): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pa...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(319): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(788): CodeIgniter\Model->doInsert(Array)
+#6 C:\laragon\www\projectbackend\system\Model.php(715): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\laragon\www\projectbackend\app\Controllers\UserController.php(148): CodeIgniter\Model->insert(Array)
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->saveMunPalawanRate()
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#10 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#12 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#13 {main}
+CRITICAL - 2024-02-23 12:13:14 --> Unknown column 'balacbac' in 'field list'
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2308): CodeIgniter\Database\BaseConnection->query('INSERT INTO `palawan_cps` (`userid`, `month`, `year`, `aborian`, `agutaya`, `arceli`, `balacbac`, `bataraza`, `brookes_point`, `busuanga`, `cagayancilo`, `coron`, `culion`, `cuyo`, `dumaron`, `el_nido`, `espanola`, `kalayaan`, `linapacan`, `magsaysay`, `narra`, `quezon`, `rizal`, `roxas`, `san_vicente`, `taytay`) VALUES (:userid:, :month:, :year:, :aborian:, :agutaya:, :arceli:, :balacbac:, :bataraza:, :brookes_point:, :busuanga:, :cagayancilo:, :coron:, :culion:, :cuyo:, :dumaron:, :el_nido:, :espanola:, :kalayaan:, :linapacan:, :magsaysay:, :narra:, :quezon:, :rizal:, :roxas:, :san_vicente:, :taytay:)', [...], false)
+ 2 SYSTEMPATH\Model.php(319): CodeIgniter\Database\BaseBuilder->insert()
+ 3 SYSTEMPATH\BaseModel.php(788): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(715): CodeIgniter\BaseModel->insert([...], true)
+ 5 APPPATH\Controllers\UserController.php(148): CodeIgniter\Model->insert([...])
+ 6 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveMunPalawanRate()
+ 7 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 8 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-23 12:45:04 --> Undefined property: stdClass::$Alcantara
+in APPPATH\Controllers\UserController.php on line 194.
+ 1 APPPATH\Controllers\UserController.php(194): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$Alcantara', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 194)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveMunMarinduqueRate()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-23 12:49:52 --> Undefined property: stdClass::$Sta_cruz
+in APPPATH\Controllers\UserController.php on line 198.
+ 1 APPPATH\Controllers\UserController.php(198): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$Sta_cruz', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 198)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveMunMarinduqueRate()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-23 12:50:14 --> Undefined property: stdClass::$Sta_cruz
+in APPPATH\Controllers\UserController.php on line 198.
+ 1 APPPATH\Controllers\UserController.php(198): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$Sta_cruz', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\UserController.php', 198)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->saveMunMarinduqueRate()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

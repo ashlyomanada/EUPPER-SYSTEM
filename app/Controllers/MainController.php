@@ -9,6 +9,7 @@ use App\Models\MainModel;
 use App\Models\AdminModel;
 use App\Models\PpoModel;
 use App\Models\RatingModel;
+use App\Models\MpsModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mpdf\Mpdf;
@@ -179,6 +180,35 @@ public function insertRating()
     return $this->respond(['message' => 'Rating inserted successfully']);
 }
 
+public function insertMps(){
+    $json = $this->request->getJSON();
+    $sixtypercent = ($json->ROD + $json->RIDMD + $json->RID + $json->RCADD) / 600 * 60;
+    $fortypercent = ($json->RLRDD + $json->RLDDD + $json->RPRMD + $json->RICTMD + $json->RPSMD + $json->RCD + $json->RRD) / 400 * 40;
+    $ratingModel = new MpsModel();
+    $data = [
+        'userid'   => $json->UserId,
+        'month'    => $json->Month,
+        'year'     => $json->Year,
+        'office'   => $json->Municipality,
+        'ROD'       => $json->ROD,
+        'RIDMD'     => $json->RIDMD,
+        'RID'       => $json->RID,
+        'RCADD'     => $json->RCADD,
+        'RLRDD'       => $json->RLRDD,
+        'RLDDD'    => $json->RLDDD,
+        'RPRMD'     => $json->RPRMD,
+        'RICTMD'    => $json->RICTMD,
+        'RPSMD'      => $json->RPSMD,
+        'RCD'       => $json->RCD,
+        'RRD'      => $json->RRD,
+        'Total'   => $sixtypercent + $fortypercent,
+        'Ranking'  => 0,
+    ];
+    $ratingModel->insert($data);
+
+    return $this->respond(['message' => 'Rating inserted successfully']);
+}
+
 public function getUserData($userId)
 {
     $main = new MainModel();
@@ -223,6 +253,30 @@ public function viewUserRatings($userId)
         return $this->response->setJSON($userData->getResult());
     } else {
         return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+    }
+}
+
+
+public function viewUserPPO($userId)
+{
+    if (!empty($userId)) {
+        $userRatingsModel = new UserRatingsModel();
+        $userRatings = $userRatingsModel->where('user_id', $userId)->findAll();
+
+        if (!empty($userRatings)) {
+            // If user ratings are found, return a JSON response with success message and data
+            return $this->respond([
+                'success' => true,
+                'message' => 'User ratings fetched successfully',
+                'data' => $userRatings
+            ]);
+        } else {
+            // If user ratings are not found, return a JSON response with a message
+            return $this->failNotFound('User ratings not found');
+        }
+    } else {
+        // If user id is not provided, return a JSON response with an error message
+        return $this->fail('User id is required', 400);
     }
 }
 
