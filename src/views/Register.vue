@@ -86,7 +86,7 @@
           Register
         </button>
         <p class="signin">
-          Already have an acount ? <router-link to="/login">Signin</router-link>
+          Already have an acount ? <router-link to="/">Signin</router-link>
         </p>
         <div
           v-if="registrationStatus"
@@ -199,6 +199,7 @@ export default {
   width: 65vw;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: #fff;
   border-radius: 1.5rem;
   box-shadow: 0 30px 30px -30px rgba(27, 26, 26, 0.315);
@@ -361,8 +362,11 @@ export default {
   .picture-container {
     display: none;
   }
-  .register {
+  .form1 {
     width: 100vw;
+  }
+  .register {
+    background-color: transparent;
   }
 }
 </style>

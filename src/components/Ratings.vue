@@ -279,9 +279,6 @@ export default {
 </script>
 
 <style>
-label {
-  width: 1.3rem;
-}
 #rating-form-edit {
   position: absolute;
   width: 80%;

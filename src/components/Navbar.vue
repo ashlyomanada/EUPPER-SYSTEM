@@ -5,15 +5,41 @@
     <div class="nav-items">
       <input type="checkbox" id="switch-mode" hidden />
       <label for="switch-mode" class="switch-mode"></label>
-      <a href="#" class="profile">
-        <img src="img/logo.png" />
-      </a>
+      <a href="#" class="profile"></a>
     </div>
   </nav>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  data() {
+    return {
+      profilePic: "",
+    };
+  },
+
+  mounted() {
+    this.profile();
+  },
+
+  methods: {
+    async profile() {
+      const storedUserId = sessionStorage.getItem("id");
+      if (storedUserId) {
+        try {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
+          if (response.status === 200) {
+            const userdata = response.data;
+            this.profilePic = userdata.image;
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    },
+  },
+};
 </script>
 
 <style>

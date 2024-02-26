@@ -29,6 +29,18 @@
             <span class="text">PPO CPO Ratings</span>
           </a>
         </li>
+        <li>
+          <a href="#" @click="showComponent('RMFB')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">RMFB PMFC Ratings</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showComponent('MPS')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">MPS CPS Ratings</span>
+          </a>
+        </li>
       </div>
       <li>
         <a href="#" id="rate-btn2" @click="toggleButtons2">
@@ -75,7 +87,7 @@
     </ul>
     <ul class="side-menu">
       <li>
-        <router-link to="/login" class="logout">
+        <router-link to="/" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </router-link>

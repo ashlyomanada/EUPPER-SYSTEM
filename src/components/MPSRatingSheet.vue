@@ -1,14 +1,14 @@
 <template>
   <div class="MPSContainer">
     <div>
-      <Occidental v-if="number === 0" />
-      <Oriental v-if="number === 1" />
-      <Marinduque v-if="number === 2" />
-      <Romblon v-if="number === 3" />
-      <Palawan v-if="number === 4" />
-      <PuertoPrincesa v-if="number === 5" />
+      <MunOccidental v-if="number === 0" />
+      <MunOriental v-if="number === 1" />
+      <MunMarinduque v-if="number === 2" />
+      <MunRomblon v-if="number === 3" />
+      <MunPalawan v-if="number === 4" />
+      <MunPrinsesa v-if="number === 5" />
     </div>
-    <div class="mps-btn-container">
+    <div class="mpsRating-btn-container">
       <button v-if="number > 0" class="nextBtn" @click.prevent="decrease()">
         Previous
       </button>
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import Oriental from "../components/Oriental.vue";
-import Occidental from "../components/Occidental.vue";
-import Marinduque from "../components/Marinduque.vue";
-import Romblon from "../components/Romblon.vue";
-import Palawan from "../components/Palawan.vue";
-import PuertoPrincesa from "../components/PuertoPrincesa.vue";
+import MunOriental from "../components/MunOriental.vue";
+import MunOccidental from "../components/MunOccidental.vue";
+import MunMarinduque from "../components/MunMarinduque.vue";
+import MunRomblon from "../components/MunRomblon.vue";
+import MunPalawan from "../components/MunPalawan.vue";
+import MunPrinsesa from "../components/MunPrinsesa.vue";
 
 export default {
   data() {
@@ -35,12 +35,12 @@ export default {
     };
   },
   components: {
-    Oriental,
-    Occidental,
-    Marinduque,
-    Romblon,
-    Palawan,
-    PuertoPrincesa,
+    MunOriental,
+    MunOccidental,
+    MunMarinduque,
+    MunRomblon,
+    MunPalawan,
+    MunPrinsesa,
   },
 
   methods: {
@@ -66,10 +66,10 @@ export default {
   flex-direction: column;
   overflow: auto;
 }
-.mps-btn-container {
+.mpsRating-btn-container {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
   gap: 1rem;

@@ -1,163 +1,41 @@
 <template>
   <div class="table-data">
     <div class="order">
-      <div class="head">
+      <div class="rating-header">
         <div>
-          <h3>Unit Performance Evaluation Rating</h3>
-          <h4>Oriental Mindoro PPO / CPO Level</h4>
+          <h2>Unit Performance Evaluation Rating</h2>
+          <h4 class="head-subtitle">PPO / CPO Level</h4>
         </div>
       </div>
       <table v-if="dataFetched">
         <thead>
           <tr>
-            <th>Action</th>
-            <th>Month</th>
-            <th>Year</th>
-            <th>Office</th>
-            <th>DO</th>
-            <th>DIDM</th>
-            <th>DI</th>
-            <th>DPCR</th>
-            <th>Dl</th>
-            <th>Dhrdd</th>
-            <th>Dprm</th>
-            <th>Dictm</th>
-            <th>Dpl</th>
-            <th>Dc</th>
-            <th>Drd</th>
-          </tr>
-          <tr v-for="rating in userRatings" :key="rating.id">
-            <td class="td-btn">
-              <button
-                class="pen-btn"
-                @click="openForm(rating)"
-                v-if="UsersInfo[0]?.status === 'Enable'"
-              >
-                <i class="fa-solid fa-pen fa-lg"></i>
-              </button>
-            </td>
-            <td>{{ rating.month }}</td>
-            <td>{{ rating.year }}</td>
-            <td>{{ rating.office }}</td>
-            <td>{{ rating.do }}</td>
-            <td>{{ rating.didm }}</td>
-            <td>{{ rating.di }}</td>
-            <td>{{ rating.dpcr }}</td>
-            <td>{{ rating.dl }}</td>
-            <td>{{ rating.dhrdd }}</td>
-            <td>{{ rating.dprm }}</td>
-            <td>{{ rating.dictm }}</td>
-            <td>{{ rating.dpl }}</td>
-            <td>{{ rating.dc }}</td>
-            <td>{{ rating.drd }}</td>
+            <th class="t-row">Month</th>
+            <th class="t-row">Year</th>
+            <th class="t-row">Occidental Mindoro</th>
+            <th class="t-row">Oriental Mindoro</th>
+            <th class="t-row">Marinduque</th>
+            <th class="t-row">Romblon</th>
+            <th class="t-row">Palawan</th>
+            <th class="t-row">Puerto Prinsesa</th>
           </tr>
         </thead>
+        <tbody>
+          <tr v-for="rating in userRatings" :key="rating.userid">
+            <td class="t-data">{{ rating.month }}</td>
+            <td class="t-data">{{ rating.year }}</td>
+            <td class="t-data">{{ rating.occi }}</td>
+            <td class="t-data">{{ rating.ormin }}</td>
+            <td class="t-data">{{ rating.marin }}</td>
+            <td class="t-data">{{ rating.rom }}</td>
+            <td class="t-data">{{ rating.pal }}</td>
+            <td class="t-data">{{ rating.puertop }}</td>
+          </tr>
+        </tbody>
       </table>
-      <h2 v-else>No Ratings Yet</h2>
+      <h4 v-else style="text-align: center">No Ratings Yet</h4>
     </div>
   </div>
-  <form
-    class="form"
-    id="rating-form-edit2"
-    :style="{ display: formVisible ? 'block' : 'none' }"
-  >
-    <div class="form-edit">
-      <label for="">Office:</label>
-      <input
-        v-model="selectedRatings.office"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Do:</label>
-      <input
-        v-model="selectedRatings.do"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Didm:</label>
-      <input
-        v-model="selectedRatings.didm"
-        type="text"
-        placeholder=" Mindoro"
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">Di:</label>
-      <input
-        v-model="selectedRatings.di"
-        type="text"
-        placeholder=" Mindoro"
-        class="input"
-      />
-      <label for="">Dpcr:</label>
-      <input
-        v-model="selectedRatings.dpcr"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Dl:</label>
-      <input
-        v-model="selectedRatings.dl"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">Dhrdd:</label>
-      <input
-        v-model="selectedRatings.dhrdd"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Dprm:</label>
-      <input
-        v-model="selectedRatings.dprm"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Dictm:</label>
-      <input
-        v-model="selectedRatings.dictm"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">Dpl:</label>
-      <input
-        v-model="selectedRatings.dpl"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Dc:</label>
-      <input
-        v-model="selectedRatings.dc"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">Drd:</label>
-      <input
-        v-model="selectedRatings.drd"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="modal-buttons">
-      <button @click.prevent="saveUserRates">Save</button>
-      <button @click.prevent="closeForm">Close</button>
-    </div>
-  </form>
 </template>
 
 <script>
@@ -171,48 +49,30 @@ export default {
       formVisible: false,
       selectedRatings: {
         id: null,
-        office: "",
-        do: "",
-        didm: "",
-        di: "",
-        dpcr: "",
-        dl: "",
-        dhrdd: "",
-        dprm: "",
-        dictm: "",
-        dpl: "",
-        dc: "",
-        drd: "",
-      }, // Use an array to store all ratings
+        Occidental: "",
+        Oriental: "",
+        Marinduque: "",
+        Romblon: "",
+        Palawan: "",
+        PuertoPrinsesa: "",
+      },
     };
   },
 
   mounted() {
     this.fetchData();
-    this.getUsersInfo();
   },
 
   methods: {
-    // Example log in the methods
-    async getUsersInfo() {
-      try {
-        const UsersInfo = await axios.get("getUsersInfo");
-        this.UsersInfo = UsersInfo.data;
-        console.log("UsersInfo:", this.UsersInfo); // Log the entire UsersInfo object
-      } catch (e) {
-        console.error("Error fetching UsersInfo:", e);
-      }
-    },
-
     fetchData() {
       const storedUserId = sessionStorage.getItem("id");
 
       if (storedUserId) {
         axios
-          .get(`/viewUserRatings/${storedUserId}`)
+          .get(`/viewUserPPORates/${storedUserId}`)
           .then((response) => {
             this.userRatings = response.data; // Store all ratings in the array
-
+            //console.log(this.userRatings);
             // Set dataFetched to true to indicate that the data is available
             this.dataFetched = true;
           })
@@ -226,44 +86,11 @@ export default {
       this.selectedRatings = { ...UserRatings };
       this.formVisible = true;
     },
-
-    async saveUserRates() {
-      try {
-        const response = await axios.post(
-          "/api/saveUserRates",
-          this.selectedRatings
-        );
-
-        if (response.status === 200) {
-          const responseData = response.data;
-
-          if (responseData && responseData.success) {
-            //  console.log(responseData.message);
-            this.formVisible = false;
-            this.fetchData();
-            this.getUsersInfo();
-          } else {
-            console.error("Save failed:", responseData.message);
-          }
-        } else {
-          console.error(`Unexpected response status: ${response.status}`);
-        }
-      } catch (error) {
-        console.error("Error saving admin:", error);
-      }
-    },
-
-    closeForm() {
-      this.formVisible = false;
-    },
   },
 };
 </script>
 
 <style>
-label {
-  width: 1.3rem;
-}
 #rating-form-edit2 {
   position: absolute;
   width: 80%;

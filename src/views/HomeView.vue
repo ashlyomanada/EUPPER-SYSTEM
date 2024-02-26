@@ -23,6 +23,18 @@
             <span class="text">PPO CPO Level</span>
           </a>
         </li>
+        <li>
+          <a href="#" @click="showComponent('RMFB')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">RMFB PMFC Level</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showComponent('MPSRatingSheet')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">MPS CPS Level</span>
+          </a>
+        </li>
       </div>
       <li>
         <a href="#" id="btn2" @click="toggleButtons2">
@@ -39,6 +51,18 @@
           <a href="#" @click="showComponent('UserPPO')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">PPO CPO Ratings</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showComponent('UserRMFB')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">RMFB PMFC Ratings</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showComponent('UserMPS')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">MPS CPS Ratings</span>
           </a>
         </li>
       </div>
@@ -63,7 +87,7 @@
     </ul>
     <ul class="side-menu">
       <li>
-        <router-link to="/login" class="logout">
+        <router-link to="/" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </router-link>
@@ -99,7 +123,9 @@
       <Uper v-if="selectedComponent === 'Uper'" />
       <UserPPO v-if="selectedComponent === 'UserPPO'" />
       <UserRMFB v-if="selectedComponent === 'UserRMFB'" />
+      <RMFB v-if="selectedComponent === 'RMFB'" />
       <UserMPS v-if="selectedComponent === 'UserMPS'" />
+      <MPSRatingSheet v-if="selectedComponent === 'MPSRatingSheet'" />
       <ViewRatings v-if="selectedComponent === 'ViewRatings'" />
       <UserProfile v-if="selectedComponent === 'UserProfile'" />
       <RequestForm v-if="selectedComponent === 'RequestForm'" />
@@ -110,7 +136,6 @@
   <!-- CONTENT -->
 </template>
 <script>
-import { defineComponent } from "vue";
 import Uper from "../components/Uper.vue";
 import ViewRatings from "../components/ViewRatings.vue";
 import UserProfile from "../components/UserProfile.vue";
@@ -119,10 +144,13 @@ import UserGmail from "../components/UserGmail.vue";
 import UserPPO from "../components/UserPPO.vue";
 import UserRMFB from "../components/UserRMFB.vue";
 import UserMPS from "../components/UserMPS.vue";
-import PPORatingSheet from "../components/PPORatingSheet.vue";
+import PPORatingSheet from "../components/ratingSheetForm/PPORatingSheet.vue";
+import RMFB from "../components/ratingSheetForm/RMFBRatingSheet.vue";
 import axios from "axios";
+import router from "@/router";
+import MPSRatingSheet from "../components/MPSRatingSheet.vue";
 // Components
-export default defineComponent({
+export default {
   components: {
     Uper,
     ViewRatings,
@@ -131,8 +159,10 @@ export default defineComponent({
     UserGmail,
     UserPPO,
     UserRMFB,
-    UserMPS,
     PPORatingSheet,
+    RMFB,
+    MPSRatingSheet,
+    UserMPS,
   },
   data() {
     return {
@@ -174,6 +204,9 @@ export default defineComponent({
     }
   },
   methods: {
+    logout() {
+      router.push("/login");
+    },
     showComponent(componentName) {
       this.selectedComponent = componentName;
     },
@@ -203,7 +236,7 @@ export default defineComponent({
       );
     },
   },
-});
+};
 </script>
 <style>
 .admin-logo2 {

@@ -25,7 +25,8 @@
         </label>
         <button type="submit" class="submit" style="color: white">Login</button>
         <p class="signin">
-          Don't have an account? <router-link to="/">Sign up</router-link>
+          Don't have an account?
+          <router-link to="/register">Sign up</router-link>
         </p>
         <p class="error-message">{{ errorMessage }}</p>
       </form>
@@ -59,11 +60,13 @@ export default {
         })
         .then((response) => {
           if (response.data.message === "Login successful") {
+            const role = response.data.role;
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("id", response.data.id);
-            router.push("/home");
+            router.push(role === "user" ? "/home" : "/admin");
           }
         })
+
         .catch((error) => {
           console.error(error);
           this.errorMessage = "Invalid email or password, try again!";

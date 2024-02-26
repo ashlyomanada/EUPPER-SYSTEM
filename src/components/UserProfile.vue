@@ -1,65 +1,72 @@
 <template>
-  <div class="profile-container">
-    <div class="cover-container">
-      <img src="./img/cover.png" alt="" srcset="" class="cover-photo" />
-    </div>
-    <div class="img-container">
-      <div class="img-left">
-        <img
-          :src="`http://localhost:8080/${profilePic}`"
-          alt=""
-          id="profile-pic"
-        />
-        <h2 class="name">{{ userName }}</h2>
+  <div class="main-profile-container">
+    <div class="profile-container">
+      <div class="cover-container">
+        <img src="./img/cover.png" alt="" srcset="" class="cover-photo" />
       </div>
-      <div class="img-right">
-        <button class="edit-profile-btn" @click.prevent="openForm">
-          <i class="fa-solid fa-pencil fa-lg"></i>Edit profile
-        </button>
+      <div class="img-container">
+        <div class="img-left">
+          <img
+            :src="`http://localhost:8080/${profilePic}`"
+            alt=""
+            id="profile-pic"
+          />
+          <h2 class="name">{{ userName }}</h2>
+        </div>
+        <div class="img-right">
+          <button class="edit-profile-btn" @click.prevent="openForm">
+            <i class="fa-solid fa-pencil fa-lg"></i>Edit profile
+          </button>
+        </div>
       </div>
-    </div>
-    <div class="profile-description-container">
-      <p>
-        <i class="fa-solid fa-briefcase fa-sm"></i>Office: {{ officeLocation }}
-      </p>
-      <p><i class="fa-solid fa-phone fa-sm"></i>Phone No. {{ phoneNumber }}</p>
-      <p><i class="fa-solid fa-envelope fa-sm"></i>Email: {{ email }}</p>
+      <div class="profile-description-container">
+        <p>
+          <i class="fa-solid fa-briefcase fa-sm"></i>Office:
+          {{ officeLocation }}
+        </p>
+        <p>
+          <i class="fa-solid fa-phone fa-sm"></i>Phone No. {{ phoneNumber }}
+        </p>
+        <p><i class="fa-solid fa-envelope fa-sm"></i>Email: {{ email }}</p>
+      </div>
     </div>
   </div>
-  <form
-    class="form"
-    id="modal-form2"
-    :style="{ display: formVisible ? 'block' : 'none' }"
-  >
-    <input
-      v-model="selectedUser.username"
-      type="text"
-      placeholder="Username"
-      class="input"
-    />
-    <input
-      v-model="selectedUser.office"
-      type="text"
-      placeholder="Office"
-      class="input"
-    />
-    <input
-      v-model="selectedUser.email"
-      type="text"
-      placeholder="Email"
-      class="input"
-    />
-    <input
-      v-model="selectedUser.phone_no"
-      type="text"
-      placeholder="Phone No."
-      class="input"
-    />
-    <div class="modal-buttons">
-      <button @click.prevent="saveUser">Save</button>
-      <button @click.prevent="closeForm">Close</button>
-    </div>
-  </form>
+  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
+    <form
+      class="form"
+      id="modal-form2"
+      :style="{ display: formVisible ? 'block' : 'none' }"
+    >
+      <input
+        v-model="selectedUser.username"
+        type="text"
+        placeholder="Username"
+        class="input"
+      />
+      <input
+        v-model="selectedUser.office"
+        type="text"
+        placeholder="Office"
+        class="input"
+      />
+      <input
+        v-model="selectedUser.email"
+        type="text"
+        placeholder="Email"
+        class="input"
+      />
+      <input
+        v-model="selectedUser.phone_no"
+        type="text"
+        placeholder="Phone No."
+        class="input"
+      />
+      <div class="modal-buttons">
+        <button @click.prevent="saveUser">Save</button>
+        <button @click.prevent="closeForm">Close</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -154,11 +161,35 @@ export default {
 </script>
 
 <style>
+.dim-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the last value for the desired transparency */
+  z-index: 1;
+  /* Make sure the overlay is above other elements */
+}
+.main-profile-container {
+  border-radius: 20px;
+  background: var(--light);
+  padding: 24px;
+  overflow-x: auto;
+}
+
 #modal-form2 {
   position: absolute;
   width: 50%;
   top: 25%;
-  left: 25%;
+  left: 37%;
   display: none;
   z-index: 2;
 }
@@ -177,6 +208,7 @@ export default {
   flex-direction: column;
   position: relative;
   color: var(--dark);
+  overflow-x: unset;
 }
 .cover-container {
   position: absolute;
@@ -228,5 +260,58 @@ export default {
   width: 100%;
   padding: 1rem;
   line-height: 2rem;
+}
+
+@media screen and (max-width: 768px) {
+  .cover-container {
+    align-items: flex-start;
+  }
+  .img-container {
+    margin-top: 5rem;
+  }
+  #profile-pic {
+    height: 55%;
+  }
+  .cover-photo {
+    height: 50%;
+  }
+  #modal-form2 {
+    left: 30%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .img-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .img-left {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .img-right {
+    height: 15%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .cover-container {
+    justify-content: center;
+  }
+  .profile-container {
+    align-items: center;
+  }
+  .profile-description-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  #modal-form2 {
+    width: 70%;
+    left: 23%;
+  }
 }
 </style>

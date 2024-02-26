@@ -86,7 +86,9 @@ export default {
   methods: {
     async fetchRatingCount() {
       try {
-        const response = await fetch("http://localhost:8080/countUserRatings");
+        const response = await fetch(
+          "https://e-upper.online/backend/countUserRatings"
+        );
         const data = await response.json();
         this.ratingCount = data.count;
         //console.log(data);
@@ -96,7 +98,9 @@ export default {
     },
     async fetchUserCount() {
       try {
-        const response = await fetch("http://localhost:8080/countUser");
+        const response = await fetch(
+          "https://e-upper.online/backend/countUser"
+        );
         const data = await response.json();
         this.userCount = data.count;
         //console.log(data);
@@ -107,7 +111,7 @@ export default {
     async fetchData() {
       try {
         const response = await fetch(
-          `http://localhost:8080/calculateRatings/${this.selectedYear}`
+          `https://e-upper.online/backend/calculateRatings/${this.selectedYear}`
         );
         const data = await response.json();
 

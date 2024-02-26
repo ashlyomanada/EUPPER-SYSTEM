@@ -110,7 +110,7 @@ export default {
     generateExcel() {
       axios
         .post(
-          "http://localhost:8080/generate",
+          "https://e-upper.online/backend/generate",
           {},
           { responseType: "arraybuffer" }
         )
@@ -143,7 +143,7 @@ export default {
       const selectedYear = document.querySelector(".year").value;
 
       fetch(
-        `http://localhost:8080/generatePdf/${selectedMonth}/${selectedYear}`,
+        `https://e-upper.online/backend/generatePdf/${selectedMonth}/${selectedYear}`,
         {
           method: "GET",
           headers: {

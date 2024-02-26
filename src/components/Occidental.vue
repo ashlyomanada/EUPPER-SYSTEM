@@ -1,268 +1,83 @@
 <template>
-  <div v-if="visible">
-    <div class="table-data">
+  <div>
+    <div class="table-data" v-if="visible">
       <div class="order">
         <div class="rating-header">
           <div>
-            <h3>Occidental Mindoro PPO Ratings</h3>
-            <h4 class="head-subtitle">PPO / CPO Level</h4>
+            <h2>Occidental Mindoro PPO Ratings</h2>
+            <h4 class="head-subtitle">MPS / CPS Level</h4>
           </div>
         </div>
-        <div class="oriental-container">
-          <form action="" id="oriental-form" @submit.prevent="save">
-            <div class="rate-date-container">
-              <h1>Operational Ratings</h1>
-              <div class="date-container">
-                Month:
-                <select class="month" v-model="Month" required>
-                  <option value="January">January</option>
-                  <option value="February">February</option>
-                  <option value="March">March</option>
-                  <option value="April">April</option>
-                  <option value="May">May</option>
-                  <option value="June">June</option>
-                  <option value="July">July</option>
-                  <option value="August">August</option>
-                  <option value="September">September</option>
-                  <option value="October">October</option>
-                  <option value="November">November</option>
-                  <option value="December">December</option>
-                </select>
-                <input
-                  type="number"
-                  class="year"
-                  name="year"
-                  min="2000"
-                  max="2100"
-                  step="1"
-                  placeholder="Year"
-                  v-model="Year"
-                  required
-                />
-              </div>
-            </div>
-            <div class="operational-container">
-              <table>
-                <tr>
-                  <th>DO / 167</th>
-                  <th>DIDM / 166</th>
-                  <th>DI / 167</th>
-                  <th>DPCR / 100</th>
-                </tr>
-                <tbody>
-                  <tr>
-                    <td>
-                      <input
-                        type="number"
-                        name=""
-                        class="ratings"
-                        placeholder="DO"
-                        v-model="Do"
-                        required
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name=""
-                        class="ratings"
-                        placeholder="DIDM"
-                        v-model="Didm"
-                        required
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name=""
-                        class="ratings"
-                        placeholder="DI"
-                        v-model="Di"
-                        required
-                      />
-                    </td>
-                    <td>
-                      <input
-                        type="number"
-                        name=""
-                        class="ratings"
-                        placeholder="DPCR"
-                        v-model="Dpcr"
-                        required
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <h1>Administrative Ratings</h1>
-            <div class="administrative-container">
-              <table>
-                <tr>
-                  <th>Dl / 80</th>
-                  <th>Dhrdd / 80</th>
-                  <th>Dprm / 80</th>
-                  <th>Dictm / 80</th>
-                  <th>Dpl / 35</th>
-                  <th>Dc / 25</th>
-                  <th>Drd / 20</th>
-                </tr>
-                <tr>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Dl"
-                      v-model="Dl"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Dhrdd"
-                      v-model="Dhrdd"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Dprm"
-                      v-model="Dprm"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Dictm"
-                      v-model="Dictm"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Dpl"
-                      v-model="Dpl"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Dc"
-                      v-model="Dc"
-                      required
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="Drd"
-                      v-model="Drd"
-                      required
-                    />
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div class="rating-footer">
-              <button class="returnRate" @click="selectRating">Return</button>
-              <button type="submit" class="submitRate">Submit</button>
-            </div>
-          </form>
-        </div>
+        <table v-if="dataFetched">
+          <thead>
+            <tr>
+              <th class="t-row">Month</th>
+              <th class="t-row">Year</th>
+              <th class="t-row">Abra</th>
+              <th class="t-row">Calintaan</th>
+              <th class="t-row">Looc</th>
+              <th class="t-row">Lubang</th>
+              <th class="t-row">Magsaysay</th>
+              <th class="t-row">Mamburao</th>
+              <th class="t-row">Paluan</th>
+              <th class="t-row">Rizal</th>
+              <th class="t-row">Sablayan</th>
+              <th class="t-row">San Jose</th>
+              <th class="t-row">Santa Cruz</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="rating in usersRate" :key="rating.userid">
+              <td class="t-data">{{ rating.month }}</td>
+              <td class="t-data">{{ rating.year }}</td>
+              <td class="t-data">{{ rating.abra }}</td>
+              <td class="t-data">{{ rating.calintaan }}</td>
+              <td class="t-data">{{ rating.looc }}</td>
+              <td class="t-data">{{ rating.lubang }}</td>
+              <td class="t-data">{{ rating.magsaysay }}</td>
+              <td class="t-data">{{ rating.mamburao }}</td>
+              <td class="t-data">{{ rating.paluan }}</td>
+              <td class="t-data">{{ rating.rizal }}</td>
+              <td class="t-data">{{ rating.sablayan }}</td>
+              <td class="t-data">{{ rating.san_jose }}</td>
+              <td class="t-data">{{ rating.sta_cruz }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4 v-else style="text-align: center">No Ratings Yet</h4>
       </div>
     </div>
-  </div>
-  <div v-else>
-    <PpoRatingSheet></PpoRatingSheet>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import PpoRatingSheet from "../components/PPORatingSheet.vue";
 
 export default {
   data() {
     return {
-      Month: "",
-      Year: "",
-      Do: "",
-      Didm: "",
-      Di: "",
-      Dpcr: "",
-      Dl: "",
-      Dhrdd: "",
-      Dprm: "",
-      Dictm: "",
-      Dpl: "",
-      Dc: "",
-      Drd: "",
-      Office: "Occidental Mindoro PPO",
-      storedUserId: null,
+      usersRate: "",
+      dataFetched: false,
       visible: true,
+      number: 0,
     };
   },
-  components: {
-    PpoRatingSheet,
-  },
+  components: {},
   mounted() {
-    // Retrieve user information from session storage
-    this.storedUserId = sessionStorage.getItem("id");
+    this.fetchUserData();
   },
   methods: {
-    selectRating() {
-      this.visible = false;
-    },
-    async save() {
+    async fetchUserData() {
       try {
-        const ins = await axios.post("insertRating", {
-          storedUserId: this.storedUserId,
-          Month: this.Month,
-          Year: this.Year,
-          Do: this.Do,
-          Didm: this.Didm,
-          Di: this.Di,
-          Dpcr: this.Dpcr,
-          Dl: this.Dl,
-          Dhrdd: this.Dhrdd,
-          Dprm: this.Dprm,
-          Dictm: this.Dictm,
-          Dpl: this.Dpl,
-          Dc: this.Dc,
-          Drd: this.Drd,
-          Office: this.Office,
-        });
-        (this.Month = ""), (this.Year = ""), (this.Do = "");
-        this.Didm = "";
-        this.Di = "";
-        this.Dpcr = "";
-        this.Dl = "";
-        this.Dhrdd = "";
-        this.Dprm = "";
-        this.Dictm = "";
-        this.Dpl = "";
-        this.Dc = "";
-        this.Drd = "";
-        this.storedUserId = "";
-        this.$emit("data-saved");
+        const storedUserId = sessionStorage.getItem("id");
+        if (storedUserId) {
+          const response = await axios.get(
+            `/viewUserOcciRates/${storedUserId}`
+          );
+          this.usersRate = response.data;
+          this.dataFetched = true;
+          // console.log(this.usersRate);
+        }
       } catch (e) {
         console.log(e);
       }
@@ -272,85 +87,20 @@ export default {
 </script>
 
 <style>
-select {
-  color: var(--dark);
-}
-option {
-  color: var(--dark);
-  background: var(--light);
-}
-.date-container {
-  display: flex;
-  gap: 1rem;
-}
-.year,
-.month {
-  color: var(--dark);
-  padding: 0.2rem 0.5rem;
-  border-radius: 0.4rem;
-}
-.rate-date-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#oriental-form {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  flex-direction: column;
-}
-.operational-container,
-.administrative-container {
-  display: flex;
-  gap: 2rem;
-}
-.ratings {
-  border: 1px solid var(--dark);
-  color: var(--dark);
-  width: 5rem;
-  padding: 0.2rem;
-}
-.rating-header {
-  display: flex;
-  align-items: center;
-  grid-gap: 16px;
-  margin-bottom: 24px;
-  justify-content: center;
-}
-.head-subtitle {
-  text-align: center;
-}
-.ratingsheet-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-.rate-month,
-.year-rate {
-  border: 1px solid var(--dark);
-  padding: 0.2rem 0.5rem;
-  color: var(--dark);
-  background: var(--light);
-  width: 16%;
-}
-.rateBtn {
-  width: 60%;
-  border: 1px solid var(--dark);
-  padding: 0.2rem 0;
-}
-.submitRate {
-  background: green;
-  padding: 0.2rem 0.5rem;
-  color: white;
-}
-.rating-footer {
+.btn-container {
+  width: 100%;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
 }
-.month,
-.year {
-  border: 1px solid var(--dark);
+.nextBtn {
+  background: rgb(26, 94, 182);
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  right: 0;
 }
 </style>
