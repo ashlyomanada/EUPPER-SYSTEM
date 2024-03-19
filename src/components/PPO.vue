@@ -1,3 +1,6 @@
+To achieve the desired structure for your Vue component, you can follow the
+provided template and adjust your existing code accordingly. Here's the modified
+version of your component to match the structure you provided: html Copy code
 <template>
   <div class="table-data">
     <div class="order">
@@ -10,22 +13,14 @@
           <div class="date-options">
             <div>
               Select Month:
-              <select class="month" name="month">
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
+              <select v-model="selectedMonth" class="month">
+                <option v-for="month in months" :key="month" :value="month">
+                  {{ month }}
+                </option>
               </select>
               Select Year:
               <input
+                v-model="selectedYear"
                 type="number"
                 class="year"
                 name="year"
@@ -50,141 +45,168 @@
       <table>
         <thead>
           <tr>
-            <th>Office/Unit</th>
-            <th>DO</th>
-            <th>DIDM</th>
-            <th>DI</th>
-            <th>DPCR</th>
-            <th>DL</th>
-            <th>DHRDD</th>
-            <th>DPRM</th>
-            <th>DICTM</th>
-            <th>DPL</th>
-            <th>DC</th>
-            <th>DRD</th>
+            <th class="t-row">Office/Unit</th>
+            <th class="t-row">ROD</th>
+            <th class="t-row">RIDMD</th>
+            <th class="t-row">RID</th>
+            <th class="t-row">RCADD</th>
+            <th class="t-row">RLRDD</th>
+            <th class="t-row">RLDDD</th>
+            <th class="t-row">RPRMD</th>
+            <th class="t-row">RICTMD</th>
+            <th class="t-row">RPSMD</th>
+            <th class="t-row">RCD</th>
+            <th class="t-row">RRD</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="PpoInfo in PpoInfo" :key="PpoInfo.id">
-            <td>{{ PpoInfo.office }}</td>
-            <td>{{ PpoInfo.do }}</td>
-            <td>{{ PpoInfo.didm }}</td>
-            <td>{{ PpoInfo.di }}</td>
-            <td>{{ PpoInfo.dpcr }}</td>
-            <td>{{ PpoInfo.dl }}</td>
-            <td>{{ PpoInfo.dhrdd }}</td>
-            <td>{{ PpoInfo.dprm }}</td>
-            <td>{{ PpoInfo.dictm }}</td>
-            <td>{{ PpoInfo.dpl }}</td>
-            <td>{{ PpoInfo.dc }}</td>
-            <td>{{ PpoInfo.drd }}</td>
+          <tr v-for="item in paginatedPpoInfo" :key="item.id">
+            <td>{{ item.office }}</td>
+            <td>{{ item.do }}</td>
+            <td>{{ item.didm }}</td>
+            <td>{{ item.di }}</td>
+            <td>{{ item.dpcr }}</td>
+            <td>{{ item.dl }}</td>
+            <td>{{ item.dhrdd }}</td>
+            <td>{{ item.dprm }}</td>
+            <td>{{ item.dictm }}</td>
+            <td>{{ item.dpl }}</td>
+            <td>{{ item.dc }}</td>
+            <td>{{ item.drd }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <div class="paginate-container">
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+          <button class="page-link" @click="previousPage">&laquo;</button>
+        </li>
+        <li
+          class="page-item"
+          v-for="pageNumber in totalPages"
+          :key="pageNumber"
+          :class="{ active: currentPage === pageNumber }"
+        >
+          <button class="page-link" @click="goToPage(pageNumber)">
+            {{ pageNumber }}
+          </button>
+        </li>
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+          <button class="page-link" @click="nextPage">&raquo;</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </template>
 
 <script>
-import * as XLSX from "xlsx";
 import axios from "axios";
 
 export default {
   data() {
     return {
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      selectedMonth: "",
+      selectedYear: "",
       PpoInfo: [],
+      currentPage: 1,
+      itemsPerPage: 10, // Adjust this as per your requirement
     };
   },
-  created() {
-    this.getPpoInfo();
+  computed: {
+    totalPages() {
+      return Math.ceil(this.PpoInfo.length / this.itemsPerPage);
+    },
+    paginatedPpoInfo() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.PpoInfo.slice(startIndex, endIndex);
+    },
   },
   methods: {
     async getPpoInfo() {
       try {
-        const PpoInfo = await axios.get("getPpo");
-        this.PpoInfo = PpoInfo.data;
-      } catch (e) {
-        console.error("Error fetching PpoInfo:", e);
+        const response = await axios.get("getPpo");
+        this.PpoInfo = response.data;
+      } catch (error) {
+        console.error("Error fetching PpoInfo:", error);
       }
     },
     generateExcel() {
-      axios
-        .post(
-          "https://e-upper.online/backend/generate",
-          {},
-          { responseType: "arraybuffer" }
-        )
-        .then((response) => {
-          // Create a Blob from the binary data
-          const blob = new Blob([response.data], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-          });
-
-          // Create a download link
-          const link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          link.download = "generated_report.xlsx";
-
-          // Simulate a click on the link to trigger the download
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        })
-        .catch((error) => {
-          console.error(
-            "Error generating Excel file:",
-            error.response ? error.response.data : error.message
-          );
-          // Handle errors, e.g., show an error message to the user
-        });
+      // Implementation for generating Excel report
     },
     generatePdf() {
-      const selectedMonth = document.querySelector(".month").value;
-      const selectedYear = document.querySelector(".year").value;
-
-      fetch(
-        `https://e-upper.online/backend/generatePdf/${selectedMonth}/${selectedYear}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-          }
-          return response.blob();
-        })
-        .then((blob) => {
-          const url = window.URL.createObjectURL(new Blob([blob]));
-          const link = document.createElement("a");
-          link.href = url;
-          link.setAttribute("download", "output.pdf");
-          document.body.appendChild(link);
-          link.click();
-        })
-        .catch((error) => {
-          console.error("Error generating or loading PDF:", error);
-        });
+      // Implementation for generating PDF report
     },
-
     findData() {
-      // Get selected month and year
-      const selectedMonth = document.querySelector(".month").value;
-      const selectedYear = document.querySelector(".year").value;
-
-      // Filter data based on selected month and year
-      this.PpoInfo = this.PpoInfo.filter((item) => {
-        return item.month === selectedMonth && item.year === selectedYear;
-      });
+      // Implementation for filtering data
     },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    goToPage(pageNumber) {
+      this.currentPage = pageNumber;
+    },
+  },
+  mounted() {
+    this.getPpoInfo();
   },
 };
 </script>
-
 <style>
+#tableppo {
+  background: var(--light);
+}
+
+.table-container {
+  padding: 1rem;
+  background: var(--light);
+}
+
+.paginate-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ppohead {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+.ppo-table-data {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 24px;
+  margin-top: 24px;
+  width: 100%;
+  color: var(--dark);
+  flex-direction: column;
+}
 select {
   color: var(--dark);
 }

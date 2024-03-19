@@ -35,21 +35,21 @@
           <tr>
             <th>Action</th>
             <th>Office</th>
-            <th>Do</th>
-            <th>Didm</th>
-            <th>Di</th>
-            <th>Dpcr</th>
-            <th>Dl</th>
-            <th>Dhrdd</th>
-            <th>Dprm</th>
-            <th>Dictm</th>
-            <th>Dpl</th>
-            <th>Dc</th>
-            <th>Drd</th>
+            <th>ROD</th>
+            <th>RIDMD</th>
+            <th>RID</th>
+            <th>RCADD</th>
+            <th>RLRDD</th>
+            <th>RLDDD</th>
+            <th>RPRMD</th>
+            <th>RICTMD</th>
+            <th>RPSMD</th>
+            <th>RCD</th>
+            <th>RRD</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="UserRatings in UserRatings" :key="UserRatings.id">
+          <tr v-for="UserRatings in paginatedData" :key="UserRatings.id">
             <td class="td-btn">
               <button class="pen-btn" @click="openForm(UserRatings)">
                 <i class="fa-solid fa-pen fa-lg"></i>
@@ -72,108 +72,142 @@
       </table>
     </div>
   </div>
-  <form
-    class="form"
-    id="rating-form-edit"
-    :style="{ display: formVisible ? 'block' : 'none' }"
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+      overflow: hidden;
+    "
   >
-    <div class="form-edit">
-      <label for="">Office:</label>
-      <input
-        v-model="selectedRatings.office"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">do:</label>
-      <input
-        v-model="selectedRatings.do"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">didm:</label>
-      <input
-        v-model="selectedRatings.didm"
-        type="text"
-        placeholder=" Mindoro"
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">di:</label>
-      <input
-        v-model="selectedRatings.di"
-        type="text"
-        placeholder=" Mindoro"
-        class="input"
-      />
-      <label for="">dpcr:</label>
-      <input
-        v-model="selectedRatings.dpcr"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dl:</label>
-      <input
-        v-model="selectedRatings.dl"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">dhrdd:</label>
-      <input
-        v-model="selectedRatings.dhrdd"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dprm:</label>
-      <input
-        v-model="selectedRatings.dprm"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dictm:</label>
-      <input
-        v-model="selectedRatings.dictm"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">dpl:</label>
-      <input
-        v-model="selectedRatings.dpl"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dc:</label>
-      <input
-        v-model="selectedRatings.dc"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">drd:</label>
-      <input
-        v-model="selectedRatings.drd"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="modal-buttons">
-      <button @click.prevent="saveUserRates">Save</button>
-      <button @click.prevent="closeForm">Close</button>
-    </div>
-  </form>
+    <!-- Pagination -->
+    <nav aria-label="Page navigation">
+      <ul class="pagination">
+        <li class="page-item" :class="{ disabled: currentPage === 1 }">
+          <button class="page-link" @click="prevPage">&laquo;</button>
+        </li>
+        <li
+          class="page-item"
+          v-for="page in totalPages"
+          :key="page"
+          :class="{ active: page === currentPage }"
+        >
+          <button class="page-link" @click="changePage(page)">
+            {{ page }}
+          </button>
+        </li>
+        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+          <button class="page-link" @click="nextPage">&raquo;</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
+    <form
+      class="form"
+      id="rating-form-edit"
+      :style="{ display: formVisible ? 'block' : 'none' }"
+    >
+      <div class="form-edit">
+        <label class="rate-labels" for="">Office:</label>
+        <input
+          v-model="selectedRatings.office"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">ROD:</label>
+        <input
+          v-model="selectedRatings.do"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">RIDMD:</label>
+        <input
+          v-model="selectedRatings.didm"
+          type="text"
+          placeholder=" Mindoro"
+          class="input"
+        />
+      </div>
+      <div class="form-edit">
+        <label class="rate-labels" for="">RID:</label>
+        <input
+          v-model="selectedRatings.di"
+          type="text"
+          placeholder=" Mindoro"
+          class="input"
+        />
+        <label class="rate-labels" for="">RCADD:</label>
+        <input
+          v-model="selectedRatings.dpcr"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">RLRDD:</label>
+        <input
+          v-model="selectedRatings.dl"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+      </div>
+      <div class="form-edit">
+        <label class="rate-labels" for="">RLDDD:</label>
+        <input
+          v-model="selectedRatings.dhrdd"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">RPRMD:</label>
+        <input
+          v-model="selectedRatings.dprm"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">RICTMD:</label>
+        <input
+          v-model="selectedRatings.dictm"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+      </div>
+      <div class="form-edit">
+        <label class="rate-labels" for="">RPSMD:</label>
+        <input
+          v-model="selectedRatings.dpl"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">RCD:</label>
+        <input
+          v-model="selectedRatings.dc"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+        <label class="rate-labels" for="">RRD:</label>
+        <input
+          v-model="selectedRatings.drd"
+          type="text"
+          placeholder=""
+          class="input"
+        />
+      </div>
+      <div class="modal-buttons">
+        <button @click.prevent="saveUserRates">Save</button>
+        <button @click.prevent="closeForm">Close</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -202,12 +236,25 @@ export default {
         dc: "",
         drd: "",
       },
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   },
 
   created() {
     this.getUserRatings();
     this.getUsers();
+  },
+
+  computed: {
+    totalPages() {
+      return Math.ceil(this.UserRatings.length / this.itemsPerPage);
+    },
+    paginatedData() {
+      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+      const endIndex = startIndex + this.itemsPerPage;
+      return this.UserRatings.slice(startIndex, endIndex);
+    },
   },
 
   methods: {
@@ -274,16 +321,58 @@ export default {
         console.error("Error fetching filtered data:", error);
       }
     },
+
+    // Pagination methods
+    changePage(page) {
+      this.currentPage = page;
+    },
+    prevPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
   },
 };
 </script>
 
 <style>
+.dim-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the last value for the desired transparency */
+  z-index: 1;
+  /* Make sure the overlay is above other elements */
+}
+.main-profile-container {
+  border-radius: 20px;
+  background: var(--light);
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.rate-labels {
+  width: 1.3rem;
+}
 #rating-form-edit {
   position: absolute;
-  width: 80%;
-  top: 15%;
-  left: 10%;
+  width: 65%;
+  top: 25%;
+  left: 28%;
   display: none;
 }
 .form-edit {

@@ -68,40 +68,42 @@
       </table>
     </div>
   </div>
-  <form
-    class="form"
-    id="modal-form"
-    :style="{ display: formVisible ? 'block' : 'none' }"
-  >
-    <input
-      v-model="selectedUser.username"
-      type="text"
-      placeholder="Username"
-      class="input"
-    />
-    <input
-      v-model="selectedUser.office"
-      type="text"
-      placeholder="Office"
-      class="input"
-    />
-    <input
-      v-model="selectedUser.email"
-      type="text"
-      placeholder="Email"
-      class="input"
-    />
-    <input
-      v-model="selectedUser.phone_no"
-      type="text"
-      placeholder="Phone No."
-      class="input"
-    />
-    <div class="modal-buttons">
-      <button @click.prevent="saveUser">Save</button>
-      <button @click.prevent="closeForm">Close</button>
-    </div>
-  </form>
+  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
+    <form
+      class="form"
+      id="modal-form3"
+      :style="{ display: formVisible ? 'block' : 'none' }"
+    >
+      <input
+        v-model="selectedUser.username"
+        type="text"
+        placeholder="Username"
+        class="input"
+      />
+      <input
+        v-model="selectedUser.office"
+        type="text"
+        placeholder="Office"
+        class="input"
+      />
+      <input
+        v-model="selectedUser.email"
+        type="text"
+        placeholder="Email"
+        class="input"
+      />
+      <input
+        v-model="selectedUser.phone_no"
+        type="text"
+        placeholder="Phone No."
+        class="input"
+      />
+      <div class="modal-buttons">
+        <button @click.prevent="saveUser">Save</button>
+        <button @click.prevent="closeForm">Close</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -227,12 +229,30 @@ export default {
 </script>
 
 <style>
-#modal-form {
+.dim-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the last value for the desired transparency */
+  z-index: 1;
+  /* Make sure the overlay is above other elements */
+}
+#modal-form3 {
   position: absolute;
   width: 50%;
-  top: 15%;
-  left: 25%;
+  top: 25%;
+  left: 37%;
   display: none;
+  z-index: 2;
 }
 
 .modal-buttons {

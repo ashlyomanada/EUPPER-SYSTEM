@@ -5,7 +5,7 @@
     <div class="nav-items">
       <input type="checkbox" id="switch-mode" hidden />
       <label for="switch-mode" class="switch-mode"></label>
-      <a href="#" class="profile"></a>
+      <a href="#" class="profile"> </a>
     </div>
   </nav>
 </template>

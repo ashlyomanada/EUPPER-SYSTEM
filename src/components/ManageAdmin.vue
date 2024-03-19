@@ -17,11 +17,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="adminInfo in AdminsInfo" :key="adminInfo.admin_id">
-            <td>{{ adminInfo.username }}</td>
+          <tr>
+            <td>{{ username }}</td>
             <td></td>
-            <td>{{ adminInfo.email }}</td>
-            <td>{{ adminInfo.phone_no }}</td>
+            <td>{{ email }}</td>
+            <td>{{ phone_no }}</td>
             <td class="td-btn">
               <button class="pen-btn" @click="openForm(adminInfo)">
                 <i class="fa-solid fa-pen fa-lg"></i>
@@ -32,40 +32,37 @@
       </table>
     </div>
   </div>
-  <form
-    class="form"
-    id="modal-form"
-    :style="{ display: formVisible ? 'block' : 'none' }"
-  >
-    <input
-      v-model="selectedAdmin.username"
-      type="text"
-      placeholder="Username"
-      class="input"
-    />
-    <input
-      v-model="selectedAdmin.password"
-      type="text"
-      placeholder="Password"
-      class="input"
-    />
-    <input
-      v-model="selectedAdmin.email"
-      type="text"
-      placeholder="Email"
-      class="input"
-    />
-    <input
-      v-model="selectedAdmin.phone_no"
-      type="text"
-      placeholder="Phone No."
-      class="input"
-    />
-    <div class="modal-buttons">
-      <button @click.prevent="saveAdmin">Save</button>
-      <button @click.prevent="closeForm">Close</button>
-    </div>
-  </form>
+  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
+    <form
+      class="form"
+      id="modal-form"
+      :style="{ display: formVisible ? 'block' : 'none' }"
+    >
+      <input
+        v-model="username"
+        type="text"
+        placeholder="Username"
+        class="input"
+      />
+      <input
+        v-model="password"
+        type="text"
+        placeholder="Password"
+        class="input"
+      />
+      <input v-model="email" type="text" placeholder="Email" class="input" />
+      <input
+        v-model="phone_no"
+        type="text"
+        placeholder="Phone No."
+        class="input"
+      />
+      <div class="modal-buttons">
+        <button @click.prevent="saveAdmin">Save</button>
+        <button @click.prevent="closeForm">Close</button>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -83,28 +80,52 @@ export default {
         email: "",
         phone_no: "",
       },
+      username: "",
+      password: "",
+      email: "",
+      phone_no: "",
+      storedId: "",
     };
   },
 
   created() {
-    this.getAdminsInfo();
+    this.getAdminsData();
+  },
+
+  mounted() {
+    this.storedId = sessionStorage.getItem("id");
   },
 
   methods: {
-    async getAdminsInfo() {
-      try {
-        const response = await axios.get("/getAdmins");
-        this.AdminsInfo = response.data;
-      } catch (error) {
-        console.error("Error fetching admin data:", error);
+    async getAdminsData() {
+      const adminStoredId = sessionStorage.getItem("id");
+
+      if (adminStoredId) {
+        try {
+          const response = await axios.get(`/getUserData/${adminStoredId}`);
+          if (response.status === 200) {
+            const responseData = response.data;
+            this.username = responseData.username;
+            this.password = responseData.password;
+            this.email = responseData.email;
+            this.phone_no = responseData.phone_no;
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
     },
 
-    openForm(adminInfo) {
-      this.selectedAdmin = { ...adminInfo };
+    openForm() {
+      this.selectedAdmin = {
+        user_id: this.storedId,
+        username: this.username,
+        password: this.password,
+        email: this.email,
+        phone_no: this.phone_no,
+      };
       this.formVisible = true;
     },
-
     async saveAdmin() {
       try {
         const response = await axios.post("/api/saveAdmin", this.selectedAdmin);
@@ -115,7 +136,7 @@ export default {
           if (responseData && responseData.success) {
             console.log(responseData.message);
             this.formVisible = false;
-            this.getAdminsInfo();
+            this.getAdminsData();
           } else {
             console.error("Save failed:", responseData.message);
           }
@@ -135,12 +156,30 @@ export default {
 </script>
 
 <style>
+.dim-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the last value for the desired transparency */
+  z-index: 1;
+  /* Make sure the overlay is above other elements */
+}
 #modal-form {
   position: absolute;
   width: 50%;
-  top: 15%;
-  left: 25%;
+  top: 25%;
+  left: 37%;
   display: none;
+  z-index: 2;
 }
 
 .modal-buttons {

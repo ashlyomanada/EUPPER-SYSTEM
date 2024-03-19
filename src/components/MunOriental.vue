@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="table-data"
-    :style="{ display: buttonVisible ? 'block' : 'none' }"
-  >
+  <div class="table-data" :style="{ display: visible ? 'block' : 'none' }">
     <div class="order">
       <div class="rating-header">
         <div>
@@ -10,177 +7,224 @@
           <h4 class="head-subtitle">Municipalities of Oriental Mindoro</h4>
         </div>
       </div>
-      <form class="ratingsheet-container" @submit.prevent="saveRating">
-        <div class="rateDate">
-          <select class="rateMonth" v-model="Month" required>
-            <option value="January">January</option>
-            <option value="February">February</option>
-            <option value="March">March</option>
-            <option value="April">April</option>
-            <option value="May">May</option>
-            <option value="June">June</option>
-            <option value="July">July</option>
-            <option value="August">August</option>
-            <option value="September">September</option>
-            <option value="October">October</option>
-            <option value="November">November</option>
-            <option value="December">December</option>
-          </select>
-          <input
-            type="number"
-            class="rateYear"
-            min="2020"
-            max="2100"
-            step="1"
-            placeholder="Year"
-            v-model="Year"
-            required
-          />
-        </div>
 
-        <input
-          type="number"
-          placeholder="Baco"
-          v-model="Baco"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Bansud"
-          v-model="Bansud"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Bongabong"
-          v-model="Bongabong"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Bulalacao"
-          v-model="Bulalacao"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Calapan"
-          v-model="Calapan"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Gloria"
-          v-model="Gloria"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Mansalay"
-          v-model="Mansalay"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Naujan"
-          v-model="Naujan"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Pinamalayan"
-          v-model="Pinamalayan"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Pola"
-          v-model="Pola"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="PuertoGalera"
-          v-model="PuertoGalera"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Roxas"
-          v-model="Roxas"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="SanTeodoro"
-          v-model="SanTeodoro"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Socorro"
-          v-model="Socorro"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Victoria"
-          v-model="Victoria"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <button class="submitPPORate" type="submit">Submit</button>
-      </form>
-      <div :class="{ dim: formVisible }">
-        <div class="alertBox" v-if="formVisible">
-          <img class="checkImg" src="./img/check2.gif" alt="" />
-          <h1 class="alertContent">Successfully Rated</h1>
-          <button class="backPPORate" @click="okayBtn">Okay</button>
-        </div>
+      <div class="oriental-container">
+        <form action="" id="oriental-form" @submit.prevent="saveRating">
+          <div class="rate-date-container">
+            <h2>Operational Ratings</h2>
+
+            <div class="date-container">
+              Municipality :
+              <select class="month" v-model="Municipality" required>
+                <option value="Baco">Baco</option>
+                <option value="Bansud">Bansud</option>
+                <option value="Bongabong">Bongabong</option>
+                <option value="Bulalacao">Bulalacao</option>
+                <option value="Calapan">Calapan</option>
+                <option value="Gloria">Gloria</option>
+                <option value="Mansalay">Mansalay</option>
+                <option value="Naujan">Naujan</option>
+                <option value="Pinamalayan">Pinamalayan</option>
+                <option value="Pola">Pola</option>
+                <option value="PuertoGalera">PuertoGalera</option>
+                <option value="Roxas">Roxas</option>
+                <option value="SanTeodoro">SanTeodoro</option>
+                <option value="Socorro">Socorro</option>
+                <option value="Victoria">Victoria</option>
+              </select>
+              Month :
+              <select class="month" v-model="Month" required>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+              <input
+                type="number"
+                class="year"
+                name="year"
+                min="2020"
+                max="2100"
+                step="1"
+                placeholder="Year"
+                v-model="Year"
+                required
+              />
+            </div>
+          </div>
+          <div class="operational-container">
+            <table>
+              <tr>
+                <th class="operationalHeader">ROD</th>
+                <th>RIDMD</th>
+                <th>RID</th>
+                <th>RCADD</th>
+              </tr>
+              <tbody>
+                <tr>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="167"
+                      v-model="ROD"
+                      required
+                      min="0"
+                      max="167"
+                    />
+                  </td>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="166"
+                      v-model="RIDMD"
+                      required
+                      min="0"
+                      max="166"
+                    />
+                  </td>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="167"
+                      v-model="RID"
+                      required
+                      min="0"
+                      max="167"
+                    />
+                  </td>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="100"
+                      v-model="RCADD"
+                      required
+                      min="0"
+                      max="100"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>Administrative Ratings</h2>
+          <div class="administrative-container">
+            <table>
+              <tr>
+                <th>RLRDD</th>
+                <th>RLDDD</th>
+                <th>RPRMD</th>
+                <th>RICTMD</th>
+                <th>RPSMD</th>
+                <th>RCD</th>
+                <th>RRD</th>
+              </tr>
+              <tr>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RLRDD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RLDDD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RPRMD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RICTMD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="35"
+                    v-model="RPSMD"
+                    required
+                    min="0"
+                    max="35"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="25"
+                    v-model="RCD"
+                    min="0"
+                    max="25"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="20"
+                    v-model="RRD"
+                    required
+                    min="0"
+                    max="20"
+                  />
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="rating-footer">
+            <button type="submit" class="submitRate">Submit</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -192,147 +236,84 @@ import axios from "axios";
 export default {
   data() {
     return {
-      selectedRating: null,
-      buttonVisible: true,
-      formVisible: false,
-      storedUserId: "",
       Month: "",
       Year: "",
-      Baco: "",
-      Bansud: "",
-      Bongabong: "",
-      Bulalacao: "",
-      Calapan: "",
-      Gloria: "",
-      Mansalay: "",
-      Naujan: "",
-      Pinamalayan: "",
-      Pola: "",
-      PuertoGalera: "",
-      Roxas: "",
-      SanTeodoro: "",
-      Socorro: "",
-      Victoria: "",
-      componentName: null,
+      ROD: "",
+      RIDMD: "",
+      RID: "",
+      RCADD: "",
+      RLRDD: "",
+      RLDDD: "",
+      RPRMD: "",
+      RICTMD: "",
+      RPSMD: "",
+      RCD: "",
+      RRD: "",
+      Municipality: "",
+      storedUserId: null,
+      visible: true,
     };
   },
-  components: {},
+  mounted() {
+    this.storedUserId = sessionStorage.getItem("id");
+  },
   methods: {
+    back() {
+      this.visible = false;
+    },
+
     async saveRating() {
       try {
-        this.storedUserId = sessionStorage.getItem("id");
-        const ins = await axios.post("/saveMunOrientalRate", {
+        const ins = await axios.post("insertMps", {
           UserId: this.storedUserId,
           Month: this.Month,
           Year: this.Year,
-          Baco: this.Baco,
-          Bansud: this.Bansud,
-          Bongabong: this.Bongabong,
-          Bulalacao: this.Bulalacao,
-          Calapan: this.Calapan,
-          Gloria: this.Gloria,
-          Mansalay: this.Mansalay,
-          Naujan: this.Naujan,
-          Pinamalayan: this.Pinamalayan,
-          Pola: this.Pola,
-          PuertoGalera: this.PuertoGalera,
-          Roxas: this.Roxas,
-          SanTeodoro: this.SanTeodoro,
-          Socorro: this.Socorro,
-          Victoria: this.Victoria,
+          ROD: this.ROD,
+          RIDMD: this.RIDMD,
+          RID: this.RID,
+          RCADD: this.RCADD,
+          RLRDD: this.RLRDD,
+          RLDDD: this.RLDDD,
+          RPRMD: this.RPRMD,
+          RICTMD: this.RICTMD,
+          RPSMD: this.RPSMD,
+          RCD: this.RCD,
+          RRD: this.RRD,
+          Municipality: this.Municipality,
         });
         this.Month = "";
         this.Year = "";
-        this.Baco = "";
-        this.Bansud = "";
-        this.Bongabong = "";
-        this.Bulalacao = "";
-        this.Calapan = "";
-        this.Gloria = "";
-        this.Mansalay = "";
-        this.Naujan = "";
-        this.Pinamalayan = "";
-        this.Pola = "";
-        this.PuertoGalera = "";
-        this.Roxas = "";
-        this.SanTeodoro = "";
-        this.Socorro = "";
-        this.Victoria = "";
+        this.ROD = "";
+        this.RIDMD = "";
+        this.RID = "";
+        this.RCADD = "";
+        this.RLRDD = "";
+        this.RLDDD = "";
+        this.RPRMD = "";
+        this.RICTMD = "";
+        this.RPSMD = "";
+        this.RCD = "";
+        this.RRD = "";
+        this.Municipality = "";
         this.$emit("data-saved");
-        this.formVisible = true;
-        setTimeout(() => {
-          this.formVisible = false;
-        }, 5000);
       } catch (e) {
         console.log(e);
       }
     },
-
-    okayBtn() {
-      this.formVisible = false;
-    },
   },
+  components: {},
 };
 </script>
 
 <style>
-.rating-header {
-  display: flex;
-  align-items: center;
-  grid-gap: 16px;
-  margin-bottom: 24px;
-  justify-content: center;
-}
-.head-subtitle {
-  text-align: center;
-}
-.ratingsheet-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateDate {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  align-items: center;
-}
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateInput {
-  width: 60%;
-  border: 1px solid var(--dark);
-  padding: 0.3rem 0.5rem;
-  text-align: center;
-  color: var(--dark);
-  border-radius: 0.5rem;
-}
-.submitPPORate {
-  background: green;
-  padding: 0.5rem 1rem;
+.backBtn {
+  background: rgb(40, 93, 163);
   color: white;
+  border: none;
   border-radius: 0.5rem;
+  padding: 0.5rem 0;
 }
-.backPPORate {
-  background: rgb(26, 94, 182);
-  padding: 0.5rem 1rem;
-  color: white;
-  border-radius: 0.5rem;
-}
-.buttonDiv {
-  display: flex;
-  gap: 1rem;
+.backBtn:hover {
+  background: rgb(65, 130, 216);
 }
 </style>

@@ -4,11 +4,15 @@ import Register from "../views/Register.vue";
 const routes = [
   {
     path: "/",
-    component: () => import("../views/Login.vue"),
+    component: Register,
   },
   {
     path: "/register",
-    component: Register,
+    component: () => import("../views/Rehistro.vue"),
+  },
+  {
+    path: "/manage",
+    component: () => import("../views/IndexPage.vue"),
   },
   {
     path: "/admin",
@@ -17,6 +21,18 @@ const routes = [
   {
     path: "/home",
     component: () => import("../views/HomeView.vue"),
+  },
+  {
+    path: "/login",
+    component: () => import("../views/Login.vue"),
+  },
+  {
+    path: "/AdminLogin",
+    component: () => import("../views/AdminLogin.vue"),
+  },
+  {
+    path: "/page",
+    component: () => import("../views/IndexPage.vue"),
   },
 ];
 

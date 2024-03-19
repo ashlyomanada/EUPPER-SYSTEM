@@ -1,74 +1,56 @@
 <template>
-  <div class="table-data">
-    <div class="order">
-      <div class="head">
-        <div class="head-options">
-          <div>
-            <h3>Unit Performance Evaluation Rating</h3>
-            <h4>MPS / CPS Level</h4>
-          </div>
-          <div class="date-options">
-            <div>
-              Select Month:<select class="month" name="month">
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
-              Select Year:
-              <input
-                type="number"
-                class="year"
-                name="year"
-                min="1900"
-                max="2100"
-                step="1"
-                placeholder="Year"
-              />
-              <button class="find"><i class="bx bx-search"></i>Find</button>
-            </div>
-            <button class="generate">Generate Excel Report</button>
-            <button class="generate" @click="generatePdf">
-              Generate Pdf Report
-            </button>
-          </div>
-        </div>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Office/Unit</th>
-            <th>DO</th>
-            <th>DIDM</th>
-            <th>DI</th>
-            <th>DPCR</th>
-            <th>DL</th>
-            <th>DHRDD</th>
-            <th>DPRM</th>
-            <th>DICTM</th>
-            <th>DPL</th>
-            <th>DC</th>
-            <th>DRD</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div class="MPSContainer">
+    <div>
+      <MunOccidental v-if="number === 0" />
+      <MunOriental v-if="number === 1" />
+      <MunMarinduque v-if="number === 2" />
+      <MunRomblon v-if="number === 3" />
+      <MunPalawan v-if="number === 4" />
+      <MunPrincesa v-if="number === 5" />
+    </div>
+    <div class="mps-btn-container">
+      <button v-if="number > 0" class="nextBtn" @click.prevent="decrease()">
+        Previous
+      </button>
+      <button v-if="number < 5" class="nextBtn" @click.prevent="increase()">
+        Next
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import MunOccidental from "../components/MunOccidental.vue";
+import MunOriental from "../components/MunOriental.vue";
+import MunMarinduque from "../components/MunMarinduque.vue";
+import MunRomblon from "../components/MunRomblon.vue";
+import MunPalawan from "../components/MunPalawan.vue";
+import MunPrincesa from "../components/MunPrincesa.vue";
 export default {
   data() {
-    return {};
+    return {
+      number: 0,
+    };
+  },
+  components: {
+    MunOccidental,
+    MunOriental,
+    MunMarinduque,
+    MunRomblon,
+    MunPalawan,
+    MunPrincesa,
+  },
+  methods: {
+    increase() {
+      if (this.number < 5) {
+        this.number++;
+      }
+    },
+    decrease() {
+      if (this.number > 0) {
+        this.number--;
+      }
+    },
   },
 };
 </script>
@@ -91,5 +73,28 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+.MPSContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.mps-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+}
+.nextBtn {
+  background: rgb(26, 94, 182);
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  right: 0;
 }
 </style>

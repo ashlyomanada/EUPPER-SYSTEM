@@ -1,10 +1,10 @@
 <template>
   <!-- SIDEBAR -->
   <section id="sidebar">
-    <ul class="side-menu top">
+    <ul class="side-menu top" style="padding-left: 0">
       <div class="admin-logo">
         <img src="./img/logo.png" alt="" id="logo" />
-        <h1 id="adminName">Administrator</h1>
+        <h2 id="adminName">{{ userName }}</h2>
       </div>
       <li class="active">
         <a href="#" @click="showComponent('Dashboard')">
@@ -36,7 +36,7 @@
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('MPS')">
+          <a href="#" @click="showComponent('AdminMPS')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">MPS CPS Ratings</span>
           </a>
@@ -85,9 +85,9 @@
         </a>
       </li>
     </ul>
-    <ul class="side-menu">
+    <ul class="side-menu" style="padding-left: 0">
       <li>
-        <router-link to="/" class="logout">
+        <router-link to="/login" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </router-link>
@@ -108,7 +108,7 @@
       <Ratings v-if="selectedComponent === 'Ratings'" />
       <PPO v-if="selectedComponent === 'PPO'" />
       <RMFB v-if="selectedComponent === 'RMFB'" />
-      <MPS v-if="selectedComponent === 'MPS'" />
+      <AdminMPS v-if="selectedComponent === 'AdminMPS'" />
       <ManageUser v-if="selectedComponent === 'ManageUser'" />
       <ManageAdmin v-if="selectedComponent === 'ManageAdmin'" />
       <AdminGmail v-if="selectedComponent === 'AdminGmail'" />
@@ -127,7 +127,8 @@ import ManageAdmin from "../components/ManageAdmin.vue";
 import AdminGmail from "../components/AdminGmail.vue";
 import PPO from "../components/PPO.vue";
 import RMFB from "../components/RMFB.vue";
-import MPS from "../components/MPS-CPS.vue";
+import AdminMPS from "../components/AdminMPS.vue";
+import axios from "axios";
 
 export default {
   components: {
@@ -139,17 +140,21 @@ export default {
     AdminGmail,
     PPO,
     RMFB,
-    MPS,
+    AdminMPS,
   },
   data() {
     return {
       selectedComponent: "Dashboard",
       showButtons: false,
       showButtons2: false,
+      userName: "",
     };
   },
   async created() {
     await this.loadScripts(["/script.js"]);
+  },
+  mounted() {
+    this.fetchUserData();
   },
   methods: {
     showComponent(componentName) {
@@ -180,10 +185,31 @@ export default {
         })
       );
     },
+
+    async fetchUserData() {
+      const storedUserId = sessionStorage.getItem("id");
+      if (storedUserId) {
+        try {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
+          if (response.status === 200) {
+            const userData = response.data;
+            this.userName = userData.username;
+            console.log(this.userName);
+          } else {
+            console.error(`Unexpected response status: ${response.status}`);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    },
   },
 };
 </script>
 <style>
+a {
+  text-decoration: none;
+}
 #main {
   position: relative;
 }

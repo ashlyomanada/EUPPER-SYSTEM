@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="table-data"
-    :style="{ display: buttonVisible ? 'block' : 'none' }"
-  >
+  <div class="table-data" :style="{ display: visible ? 'block' : 'none' }">
     <div class="order">
       <div class="rating-header">
         <div>
@@ -11,140 +8,225 @@
         </div>
       </div>
 
-      <form class="ratingsheet-container" @submit.prevent="saveRating">
-        <div class="rateDate">
-          <select class="rateMonth" v-model="Month" required>
-            <option value="January">January</option>
-            <option value="February">February</option>
-            <option value="March">March</option>
-            <option value="April">April</option>
-            <option value="May">May</option>
-            <option value="June">June</option>
-            <option value="July">July</option>
-            <option value="August">August</option>
-            <option value="September">September</option>
-            <option value="October">October</option>
-            <option value="November">November</option>
-            <option value="December">December</option>
-          </select>
-          <input
-            type="number"
-            class="rateYear"
-            min="2020"
-            max="2100"
-            step="1"
-            placeholder="Year"
-            v-model="Year"
-            required
-          />
-        </div>
+      <div class="oriental-container">
+        <form action="" id="oriental-form" @submit.prevent="saveRating">
+          <div class="rate-date-container">
+            <h2>Operational Ratings</h2>
 
-        <input
-          type="number"
-          placeholder="Abra"
-          v-model="Abra"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Calintaan"
-          v-model="Calintaan"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Looc"
-          v-model="Looc"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Lubang"
-          v-model="Lubang"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Magsaysay"
-          v-model="Magsaysay"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Mamburao"
-          v-model="Mamburao"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Paluan"
-          v-model="Paluan"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Rizal"
-          v-model="Rizal"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="Sablayan"
-          v-model="Sablayan"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="SanJose"
-          v-model="SanJose"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          placeholder="SantaCruz"
-          v-model="SantaCruz"
-          class="rateInput"
-          required
-          min="0"
-          max="100"
-        />
-        <button class="submitPPORate" type="submit">Submit</button>
-      </form>
-      <div :class="{ dim: formVisible }">
-        <div class="alertBox" v-if="formVisible">
-          <img class="checkImg" src="./img/check2.gif" alt="" />
-          <h1 class="alertContent">Successfully Rated</h1>
-          <button class="backPPORate" @click="okayBtn">Okay</button>
+            <div class="date-container">
+              Municipality :
+              <select class="month" v-model="Municipality" required>
+                <option value="Abra">Abra</option>
+                <option value="Calintaan">Calintaan</option>
+                <option value="Looc">Looc</option>
+                <option value="Lubang">Lubang</option>
+                <option value="Magsaysay">Magsaysay</option>
+                <option value="Mamburao">Mamburao</option>
+                <option value="Paluan">Paluan</option>
+                <option value="Rizal">Rizal</option>
+                <option value="Sablayan">Sablayan</option>
+                <option value="SanJose">SanJose</option>
+                <option value="SantaCruz">SantaCruz</option>
+              </select>
+              Month :
+              <select class="month" v-model="Month" required>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+              <input
+                type="number"
+                class="year"
+                name="year"
+                min="2020"
+                max="2100"
+                step="1"
+                placeholder="Year"
+                v-model="Year"
+                required
+              />
+            </div>
+          </div>
+          <div class="operational-container">
+            <table>
+              <tr>
+                <th class="operationalHeader">ROD</th>
+                <th>RIDMD</th>
+                <th>RID</th>
+                <th>RCADD</th>
+              </tr>
+              <tbody>
+                <tr>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="167"
+                      v-model="ROD"
+                      required
+                      min="0"
+                      max="167"
+                    />
+                  </td>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="166"
+                      v-model="RIDMD"
+                      required
+                      min="0"
+                      max="166"
+                    />
+                  </td>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="167"
+                      v-model="RID"
+                      required
+                      min="0"
+                      max="167"
+                    />
+                  </td>
+                  <td class="operationalContent">
+                    <input
+                      type="number"
+                      name=""
+                      class="ratings"
+                      placeholder="100"
+                      v-model="RCADD"
+                      required
+                      min="0"
+                      max="100"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>Administrative Ratings</h2>
+          <div class="administrative-container">
+            <table>
+              <tr>
+                <th>RLRDD</th>
+                <th>RLDDD</th>
+                <th>RPRMD</th>
+                <th>RICTMD</th>
+                <th>RPSMD</th>
+                <th>RCD</th>
+                <th>RRD</th>
+              </tr>
+              <tr>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RLRDD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RLDDD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RPRMD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="80"
+                    v-model="RICTMD"
+                    required
+                    min="0"
+                    max="80"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="35"
+                    v-model="RPSMD"
+                    required
+                    min="0"
+                    max="35"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="25"
+                    v-model="RCD"
+                    min="0"
+                    max="25"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    name=""
+                    class="ratings"
+                    placeholder="20"
+                    v-model="RRD"
+                    required
+                    min="0"
+                    max="20"
+                  />
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="rating-footer">
+            <button type="submit" class="submitRate">Submit</button>
+          </div>
+        </form>
+        <div :class="{ dim: formVisible }">
+          <div class="alertBox" v-if="formVisible">
+            <img class="checkImg" src="./img/check2.gif" alt="" />
+            <h1 class="alertContent">Successfully Rated</h1>
+            <button class="backPPORate" @click="okayBtn">Okay</button>
+          </div>
         </div>
       </div>
     </div>
@@ -157,63 +239,67 @@ import axios from "axios";
 export default {
   data() {
     return {
-      selectedRating: null,
-      formVisible: false,
-      buttonVisible: true,
-      storedUserId: "",
       Month: "",
       Year: "",
-      Abra: "",
-      Calintaan: "",
-      Looc: "",
-      Lubang: "",
-      Magsaysay: "",
-      Mamburao: "",
-      Paluan: "",
-      Rizal: "",
-      Sablayan: "",
-      SanJose: "",
-      SantaCruz: "",
-      componentName: "",
-      saveAlert: "",
+      ROD: "",
+      RIDMD: "",
+      RID: "",
+      RCADD: "",
+      RLRDD: "",
+      RLDDD: "",
+      RPRMD: "",
+      RICTMD: "",
+      RPSMD: "",
+      RCD: "",
+      RRD: "",
+      Municipality: "",
+      storedUserId: null,
+      visible: true,
+      formVisible: false,
     };
   },
-  components: {},
+  mounted() {
+    this.storedUserId = sessionStorage.getItem("id");
+  },
   methods: {
+    back() {
+      this.visible = false;
+    },
+
     async saveRating() {
       try {
-        this.storedUserId = sessionStorage.getItem("id");
-        const ins = await axios.post("/saveMunOcciRate", {
-          UserId: this.storedUserId,
+        const ins = await axios.post("insertMpsOcci", {
+          storedUserId: this.storedUserId,
           Month: this.Month,
           Year: this.Year,
-          Abra: this.Abra,
-          Calintaan: this.Calintaan,
-          Looc: this.Looc,
-          Lubang: this.Lubang,
-          Magsaysay: this.Magsaysay,
-          Mamburao: this.Mamburao,
-          Paluan: this.Paluan,
-          Rizal: this.Rizal,
-          Sablayan: this.Sablayan,
-          SanJose: this.SanJose,
-          SantaCruz: this.SantaCruz,
+          Office: this.Municipality,
+          Rod: this.ROD,
+          Ridmd: this.RIDMD,
+          Rid: this.RID,
+          Rcadd: this.RCADD,
+          Rlrdd: this.RLRDD,
+          Rlddd: this.RLDDD,
+          Rprmd: this.RPRMD,
+          Rictmd: this.RICTMD,
+          Rpsmd: this.RPSMD,
+          Rcd: this.RCD,
+          Rrd: this.RRD,
         });
         this.Month = "";
         this.Year = "";
-        this.Abra = "";
-        this.Calintaan = "";
-        this.Looc = "";
-        this.Lubang = "";
-        this.Magsaysay = "";
-        this.Mamburao = "";
-        this.Paluan = "";
-        this.Rizal = "";
-        this.Sablayan = "";
-        this.SanJose = "";
-        this.SantaCruz = "";
+        this.ROD = "";
+        this.RIDMD = "";
+        this.RID = "";
+        this.RCADD = "";
+        this.RLRDD = "";
+        this.RLDDD = "";
+        this.RPRMD = "";
+        this.RICTMD = "";
+        this.RPSMD = "";
+        this.RCD = "";
+        this.RRD = "";
+        this.Municipality = "";
         this.$emit("data-saved");
-        this.saveAlert = "Successfully Rate";
         this.formVisible = true;
         setTimeout(() => {
           this.formVisible = false;
@@ -222,109 +308,24 @@ export default {
         console.log(e);
       }
     },
+
     okayBtn() {
       this.formVisible = false;
     },
   },
+  components: {},
 };
 </script>
 
 <style>
-.dim {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Adjust the last value for the desired transparency */
-  z-index: 1;
-  /* Make sure the overlay is above other elements */
-}
-.alertBox {
-  position: absolute;
-  background-color: white;
-  height: 35%;
-  width: 35%;
-  top: 35%;
-  left: 41%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2rem;
-  color: var(--dark);
-  gap: 1rem;
-}
-.checkImg {
-  height: 30%;
-}
-.alertContent {
-  color: black;
-}
-.rating-header {
-  display: flex;
-  align-items: center;
-  grid-gap: 16px;
-  margin-bottom: 24px;
-  justify-content: center;
-}
-.head-subtitle {
-  text-align: center;
-}
-.ratingsheet-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateDate {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  align-items: center;
-}
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateInput {
-  width: 60%;
-  border: 1px solid var(--dark);
-  padding: 0.3rem 0.5rem;
-  text-align: center;
-  color: var(--dark);
-  border-radius: 0.5rem;
-}
-.submitPPORate {
-  background: green;
-  padding: 0.5rem 1rem;
+.backBtn {
+  background: rgb(40, 93, 163);
   color: white;
+  border: none;
   border-radius: 0.5rem;
+  padding: 0.5rem 0;
 }
-.backPPORate {
-  background: rgb(26, 94, 182);
-  padding: 0.5rem 1rem;
-  color: white;
-  border-radius: 0.5rem;
-}
-.buttonDiv {
-  display: flex;
-  gap: 1rem;
+.backBtn:hover {
+  background: rgb(65, 130, 216);
 }
 </style>

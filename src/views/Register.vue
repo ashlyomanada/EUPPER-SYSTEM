@@ -86,7 +86,7 @@
           Register
         </button>
         <p class="signin">
-          Already have an acount ? <router-link to="/">Signin</router-link>
+          Already have an acount ? <router-link to="/login">Signin</router-link>
         </p>
         <div
           v-if="registrationStatus"
