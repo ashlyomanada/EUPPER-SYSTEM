@@ -7,7 +7,7 @@
       <div class="rating-header">
         <div>
           <h3>Unit Performance Evaluation Rating</h3>
-          <h4 class="head-subtitle">RMFB / PMFC Level</h4>
+          <h4 class="head-subtitle">Municipalities of Oriental Mindoro</h4>
         </div>
       </div>
       <form @submit.prevent="saveRating" class="ratingsheet-container">
@@ -135,7 +135,7 @@ export default {
     },
     async fetchColumns() {
       try {
-        const response = await axios.get("/getColumnNameRMFB");
+        const response = await axios.get("/getColumnNameOrmin");
         this.columns = response.data.filter(
           (column) => !["id", "userid", "month", "year"].includes(column)
         );
@@ -159,10 +159,10 @@ export default {
         };
 
         // Log the data to console
-        // console.log("Data to be saved:", data);
+        //console.log("Data to be saved:", data);
 
         // Send data to server for insertion
-        const response = await axios.post("/insertDataRMFB", data);
+        const response = await axios.post("/insertDataOrmin", data);
 
         if (response.status === 200) {
           // Data successfully saved

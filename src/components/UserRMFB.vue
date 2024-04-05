@@ -1,430 +1,102 @@
 <template>
-  <div class="table-data" :style="{ display: visible ? 'block' : 'none' }">
+  <div class="table-data">
     <div class="order">
       <div class="rating-header">
         <div>
-          <h3>Unit Performance Evaluation Rating</h3>
-          <h4 class="head-subtitle">RMFB PMFC Level</h4>
+          <h2>Unit Performance Evaluation Rating</h2>
+          <h4 class="head-subtitle">RMFB / PMFC Level</h4>
         </div>
       </div>
-
-      <div class="oriental-container">
-        <form action="" id="oriental-form" @submit.prevent="saveRating">
-          <div class="rate-date-container">
-            <h2>Operational Ratings</h2>
-
-            <div class="date-container">
-              Provinces :
-              <select class="month" v-model="Municipality" required>
-                <option value="Regional Mobile Force Battalion">
-                  Regional Mobile Force Battalion
-                </option>
-                <option value="Occidental Mindoro PMFC">
-                  Occidental Mindoro PMFC
-                </option>
-                <option value="Oriental Mindoro PMFC">
-                  Oriental Mindoro PMFC
-                </option>
-                <option value="Marinduque PMFC">Marinduque PMFC</option>
-                <option value="Romblon PMFC">Romblon PMFC</option>
-                <option value="Palawan PMFC">Palawan PMFC</option>
-                <option value="Puerto CMFC">Puerto Prinsesa CMFC</option>
-              </select>
-              Month :
-              <select class="month" v-model="Month" required>
-                <option value="January">January</option>
-                <option value="February">February</option>
-                <option value="March">March</option>
-                <option value="April">April</option>
-                <option value="May">May</option>
-                <option value="June">June</option>
-                <option value="July">July</option>
-                <option value="August">August</option>
-                <option value="September">September</option>
-                <option value="October">October</option>
-                <option value="November">November</option>
-                <option value="December">December</option>
-              </select>
-              <input
-                type="number"
-                class="year"
-                name="year"
-                min="2020"
-                max="2100"
-                step="1"
-                placeholder="Year"
-                v-model="Year"
-                required
-              />
-            </div>
-          </div>
-          <div class="operational-container">
-            <table>
-              <tr>
-                <th class="operationalHeader">ROD</th>
-                <th>RIDMD</th>
-                <th>RID</th>
-                <th>RCADD</th>
-              </tr>
-              <tbody>
-                <tr>
-                  <td class="operationalContent">
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="167"
-                      v-model="ROD"
-                      required
-                      min="0"
-                      max="167"
-                    />
-                  </td>
-                  <td class="operationalContent">
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="166"
-                      v-model="RIDMD"
-                      required
-                      min="0"
-                      max="166"
-                    />
-                  </td>
-                  <td class="operationalContent">
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="167"
-                      v-model="RID"
-                      required
-                      min="0"
-                      max="167"
-                    />
-                  </td>
-                  <td class="operationalContent">
-                    <input
-                      type="number"
-                      name=""
-                      class="ratings"
-                      placeholder="100"
-                      v-model="RCADD"
-                      required
-                      min="0"
-                      max="100"
-                    />
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <h2>Administrative Ratings</h2>
-          <div class="administrative-container">
-            <table>
-              <tr>
-                <th>RLRDD</th>
-                <th>RLDDD</th>
-                <th>RPRMD</th>
-                <th>RICTMD</th>
-                <th>RPSMD</th>
-                <th>RCD</th>
-                <th>RRD</th>
-              </tr>
-              <tr>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="80"
-                    v-model="RLRDD"
-                    required
-                    min="0"
-                    max="80"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="80"
-                    v-model="RLDDD"
-                    required
-                    min="0"
-                    max="80"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="80"
-                    v-model="RPRMD"
-                    required
-                    min="0"
-                    max="80"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="80"
-                    v-model="RICTMD"
-                    required
-                    min="0"
-                    max="80"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="35"
-                    v-model="RPSMD"
-                    required
-                    min="0"
-                    max="35"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="25"
-                    v-model="RCD"
-                    min="0"
-                    max="25"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="number"
-                    name=""
-                    class="ratings"
-                    placeholder="20"
-                    v-model="RRD"
-                    required
-                    min="0"
-                    max="20"
-                  />
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="rating-footer">
-            <button type="submit" class="submitRate">Submit</button>
-          </div>
-        </form>
-        <div :class="{ dim: formVisible }">
-          <div class="alertBox" v-if="formVisible">
-            <img class="checkImg" src="./img/check2.gif" alt="" />
-            <h1 class="alertContent">Successfully Rated</h1>
-            <button class="backPPORate" @click="okayBtn">Okay</button>
-          </div>
-        </div>
-      </div>
+      <table v-if="dataFetched">
+        <thead>
+          <tr>
+            <th class="t-row">Month</th>
+            <th class="t-row">Year</th>
+            <th v-for="(column, index) in columns" :key="index" class="t-row">
+              {{ column.replace(/_/g, " ") }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(rating, index) in userRatings" :key="index">
+            <td class="t-data">{{ rating.month }}</td>
+            <td class="t-data">{{ rating.year }}</td>
+            <td
+              v-for="(column, colIndex) in columns"
+              :key="colIndex"
+              class="t-data"
+            >
+              {{ rating[column] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <h4 v-else style="text-align: center">No Ratings Yet</h4>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
 export default {
   data() {
     return {
-      Month: "",
-      Year: "",
-      ROD: "",
-      RIDMD: "",
-      RID: "",
-      RCADD: "",
-      RLRDD: "",
-      RLDDD: "",
-      RPRMD: "",
-      RICTMD: "",
-      RPSMD: "",
-      RCD: "",
-      RRD: "",
-      Municipality: "",
-      storedUserId: null,
-      visible: true,
-      formVisible: false,
+      dataFetched: false,
+      userRatings: [],
+      columns: [],
     };
   },
-  mounted() {
-    this.storedUserId = sessionStorage.getItem("id");
-  },
-  methods: {
-    back() {
-      this.visible = false;
-    },
 
-    async saveRating() {
+  mounted() {
+    this.fetchData();
+    this.fetchColumns();
+  },
+
+  methods: {
+    async fetchColumns() {
       try {
-        const ins = await axios.post("insertRmfb", {
-          storedUserId: this.storedUserId,
-          Month: this.Month,
-          Year: this.Year,
-          Office: this.Municipality,
-          Rod: this.ROD,
-          Ridmd: this.RIDMD,
-          Rid: this.RID,
-          Rcadd: this.RCADD,
-          Rlrdd: this.RLRDD,
-          Rlddd: this.RLDDD,
-          Rprmd: this.RPRMD,
-          Rictmd: this.RICTMD,
-          Rpsmd: this.RPSMD,
-          Rcd: this.RCD,
-          Rrd: this.RRD,
-        });
-        this.Month = "";
-        this.Year = "";
-        this.ROD = "";
-        this.RIDMD = "";
-        this.RID = "";
-        this.RCADD = "";
-        this.RLRDD = "";
-        this.RLDDD = "";
-        this.RPRMD = "";
-        this.RICTMD = "";
-        this.RPSMD = "";
-        this.RCD = "";
-        this.RRD = "";
-        this.Municipality = "";
-        this.$emit("data-saved");
-        this.formVisible = true;
-        setTimeout(() => {
-          this.formVisible = false;
-        }, 5000);
-      } catch (e) {
-        console.log(e);
+        const response = await axios.get("/getColumnNameRMFB");
+        this.columns = response.data.filter(
+          (column) => !["id", "userid", "month", "year"].includes(column)
+        );
+      } catch (error) {
+        console.error("Error fetching column names:", error);
       }
     },
 
-    okayBtn() {
-      this.formVisible = false;
+    fetchData() {
+      const storedUserId = sessionStorage.getItem("id");
+      if (storedUserId) {
+        axios
+          .get(`/viewUserRMFBRates/${storedUserId}`)
+          .then((response) => {
+            this.userRatings = response.data;
+            this.dataFetched = true;
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
+      }
     },
   },
-  components: {},
 };
 </script>
 
 <style>
-.backBtn {
-  background: rgb(40, 93, 163);
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  padding: 0.5rem 0;
-}
-.backBtn:hover {
-  background: rgb(65, 130, 216);
-}
-.dim {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Adjust the last value for the desired transparency */
-  z-index: 1;
-  /* Make sure the overlay is above other elements */
-}
-.alertBox {
+#rating-form-edit2 {
   position: absolute;
-  background-color: white;
-  height: 35%;
-  width: 35%;
-  top: 35%;
-  left: 41%;
+  width: 80%;
+  top: 15%;
+  left: 10%;
+  display: none;
+  background-color: var(--grey);
+}
+.form-edit {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2rem;
-  color: var(--dark);
-  gap: 1rem;
-}
-.checkImg {
-  height: 30%;
-}
-.alertContent {
-  color: black;
-}
-.rating-header {
-  display: flex;
-  align-items: center;
-  grid-gap: 16px;
-  margin-bottom: 24px;
-  justify-content: center;
-}
-.head-subtitle {
-  text-align: center;
-}
-.ratingsheet-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateDate {
-  width: 60%;
-  display: flex;
-  justify-content: center;
   gap: 2rem;
   align-items: center;
 }
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateInput {
-  width: 60%;
-  border: 1px solid var(--dark);
-  padding: 0.3rem 0.5rem;
-  text-align: center;
-  color: var(--dark);
-  border-radius: 0.5rem;
-}
-.submitPPORate {
-  background: green;
-  padding: 0.5rem 1rem;
-  color: white;
-  border-radius: 0.5rem;
-}
-.backPPORate {
-  background: rgb(26, 94, 182);
-  padding: 0.5rem 1rem;
-  color: white;
-  border-radius: 0.5rem;
-}
-.buttonDiv {
-  display: flex;
-  gap: 1rem;
+.pen-btn {
+  color: rgb(233, 70, 70);
 }
 </style>

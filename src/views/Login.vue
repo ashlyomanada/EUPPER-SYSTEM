@@ -25,7 +25,8 @@
         </label>
         <button type="submit" class="submit" style="color: white">Login</button>
         <p class="signin">
-          Don't have an account? <router-link to="/">Sign up</router-link>
+          Don't have an account?
+          <router-link to="/register">Sign up</router-link>
         </p>
         <p class="error-message">{{ errorMessage }}</p>
       </form>

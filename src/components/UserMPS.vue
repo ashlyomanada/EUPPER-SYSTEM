@@ -1,76 +1,85 @@
 <template>
-  <div
-    class="table-data"
-    :style="{ display: visibleMunicipal ? 'block' : 'none' }"
-  >
-    <div class="order">
-      <div class="rating-header">
-        <div>
-          <h3>Unit Performance Evaluation Rating</h3>
-          <h4 class="head-subtitle">MPS / CPS Level</h4>
-        </div>
-      </div>
-      <div class="ratingsheet-container">
-        <button class="rateBtn" @click="selectedRating('MunOccidental')">
-          Occidental Mindoro
-        </button>
-        <button class="rateBtn" @click="selectedRating('MunOriental')">
-          Oriental Mindoro
-        </button>
-        <button class="rateBtn" @click="selectedRating('MunMarinduque')">
-          Marinduque
-        </button>
-        <button class="rateBtn" @click="selectedRating('MunRomblon')">
-          Romblon
-        </button>
-        <button class="rateBtn" @click="selectedRating('MunPalawan')">
-          Palawan
-        </button>
-        <button class="rateBtn" @click="selectedRating('MunPrincesa')">
-          Puerto Princesa
-        </button>
-      </div>
+  <div class="MPSContainer">
+    <div>
+      <Occidental v-if="number === 0" />
+      <Oriental v-if="number === 1" />
+      <Marinduque v-if="number === 2" />
+      <Romblon v-if="number === 3" />
+      <Palawan v-if="number === 4" />
+      <PuertoPrincesa v-if="number === 5" />
+    </div>
+    <div class="mps-btn-container">
+      <button v-if="number > 0" class="nextBtn" @click.prevent="decrease()">
+        Previous
+      </button>
+      <button v-if="number < 5" class="nextBtn" @click.prevent="increase()">
+        Next
+      </button>
     </div>
   </div>
-  <MunOccidental v-if="selectedComponent === 'MunOccidental'"></MunOccidental>
-  <MunOriental v-if="selectedComponent === 'MunOriental'"></MunOriental>
-  <MunPalawan v-if="selectedComponent === 'MunPalawan'"></MunPalawan>
-  <MunPrincesa v-if="selectedComponent === 'MunPrincesa'"></MunPrincesa>
-  <MunRomblon v-if="selectedComponent === 'MunRomblon'"></MunRomblon>
-  <MunMarinduque v-if="selectedComponent === 'MunMarinduque'"></MunMarinduque>
 </template>
 
 <script>
-import MunOccidental from "../components/MunOccidental.vue";
-import MunOriental from "../components/MunOriental.vue";
-import MunPalawan from "../components/MunPalawan.vue";
-import MunPrincesa from "../components/MunPrincesa.vue";
-import MunRomblon from "../components/MunRomblon.vue";
-import MunMarinduque from "../components/MunMarinduque.vue";
-export default {
-  components: {
-    MunOccidental,
-    MunOriental,
-    MunPalawan,
-    MunPrincesa,
-    MunRomblon,
-    MunMarinduque,
-  },
+import Oriental from "../components/Oriental.vue";
+import Occidental from "../components/Occidental.vue";
+import Marinduque from "../components/Marinduque.vue";
+import Romblon from "../components/Romblon.vue";
+import Palawan from "../components/Palawan.vue";
+import PuertoPrincesa from "../components/PuertoPrincesa.vue";
 
+export default {
   data() {
     return {
-      selectedComponent: "",
-      visibleMunicipal: true,
+      number: 0,
+      visible: true,
     };
+  },
+  components: {
+    Oriental,
+    Occidental,
+    Marinduque,
+    Romblon,
+    Palawan,
+    PuertoPrincesa,
   },
 
   methods: {
-    selectedRating(rating) {
-      this.selectedComponent = rating;
-      this.visibleMunicipal = false;
+    increase() {
+      if (this.number < 5) {
+        this.number++;
+      }
+    },
+    decrease() {
+      if (this.number > 0) {
+        this.number--;
+      }
     },
   },
 };
 </script>
 
-<style></style>
+<style>
+.MPSContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.mps-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+}
+.nextBtn {
+  background: rgb(26, 94, 182);
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 0.5rem;
+  display: flex;
+  right: 0;
+}
+</style>

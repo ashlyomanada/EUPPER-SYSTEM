@@ -5,7 +5,7 @@
         <div class="head-options">
           <div style="text-align: center">
             <h3>Unit Performance Evaluation Rating</h3>
-            <h4>PPO / CPO Level</h4>
+            <h4>Municipalities of Oriental Mindoro</h4>
           </div>
           <div class="date-options">
             <div>
@@ -54,23 +54,19 @@
             <th class="t-row">Office/Unit</th>
             <th
               class="t-row"
-              v-for="(office, index) in allOffices"
+              v-for="(office, index) in UsersOffice"
               :key="index"
             >
-              {{ office }}
+              {{ office.office }}
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(column, colIndex) in columns" :key="colIndex">
             <td>{{ column.replace(/_/g, " ") }}</td>
-            <template
-              v-for="(office, officeIndex) in allOffices"
-              :key="officeIndex"
-            >
+            <template v-for="(rate, rateIndex) in UsersRate" :key="rateIndex">
               <td>
-                <!-- Find the corresponding rate for this office and column -->
-                {{ findRateForOfficeAndColumn(office, column) }}
+                {{ rate[column] }}
               </td>
             </template>
           </tr>
@@ -93,19 +89,17 @@ export default {
       month: "",
       year: "",
       userId: "",
-      allOffices: [], // Array to store all office names
     };
   },
   created() {
     this.fetchColumns();
-    this.getUsersRate();
     this.getUsersOffice();
+    this.getUsersRate();
   },
-
   methods: {
     async fetchColumns() {
       try {
-        const response = await axios.get("/getColumnNameRMFB");
+        const response = await axios.get("/getColumnNameOrmin");
         this.columns = response.data.filter(
           (column) => !["id", "userid", "month", "year"].includes(column)
         );
@@ -114,9 +108,19 @@ export default {
       }
     },
 
+    async getUsersOffice() {
+      try {
+        const response = await axios.get("/getUsersOffice");
+        this.UsersOffice = response.data;
+        // console.log(this.UsersOffice);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async getUsersRate() {
       try {
-        const response = await axios.get("/getUsersRateRMFB");
+        const response = await axios.get("/getUsersRateOrmin");
         // Exclude specified properties from each object in the response data
         this.UsersRate = response.data.map(
           ({ id, userid, month, year, ...rest }) => ({
@@ -135,33 +139,13 @@ export default {
           Month: this.month,
           Year: this.year,
         });
-        this.UsersRate = response.data.map(
-          ({ id, userid, month, year, ...rest }) => ({
-            ...rest, // Spread the rest of the properties
-          })
-        );
+        this.UsersRate = response.data;
+        this.UsersRate.forEach((item) => {
+          item.userid = this.userId;
+        });
+        this.getUsersRateByOffice();
       } catch (error) {
         console.error("Error filtering users rate:", error);
-      }
-    },
-
-    async getUsersOffice() {
-      try {
-        const response = await axios.get("/getUsersOffice");
-        // Extract office names from the response
-        this.allOffices = response.data.map((office) => office.office);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-
-    findRateForOfficeAndColumn(office, column) {
-      // Find the rate corresponding to the given office and column
-      const rate = this.UsersRate.find((rate) => rate.office === office);
-      if (rate) {
-        return rate[column];
-      } else {
-        return ""; // Return empty string if no corresponding rate is found
       }
     },
   },

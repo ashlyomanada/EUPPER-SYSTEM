@@ -1,26 +1,31 @@
-To achieve the desired structure for your Vue component, you can follow the
-provided template and adjust your existing code accordingly. Here's the modified
-version of your component to match the structure you provided: html Copy code
 <template>
   <div class="table-data">
     <div class="order">
       <div class="head">
         <div class="head-options">
-          <div>
+          <div style="text-align: center">
             <h3>Unit Performance Evaluation Rating</h3>
             <h4>PPO / CPO Level</h4>
           </div>
           <div class="date-options">
             <div>
               Select Month:
-              <select v-model="selectedMonth" class="month">
-                <option v-for="month in months" :key="month" :value="month">
-                  {{ month }}
-                </option>
+              <select class="month" name="month" v-model="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
               </select>
               Select Year:
               <input
-                v-model="selectedYear"
                 type="number"
                 class="year"
                 name="year"
@@ -28,12 +33,13 @@ version of your component to match the structure you provided: html Copy code
                 max="2100"
                 step="1"
                 placeholder="Year"
+                v-model="year"
               />
-              <button class="find" @click="findData">
+              <button class="find" @click="getUsersRateByMonth">
                 <i class="bx bx-search"></i>Find
               </button>
             </div>
-            <button class="generate" @click="generateExcel">
+            <button class="generate" @click="generatePPOReport">
               Generate Excel Report
             </button>
             <button class="generate" @click="generatePdf">
@@ -46,167 +52,145 @@ version of your component to match the structure you provided: html Copy code
         <thead>
           <tr>
             <th class="t-row">Office/Unit</th>
-            <th class="t-row">ROD</th>
-            <th class="t-row">RIDMD</th>
-            <th class="t-row">RID</th>
-            <th class="t-row">RCADD</th>
-            <th class="t-row">RLRDD</th>
-            <th class="t-row">RLDDD</th>
-            <th class="t-row">RPRMD</th>
-            <th class="t-row">RICTMD</th>
-            <th class="t-row">RPSMD</th>
-            <th class="t-row">RCD</th>
-            <th class="t-row">RRD</th>
+            <th
+              class="t-row"
+              v-for="(office, index) in allOffices"
+              :key="index"
+            >
+              {{ office }}
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in paginatedPpoInfo" :key="item.id">
-            <td>{{ item.office }}</td>
-            <td>{{ item.do }}</td>
-            <td>{{ item.didm }}</td>
-            <td>{{ item.di }}</td>
-            <td>{{ item.dpcr }}</td>
-            <td>{{ item.dl }}</td>
-            <td>{{ item.dhrdd }}</td>
-            <td>{{ item.dprm }}</td>
-            <td>{{ item.dictm }}</td>
-            <td>{{ item.dpl }}</td>
-            <td>{{ item.dc }}</td>
-            <td>{{ item.drd }}</td>
+          <tr v-for="(column, colIndex) in columns" :key="colIndex">
+            <td>{{ column.replace(/_/g, " ") }}</td>
+            <template
+              v-for="(office, officeIndex) in allOffices"
+              :key="officeIndex"
+            >
+              <td>
+                <!-- Find the corresponding rate for this office and column -->
+                {{ findRateForOfficeAndColumn(office, column) }}
+              </td>
+            </template>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="paginate-container">
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
-        <li class="page-item" :class="{ disabled: currentPage === 1 }">
-          <button class="page-link" @click="previousPage">&laquo;</button>
-        </li>
-        <li
-          class="page-item"
-          v-for="pageNumber in totalPages"
-          :key="pageNumber"
-          :class="{ active: currentPage === pageNumber }"
-        >
-          <button class="page-link" @click="goToPage(pageNumber)">
-            {{ pageNumber }}
-          </button>
-        </li>
-        <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-          <button class="page-link" @click="nextPage">&raquo;</button>
-        </li>
-      </ul>
-    </nav>
-  </div>
 </template>
 
 <script>
+import * as XLSX from "xlsx";
 import axios from "axios";
 
 export default {
   data() {
     return {
-      months: [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-      ],
-      selectedMonth: "",
-      selectedYear: "",
-      PpoInfo: [],
-      currentPage: 1,
-      itemsPerPage: 10, // Adjust this as per your requirement
+      UsersOffice: [],
+      columns: [],
+      UsersRate: [],
+      month: "",
+      year: "",
+      userId: "",
+      allOffices: [], // Array to store all office names
     };
   },
-  computed: {
-    totalPages() {
-      return Math.ceil(this.PpoInfo.length / this.itemsPerPage);
-    },
-    paginatedPpoInfo() {
-      const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-      const endIndex = startIndex + this.itemsPerPage;
-      return this.PpoInfo.slice(startIndex, endIndex);
-    },
+  created() {
+    this.fetchColumns();
+    this.getUsersRate();
+    this.getUsersOffice();
   },
+
   methods: {
-    async getPpoInfo() {
+    async fetchColumns() {
       try {
-        const response = await axios.get("getPpo");
-        this.PpoInfo = response.data;
+        const response = await axios.get("/getColumnNamePPO");
+        this.columns = response.data.filter(
+          (column) => !["id", "userid", "month", "year"].includes(column)
+        );
       } catch (error) {
-        console.error("Error fetching PpoInfo:", error);
+        console.error("Error fetching column names:", error);
       }
     },
-    generateExcel() {
-      // Implementation for generating Excel report
-    },
-    generatePdf() {
-      // Implementation for generating PDF report
-    },
-    findData() {
-      // Implementation for filtering data
-    },
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage--;
+
+    async getUsersRate() {
+      try {
+        const response = await axios.get("/getUsersRatePPO");
+        // Exclude specified properties from each object in the response data
+        this.UsersRate = response.data.map(
+          ({ id, userid, month, year, ...rest }) => ({
+            ...rest, // Spread the rest of the properties
+          })
+        );
+        //console.log(this.UsersRate);
+      } catch (e) {
+        console.log(e);
       }
     },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage++;
+
+    async getUsersRateByMonth() {
+      try {
+        const response = await axios.post("/getUsersRateByMonth", {
+          Month: this.month,
+          Year: this.year,
+        });
+        this.UsersRate = response.data.map(
+          ({ id, userid, month, year, ...rest }) => ({
+            ...rest, // Spread the rest of the properties
+          })
+        );
+      } catch (error) {
+        console.error("Error filtering users rate:", error);
       }
     },
-    goToPage(pageNumber) {
-      this.currentPage = pageNumber;
+
+    async getUsersOffice() {
+      try {
+        const response = await axios.get("/getUsersOffice");
+        // Extract office names from the response
+        this.allOffices = response.data.map((office) => office.office);
+      } catch (e) {
+        console.log(e);
+      }
     },
-  },
-  mounted() {
-    this.getPpoInfo();
+
+    findRateForOfficeAndColumn(office, column) {
+      // Find the rate corresponding to the given office and column
+      const rate = this.UsersRate.find((rate) => rate.office === office);
+      if (rate) {
+        return rate[column];
+      } else {
+        return ""; // Return empty string if no corresponding rate is found
+      }
+    },
+
+    async generatePPOReport() {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/generatePPOOffice",
+          {
+            month: this.month,
+            year: this.year,
+          },
+          { responseType: "blob" }
+        );
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "report.xlsx");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error generating report:", error);
+      }
+    },
   },
 };
 </script>
+
 <style>
-#tableppo {
-  background: var(--light);
-}
-
-.table-container {
-  padding: 1rem;
-  background: var(--light);
-}
-
-.paginate-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.ppohead {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-}
-.ppo-table-data {
-  display: flex;
-  flex-wrap: wrap;
-  grid-gap: 24px;
-  margin-top: 24px;
-  width: 100%;
-  color: var(--dark);
-  flex-direction: column;
-}
 select {
   color: var(--dark);
 }

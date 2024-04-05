@@ -4,7 +4,7 @@
     <ul class="side-menu top" style="padding-left: 0">
       <div class="admin-logo">
         <img src="./img/logo.png" alt="" id="logo" />
-        <h2 id="adminName">{{ userName }}</h2>
+        <h3 id="adminName">{{ userName }}</h3>
       </div>
       <li class="active">
         <a href="#" @click="showComponent('Dashboard')">
@@ -36,7 +36,7 @@
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('AdminMPS')">
+          <a href="#" @click="showComponent('MPS')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">MPS CPS Ratings</span>
           </a>
@@ -71,6 +71,42 @@
             <span class="text">Announcement</span>
           </a>
         </li>
+        <li>
+          <a href="#" @click="showComponent('AddUser')">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">Add User</span>
+          </a>
+        </li>
+      </div>
+      <li>
+        <a href="#" id="rate-btn" @click="toggleButtons3">
+          <div class="rate">
+            <i class="bx bxs-shopping-bag-alt"></i>
+            <span class="text">Manage Offices</span>
+          </div>
+          <i v-if="showButtons3" class="fa-solid fa-chevron-down"></i>
+          <i v-else class="fa-solid fa-chevron-right"></i>
+        </a>
+      </li>
+      <div v-show="showButtons3" class="li-div">
+        <li>
+          <a href="#" @click="showComponent('AddPPO')">
+            <i class="bx bxs-message-dots"></i>
+            <span class="text">Manage PPO</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showComponent('AddRMFB')">
+            <i class="bx bxs-message-dots"></i>
+            <span class="text">Manage RMFB</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" @click="showComponent('AddMPS')">
+            <i class="bx bxs-message-dots"></i>
+            <span class="text">Manage MPS</span>
+          </a>
+        </li>
       </div>
       <li>
         <a href="#" @click="showComponent('ManageAdmin')">
@@ -78,6 +114,7 @@
           <span class="text">Manage Admin</span>
         </a>
       </li>
+
       <li>
         <a href="https://mail.google.com/" target="blank">
           <i class="bx bxs-group"></i>
@@ -87,7 +124,7 @@
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <router-link to="/login" class="logout">
+        <router-link to="/" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </router-link>
@@ -108,17 +145,22 @@
       <Ratings v-if="selectedComponent === 'Ratings'" />
       <PPO v-if="selectedComponent === 'PPO'" />
       <RMFB v-if="selectedComponent === 'RMFB'" />
-      <AdminMPS v-if="selectedComponent === 'AdminMPS'" />
+      <MPS v-if="selectedComponent === 'MPS'" />
       <ManageUser v-if="selectedComponent === 'ManageUser'" />
       <ManageAdmin v-if="selectedComponent === 'ManageAdmin'" />
       <AdminGmail v-if="selectedComponent === 'AdminGmail'" />
+      <AddPPO v-if="selectedComponent === 'AddPPO'" />
+      <AddRMFB v-if="selectedComponent === 'AddRMFB'" />
+      <AddMPS v-if="selectedComponent === 'AddMPS'" />
+      <AddUser v-if="selectedComponent === 'AddUser'" />
     </main>
     <!-- MAIN -->
   </section>
-  <!-- CONTENT -->
+  <!-- CONTENT ---->
 </template>
 
 <script>
+import axios from "axios";
 import Navbar from "../components/Navbar.vue";
 import Dashboard from "../components/Dashboard.vue";
 import Ratings from "../components/Ratings.vue";
@@ -127,8 +169,11 @@ import ManageAdmin from "../components/ManageAdmin.vue";
 import AdminGmail from "../components/AdminGmail.vue";
 import PPO from "../components/PPO.vue";
 import RMFB from "../components/RMFB.vue";
-import AdminMPS from "../components/AdminMPS.vue";
-import axios from "axios";
+import MPS from "../components/MPS-CPS.vue";
+import AddPPO from "../components/AddPPO.vue";
+import AddRMFB from "../components/AddRMFB.vue";
+import AddMPS from "../components/AddMPS.vue";
+import AddUser from "../components/AddUser.vue";
 
 export default {
   components: {
@@ -140,13 +185,18 @@ export default {
     AdminGmail,
     PPO,
     RMFB,
-    AdminMPS,
+    MPS,
+    AddPPO,
+    AddRMFB,
+    AddMPS,
+    AddUser,
   },
   data() {
     return {
       selectedComponent: "Dashboard",
       showButtons: false,
       showButtons2: false,
+      showButtons3: false,
       userName: "",
     };
   },
@@ -166,6 +216,10 @@ export default {
     toggleButtons2() {
       this.showButtons2 = !this.showButtons2;
     },
+    toggleButtons3() {
+      this.showButtons3 = !this.showButtons3;
+    },
+
     loadScripts: function (scriptUrls) {
       // Changed arrow function to regular function
       const head = document.getElementsByTagName("head")[0];
@@ -194,7 +248,7 @@ export default {
           if (response.status === 200) {
             const userData = response.data;
             this.userName = userData.username;
-            console.log(this.userName);
+            //console.log(this.userName);
           } else {
             console.error(`Unexpected response status: ${response.status}`);
           }

@@ -1,108 +1,108 @@
 <template>
-  <div class="register-container">
-    <div class="register">
-      <div class="picture-container">
-        <img src="./img/logo.png" class="loginLogo" alt="" />
-        <div class="name-container">
-          <h1>EUPER SYSTEM</h1>
-          <h2>PRO MIMAROPA</h2>
-        </div>
+  <div class="table-data">
+    <div class="order">
+      <div class="head">
+        <!-- <div class="head-options">
+          <div style="text-align: center">
+            <h3>Unit Performance Evaluation Rating</h3>
+            <h4>Add New User</h4>
+          </div>
+        </div> -->
       </div>
-      <form class="form1" @submit.prevent="submitForm">
-        <p class="title">Register</p>
-        <div class="row">
-          <div class="column">
-            <label>
-              <input
-                required=""
-                placeholder=""
-                type="text"
-                class="inputs"
-                v-model="formData.username"
-              />
-              <span>Username</span>
-            </label>
+      <div class="newUserContainer">
+        <form class="form1" @submit.prevent="submitForm">
+          <p class="title">Register New User</p>
+          <div class="inputContainer">
+            <div class="column">
+              <label>
+                <input
+                  required=""
+                  placeholder=""
+                  type="text"
+                  class="inputs"
+                  v-model="formData.username"
+                />
+                <span>Username</span>
+              </label>
 
-            <label>
-              <input
-                required=""
-                placeholder=""
-                type="text"
-                class="inputs"
-                v-model="formData.office"
-              />
-              <span>Office</span>
-            </label>
+              <label>
+                <input
+                  required=""
+                  placeholder=""
+                  type="text"
+                  class="inputs"
+                  v-model="formData.office"
+                />
+                <span>Office</span>
+              </label>
 
-            <label>
-              <input
-                required=""
-                placeholder=""
-                type="email"
-                class="inputs"
-                v-model="formData.email"
-              />
-              <span>Email</span>
-            </label>
+              <label>
+                <input
+                  required=""
+                  placeholder=""
+                  type="email"
+                  class="inputs"
+                  v-model="formData.email"
+                />
+                <span>Email</span>
+              </label>
+            </div>
+
+            <div class="column">
+              <label>
+                <input
+                  required=""
+                  placeholder=""
+                  type="password"
+                  class="inputs"
+                  v-model="formData.password"
+                />
+                <span>Password</span>
+              </label>
+              <label>
+                <input
+                  required=""
+                  placeholder=""
+                  type="password"
+                  class="inputs"
+                  v-model="formData.confirmpassword"
+                />
+                <span>Confirm password</span>
+              </label>
+              <label>
+                <input
+                  required=""
+                  placeholder=""
+                  type="number"
+                  class="inputs"
+                  v-model="formData.phone_no"
+                />
+                <span>Phone Number</span>
+              </label>
+            </div>
           </div>
+          <input type="file" @change="handleFileChange" />
+          <!-- Add this input to your form -->
 
-          <div class="column">
-            <label>
-              <input
-                required=""
-                placeholder=""
-                type="password"
-                class="inputs"
-                v-model="formData.password"
-              />
-              <span>Password</span>
-            </label>
-            <label>
-              <input
-                required=""
-                placeholder=""
-                type="password"
-                class="inputs"
-                v-model="formData.confirmpassword"
-              />
-              <span>Confirm password</span>
-            </label>
-            <label>
-              <input
-                required=""
-                placeholder=""
-                type="number"
-                class="inputs"
-                v-model="formData.phone_no"
-              />
-              <span>Phone Number</span>
-            </label>
+          <button type="submit" class="submit" style="color: white">
+            Register
+          </button>
+          <div
+            v-if="registrationStatus"
+            :class="[
+              registrationStatus === 'success'
+                ? 'success-message'
+                : 'error-message',
+            ]"
+          >
+            {{
+              registrationStatus === "success"
+                ? "Registration successful!"
+                : "Registration failed. Please try again."
+            }}
           </div>
-        </div>
-        <input type="file" @change="handleFileChange" />
-        <!-- Add this input to your form -->
-
-        <button type="submit" class="submit" style="color: white">
-          Register
-        </button>
-        <p class="signin">
-          Already have an acount ? <router-link to="/">Signin</router-link>
-        </p>
-        <div
-          v-if="registrationStatus"
-          :class="[
-            registrationStatus === 'success'
-              ? 'success-message'
-              : 'error-message',
-          ]"
-        >
-          {{
-            registrationStatus === "success"
-              ? "Registration successful!"
-              : "Registration failed. Please try again."
-          }}
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -155,7 +155,7 @@ export default {
             password: "",
             confirmpassword: "",
             phone_no: "",
-            file: null,
+            file: null, // Reset the file input
           };
           this.registrationStatus = "success";
         })
@@ -176,13 +176,18 @@ export default {
 </script>
 
 <style>
-.row {
+.newUserContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+}
+.inputContainer {
   display: flex;
   gap: 0.5rem;
 }
 .column {
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
   width: 50%;
 }

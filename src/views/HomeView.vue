@@ -4,9 +4,9 @@
     <ul class="side-menu top" style="padding-left: 0">
       <div class="admin-logo2">
         <img src="./img/logo.png" alt="" id="logo2" />
-        <h2 id="adminName2">{{ userName }}</h2>
+        <h3 id="adminName2">{{ userName }}</h3>
       </div>
-      <li class="active">
+      <li class="active" v-if="status === 'Enable'">
         <a href="#" id="btn" @click="toggleButtons">
           <div class="rate">
             <i class="bx bxs-dashboard"></i>
@@ -24,13 +24,13 @@
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('UserRMFB')">
+          <a href="#" @click="showComponent('RMFB')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">RMFB PMFC Level</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('MPSCPS')">
+          <a href="#" @click="showComponent('MPSRatingSheet')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">MPS CPS Level</span>
           </a>
@@ -54,13 +54,13 @@
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('ViewRMFB')">
+          <a href="#" @click="showComponent('UserRMFB')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">RMFB PMFC Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('ViewMPS')">
+          <a href="#" @click="showComponent('UserMPS')">
             <i class="bx bxs-shopping-bag-alt"></i>
             <span class="text">MPS CPS Ratings</span>
           </a>
@@ -87,10 +87,10 @@
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <a href="#" @click="logout" class="logout">
+        <router-link to="/" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
-        </a>
+        </router-link>
       </li>
     </ul>
   </section>
@@ -123,20 +123,19 @@
       <Uper v-if="selectedComponent === 'Uper'" />
       <UserPPO v-if="selectedComponent === 'UserPPO'" />
       <UserRMFB v-if="selectedComponent === 'UserRMFB'" />
-      <MPSCPS v-if="selectedComponent === 'MPSCPS'" />
+      <RMFB v-if="selectedComponent === 'RMFB'" />
+      <UserMPS v-if="selectedComponent === 'UserMPS'" />
+      <MPSRatingSheet v-if="selectedComponent === 'MPSRatingSheet'" />
       <ViewRatings v-if="selectedComponent === 'ViewRatings'" />
       <UserProfile v-if="selectedComponent === 'UserProfile'" />
       <RequestForm v-if="selectedComponent === 'RequestForm'" />
       <UserGmail v-if="selectedComponent === 'UserGmail'" />
-      <ViewRMFB v-if="selectedComponent === 'ViewRMFB'" />
-      <ViewMPS v-if="selectedComponent === 'ViewMPS'" />
     </main>
     <!-- MAIN -->
   </section>
   <!-- CONTENT -->
 </template>
 <script>
-import { defineComponent } from "vue";
 import Uper from "../components/Uper.vue";
 import ViewRatings from "../components/ViewRatings.vue";
 import UserProfile from "../components/UserProfile.vue";
@@ -144,14 +143,14 @@ import RequestForm from "../components/RequestForm.vue";
 import UserGmail from "../components/UserGmail.vue";
 import UserPPO from "../components/UserPPO.vue";
 import UserRMFB from "../components/UserRMFB.vue";
-import MPSCPS from "../components/MPS-CPS.vue";
-import PPORatingSheet from "../components/PPORatingSheet.vue";
+import UserMPS from "../components/UserMPS.vue";
+import PPORatingSheet from "../components/ratingSheetForm/PPORatingSheet.vue";
+import RMFB from "../components/ratingSheetForm/RMFBRatingSheet.vue";
 import axios from "axios";
 import router from "@/router";
-import ViewRMFB from "../components/ViewRMFB.vue";
-import ViewMPS from "../components/ViewMPS.vue";
+import MPSRatingSheet from "../components/ratingSheetForm/MPSRatingSheet.vue";
 // Components
-export default defineComponent({
+export default {
   components: {
     Uper,
     ViewRatings,
@@ -160,10 +159,10 @@ export default defineComponent({
     UserGmail,
     UserPPO,
     UserRMFB,
-    MPSCPS,
     PPORatingSheet,
-    ViewRMFB,
-    ViewMPS,
+    RMFB,
+    MPSRatingSheet,
+    UserMPS,
   },
   data() {
     return {
@@ -176,6 +175,7 @@ export default defineComponent({
       phoneNumber: "",
       email: "",
       profilePic: "",
+      status: "",
     };
   },
   async created() {
@@ -199,7 +199,12 @@ export default defineComponent({
           this.phoneNumber = userData.phone_no;
           this.email = userData.email;
           this.profilePic = userData.image;
-          //console.log(userData);
+          this.status = userData.status;
+
+          if (this.status === "Disable") {
+            this.selectedComponent = "UserPPO";
+          }
+          console.log(userData);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
@@ -239,7 +244,7 @@ export default defineComponent({
       );
     },
   },
-});
+};
 </script>
 <style>
 a {

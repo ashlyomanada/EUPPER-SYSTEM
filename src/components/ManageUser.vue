@@ -98,6 +98,7 @@
         placeholder="Phone No."
         class="input"
       />
+
       <div class="modal-buttons">
         <button @click.prevent="saveUser">Save</button>
         <button @click.prevent="closeForm">Close</button>
@@ -120,6 +121,7 @@ export default {
         office: "",
         phone_no: "",
         email: "",
+        password: "",
       },
     };
   },
@@ -132,6 +134,7 @@ export default {
       try {
         const UsersInfo = await axios.get("getUsersInfo");
         this.UsersInfo = UsersInfo.data;
+        console.log(this.UsersInfo);
       } catch (e) {
         console.log(e);
       }

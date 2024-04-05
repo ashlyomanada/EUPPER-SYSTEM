@@ -18,12 +18,12 @@
         </thead>
         <tbody>
           <tr>
-            <td>{{ username }}</td>
+            <td>{{ selectedAdmin.username }}</td>
             <td></td>
-            <td>{{ email }}</td>
-            <td>{{ phone_no }}</td>
+            <td>{{ selectedAdmin.email }}</td>
+            <td>{{ selectedAdmin.phone_no }}</td>
             <td class="td-btn">
-              <button class="pen-btn" @click="openForm(adminInfo)">
+              <button class="pen-btn" @click="openForm()">
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
@@ -39,20 +39,25 @@
       :style="{ display: formVisible ? 'block' : 'none' }"
     >
       <input
-        v-model="username"
+        v-model="selectedAdmin.username"
         type="text"
         placeholder="Username"
         class="input"
       />
       <input
-        v-model="password"
+        v-model="selectedAdmin.password"
         type="text"
         placeholder="Password"
         class="input"
       />
-      <input v-model="email" type="text" placeholder="Email" class="input" />
       <input
-        v-model="phone_no"
+        v-model="selectedAdmin.email"
+        type="text"
+        placeholder="Email"
+        class="input"
+      />
+      <input
+        v-model="selectedAdmin.phone_no"
         type="text"
         placeholder="Phone No."
         class="input"
@@ -71,7 +76,6 @@ import axios from "axios";
 export default {
   data() {
     return {
-      AdminsInfo: [],
       formVisible: false,
       selectedAdmin: {
         admin_id: null,
@@ -80,63 +84,48 @@ export default {
         email: "",
         phone_no: "",
       },
-      username: "",
-      password: "",
-      email: "",
-      phone_no: "",
       storedId: "",
     };
   },
 
-  created() {
-    this.getAdminsData();
-  },
-
   mounted() {
     this.storedId = sessionStorage.getItem("id");
+    this.getAdminsData();
   },
 
   methods: {
     async getAdminsData() {
       const adminStoredId = sessionStorage.getItem("id");
-
       if (adminStoredId) {
         try {
           const response = await axios.get(`/getUserData/${adminStoredId}`);
           if (response.status === 200) {
-            const responseData = response.data;
-            this.username = responseData.username;
-            this.password = responseData.password;
-            this.email = responseData.email;
-            this.phone_no = responseData.phone_no;
+            this.selectedAdmin = response.data;
           }
         } catch (e) {
-          console.log(e);
+          console.error(e);
         }
       }
     },
 
     openForm() {
-      this.selectedAdmin = {
-        user_id: this.storedId,
-        username: this.username,
-        password: this.password,
-        email: this.email,
-        phone_no: this.phone_no,
-      };
       this.formVisible = true;
     },
+
     async saveAdmin() {
       try {
-        const response = await axios.post("/api/saveAdmin", this.selectedAdmin);
+        const response = await axios.post(
+          `/updateAdminInformation/${this.storedId}`,
+          this.selectedAdmin
+        );
 
         if (response.status === 200) {
           const responseData = response.data;
+          console.log(this.selectedAdmin);
 
           if (responseData && responseData.success) {
             console.log(responseData.message);
             this.formVisible = false;
-            this.getAdminsData();
           } else {
             console.error("Save failed:", responseData.message);
           }

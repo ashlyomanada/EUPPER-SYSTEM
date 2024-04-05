@@ -1,12 +1,12 @@
 <template>
   <div class="MPSContainer">
     <div>
-      <MunOccidental v-if="number === 0" />
-      <MunOriental v-if="number === 1" />
-      <MunMarinduque v-if="number === 2" />
-      <MunRomblon v-if="number === 3" />
-      <MunPalawan v-if="number === 4" />
-      <MunPrincesa v-if="number === 5" />
+      <AdminOccidental v-if="number === 0" />
+      <AdminOriental v-if="number === 1" />
+      <AdminMarinduque v-if="number === 2" />
+      <AdminRomblon v-if="number === 3" />
+      <AdminPalawan v-if="number === 4" />
+      <AdminPuerto v-if="number === 5" />
     </div>
     <div class="mps-btn-container">
       <button v-if="number > 0" class="nextBtn" @click.prevent="decrease()">
@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import MunOccidental from "../components/MunOccidental.vue";
-import MunOriental from "../components/MunOriental.vue";
-import MunMarinduque from "../components/MunMarinduque.vue";
-import MunRomblon from "../components/MunRomblon.vue";
-import MunPalawan from "../components/MunPalawan.vue";
-import MunPrincesa from "../components/MunPrincesa.vue";
+import AdminOccidental from "../components/AdminOccidental.vue";
+import AdminOriental from "../components/AdminOriental.vue";
+import AdminMarinduque from "../components/AdminMarinduque.vue";
+import AdminRomblon from "../components/AdminRomblon.vue";
+import AdminPalawan from "../components/AdminPalawan.vue";
+import AdminPuerto from "../components/AdminPuerto.vue";
 export default {
   data() {
     return {
@@ -33,12 +33,12 @@ export default {
     };
   },
   components: {
-    MunOccidental,
-    MunOriental,
-    MunMarinduque,
-    MunRomblon,
-    MunPalawan,
-    MunPrincesa,
+    AdminOccidental,
+    AdminOriental,
+    AdminMarinduque,
+    AdminRomblon,
+    AdminPalawan,
+    AdminPuerto,
   },
   methods: {
     increase() {

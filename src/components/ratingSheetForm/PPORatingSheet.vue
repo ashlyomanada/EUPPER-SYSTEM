@@ -38,69 +38,30 @@
             required
           />
         </div>
-        <input
-          type="number"
-          class="rateInput"
-          placeholder=" Occidental Mindoro PPO"
-          v-model="Occidental"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          class="rateInput"
-          placeholder="Oriental Mindoro PPO"
-          v-model="Oriental"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          class="rateInput"
-          placeholder="Marinduque PPO"
-          v-model="Marinduque"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          class="rateInput"
-          placeholder="Romblon PPO"
-          v-model="Romblon"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          class="rateInput"
-          placeholder="Palawan PPO"
-          v-model="Palawan"
-          required
-          min="0"
-          max="100"
-        />
-        <input
-          type="number"
-          class="rateInput"
-          placeholder="Puerto Princesa CPO"
-          v-model="PuertoPrinsesa"
-          required
-          min="0"
-          max="100"
-        />
+        <div
+          v-for="(column, index) in columns"
+          :key="index"
+          style="width: 100%; display: flex; justify-content: center"
+        >
+          <input
+            type="number"
+            class="rateInput"
+            :placeholder="getPlaceholder(column)"
+            v-model="formData[column]"
+            required
+            min="0"
+            :max="getMaxRateByOffice(office)"
+          />
+        </div>
         <button class="submitPPORate" type="submit">Submit</button>
       </form>
-      <div :class="{ dim: formVisible }">
-        <div class="alertBox" v-if="formVisible">
-          <img class="checkImg" src="./img/check2.gif" alt="" />
-          <h1 class="alertContent">Successfully Rated</h1>
-          <button class="backPPORate" @click="okayBtn">Okay</button>
-        </div>
-      </div>
+    </div>
+  </div>
+  <div class="modalBg" v-if="formVisible">
+    <div class="alertBox">
+      <img class="checkImg" src="./img/check2.gif" alt="" />
+      <h1 class="alertContent">Successfully Rated</h1>
+      <button class="btn btn-primary" @click="okayBtn">Okay</button>
     </div>
   </div>
 </template>
@@ -117,45 +78,113 @@ export default {
       UserId: "",
       Month: "",
       Year: "",
-      Occidental: "",
-      Oriental: "",
-      Marinduque: "",
-      Romblon: "",
-      Palawan: "",
-      PuertoPrinsesa: "",
+      office: "",
+      columns: [],
+      formData: {},
     };
   },
 
+  created() {
+    this.fetchColumns();
+    this.fetchUserData();
+  },
+
   methods: {
+    getMaxRateByOffice(office) {
+      switch (office) {
+        case "ROD":
+          return 167;
+        case "RIDMD":
+          return 166;
+        case "RID":
+          return 167;
+        case "RCADD":
+          return 100;
+        case "RLRDD":
+        case "RLDDD":
+        case "RPRMD":
+        case "RICTMD":
+          return 80;
+        case "RPSMD":
+          return 35;
+        case "RCD":
+          return 25;
+        case "RRD":
+          return 20;
+        default:
+          return 0;
+      }
+    },
+
+    async fetchUserData() {
+      const storedUserId = sessionStorage.getItem("id");
+      if (storedUserId) {
+        try {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
+          if (response.status === 200) {
+            const userData = response.data;
+            this.office = userData.office;
+            //console.log(this.office);
+          } else {
+            console.error(`Unexpected response status: ${response.status}`);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+    },
+    async fetchColumns() {
+      try {
+        const response = await axios.get("/getColumnNamePPO");
+        this.columns = response.data.filter(
+          (column) => !["id", "userid", "month", "year"].includes(column)
+        );
+        this.columns.forEach((column) => {
+          // Initialize formData with empty values for each column
+          this.formData[column] = "";
+        });
+      } catch (error) {
+        console.error("Error fetching column names:", error);
+      }
+    },
     async saveRating() {
       try {
         this.UserId = sessionStorage.getItem("id");
-        const ins = await axios.post("/savePPORate", {
+        const data = {
           UserId: this.UserId,
           Month: this.Month,
           Year: this.Year,
-          Occidental: this.Occidental,
-          Oriental: this.Oriental,
-          Marinduque: this.Marinduque,
-          Romblon: this.Romblon,
-          Palawan: this.Palawan,
-          PuertoPrinsesa: this.PuertoPrinsesa,
-        });
-        this.Month = "";
-        this.Year = "";
-        this.Occidental = "";
-        this.Oriental = "";
-        this.Marinduque = "";
-        this.Romblon = "";
-        this.Palawan = "";
-        this.PuertoPrinsesa = "";
-        this.formVisible = true;
-        setTimeout(() => {
-          this.formVisible = false;
-        }, 5000);
-      } catch (e) {
-        console.log(e);
+          ...this.formData, // Include formData properties
+        };
+
+        // Send data to server for insertion
+        const response = await axios.post("/insertDataPPO", data);
+
+        if (response.status === 200) {
+          // Data successfully saved
+          this.Month = "";
+          this.Year = "";
+          Object.keys(this.formData).forEach((key) => {
+            this.formData[key] = "";
+          });
+          // Show success modal
+          this.formVisible = true;
+          // Hide modal after 5 seconds
+          setTimeout(() => {
+            this.formVisible = false;
+          }, 5000);
+        } else {
+          // Display error message to user
+          console.error("Failed to save data.");
+        }
+      } catch (error) {
+        // Display error message to user
+        console.error("Error:", error);
       }
+    },
+
+    getPlaceholder(column) {
+      return column.replace(/_/g, " ");
     },
 
     okayBtn() {
@@ -166,6 +195,31 @@ export default {
 </script>
 
 <style>
+.modalBg {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(70, 70, 70, 0.473);
+}
+.alertBox {
+  height: 30%;
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: white;
+  gap: 0.5rem;
+  border-radius: 1rem;
+}
+.checkImg {
+  height: 4rem;
+}
 .rating-header {
   display: flex;
   align-items: center;
