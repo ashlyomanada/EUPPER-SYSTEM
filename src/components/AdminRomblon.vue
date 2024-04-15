@@ -5,39 +5,42 @@
         <div class="head-options">
           <div style="text-align: center">
             <h3>Unit Performance Evaluation Rating</h3>
-            <h4>Romblon MPS / CPS Level</h4>
+            <h4>Municipalities of Romblon</h4>
           </div>
           <div class="date-options">
-            <div>
-              Select Month:<select class="month" name="month">
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
+            <div class="d-flex gap-2">
+              Select Month:
+              <select class="month" name="month" v-model="month">
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
               </select>
               Select Year:
               <input
                 type="number"
                 class="year"
                 name="year"
-                min="1900"
+                min="2000"
                 max="2100"
                 step="1"
                 placeholder="Year"
+                v-model="year"
               />
-              <button class="find"><i class="bx bx-search"></i>Find</button>
+              <button class="find" @click="getUsersRateByMonth">
+                <i class="bx bx-search"></i>Find
+              </button>
             </div>
-            <button class="generate">Generate Excel Report</button>
-            <button class="generate" @click="generatePdf">
-              Generate Pdf Report
+            <button class="generate" @click="generateRomReport">
+              Generate Excel Report
             </button>
           </div>
         </div>
@@ -45,48 +48,28 @@
       <table>
         <thead>
           <tr>
-            <th class="t-row">Month</th>
-            <th class="t-row">Year</th>
-            <th class="t-row">Alcantara</th>
-            <th class="t-row">Banton</th>
-            <th class="t-row">Cajidiocan</th>
-            <th class="t-row">Calatrava</th>
-            <th class="t-row">Concepcion</th>
-            <th class="t-row">Concuera</th>
-            <th class="t-row">Ferrol</th>
-            <th class="t-row">Looc</th>
-            <th class="t-row">Magdiwang</th>
-            <th class="t-row">Odiongan</th>
-            <th class="t-row">Romblon</th>
-            <th class="t-row">SanAgustin</th>
-            <th class="t-row">SanAndres</th>
-            <th class="t-row">SanFernando</th>
-            <th class="t-row">SanJose</th>
-            <th class="t-row">StaFe</th>
-            <th class="t-row">StaMaria</th>
+            <th class="t-row">Office/Unit</th>
+            <th
+              class="t-row"
+              v-for="(office, index) in allOffices"
+              :key="index"
+            >
+              {{ office }}
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="rating in usersRate" :key="rating.id">
-            <td class="t-data">{{ rating.month }}</td>
-            <td class="t-data">{{ rating.year }}</td>
-            <td class="t-data">{{ rating.alcantara }}</td>
-            <td class="t-data">{{ rating.banton }}</td>
-            <td class="t-data">{{ rating.cajidiocan }}</td>
-            <td class="t-data">{{ rating.calatrava }}</td>
-            <td class="t-data">{{ rating.concepcion }}</td>
-            <td class="t-data">{{ rating.concuera }}</td>
-            <td class="t-data">{{ rating.ferrol }}</td>
-            <td class="t-data">{{ rating.looc }}</td>
-            <td class="t-data">{{ rating.magdiwang }}</td>
-            <td class="t-data">{{ rating.odiongan }}</td>
-            <td class="t-data">{{ rating.romblon }}</td>
-            <td class="t-data">{{ rating.san_agustin }}</td>
-            <td class="t-data">{{ rating.san_andres }}</td>
-            <td class="t-data">{{ rating.san_fernando }}</td>
-            <td class="t-data">{{ rating.san_jose }}</td>
-            <td class="t-data">{{ rating.sta_fe }}</td>
-            <td class="t-data">{{ rating.sta_maria }}</td>
+          <tr v-for="(column, colIndex) in columns" :key="colIndex">
+            <td>{{ column.replace(/_/g, " ") }}</td>
+            <template
+              v-for="(office, officeIndex) in allOffices"
+              :key="officeIndex"
+            >
+              <td>
+                <!-- Find the corresponding rate for this office and column -->
+                {{ findRateForOfficeAndColumn(office, column) }}
+              </td>
+            </template>
           </tr>
         </tbody>
       </table>
@@ -95,29 +78,113 @@
 </template>
 
 <script>
+import * as XLSX from "xlsx";
 import axios from "axios";
 
 export default {
   data() {
     return {
-      usersRate: "",
-      dataFetched: false,
-      visible: true,
+      UsersOffice: [],
+      columns: [],
+      UsersRate: [],
+      month: "",
+      year: "",
+      userId: "",
+      allOffices: [], // Array to store all office names
     };
   },
-  components: {},
-  mounted() {
-    this.fetchUserData();
+  created() {
+    this.fetchColumns();
+    this.getUsersRate();
+    this.getUsersOffice();
   },
+
   methods: {
-    async fetchUserData() {
+    async fetchColumns() {
       try {
-        const response = await axios.get(`/getRomRates`);
-        this.usersRate = response.data;
-        this.dataFetched = true;
-        // console.log(this.usersRate);
+        const response = await axios.get("/getColumnNameRom");
+        this.columns = response.data.filter(
+          (column) => !["id", "userid", "month", "year"].includes(column)
+        );
+      } catch (error) {
+        console.error("Error fetching column names:", error);
+      }
+    },
+
+    async getUsersRate() {
+      try {
+        const response = await axios.get("/getUsersRateRom");
+        // Exclude specified properties from each object in the response data
+        this.UsersRate = response.data.map(
+          ({ id, userid, month, year, ...rest }) => ({
+            ...rest, // Spread the rest of the properties
+          })
+        );
+        //console.log(this.UsersRate);
       } catch (e) {
         console.log(e);
+      }
+    },
+
+    async getUsersRateByMonth() {
+      try {
+        const response = await axios.post("/getUsersRateByMonth", {
+          Month: this.month,
+          Year: this.year,
+        });
+        this.UsersRate = response.data.map(
+          ({ id, userid, month, year, ...rest }) => ({
+            ...rest, // Spread the rest of the properties
+          })
+        );
+      } catch (error) {
+        console.error("Error filtering users rate:", error);
+      }
+    },
+
+    async getUsersOffice() {
+      try {
+        const response = await axios.get("/getUsersOffice");
+        // Extract office names from the response
+        this.allOffices = response.data.map((office) => office.office);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    findRateForOfficeAndColumn(office, column) {
+      // Find the rate corresponding to the given office and column
+      const rate = this.UsersRate.find((rate) => rate.office === office);
+      if (rate) {
+        return rate[column];
+      } else {
+        return ""; // Return empty string if no corresponding rate is found
+      }
+    },
+
+    async generateRomReport() {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/generateOcciReport",
+          {
+            month: this.month,
+            year: this.year,
+          },
+          { responseType: "blob" }
+        );
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Construct the file name using the month and year values
+        const fileName = `RMFB_Report_${this.month}_${this.year}.xlsx`;
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error generating report:", error);
       }
     },
   },
@@ -125,12 +192,30 @@ export default {
 </script>
 
 <style>
+select {
+  color: var(--dark);
+}
+option {
+  color: var(--dark);
+  background: var(--light);
+}
+.year {
+  color: var(--dark);
+}
 .month,
 .year,
 .find,
 .generate {
-  border: 1px solid var(--dark);
   padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+}
+.generate {
+  background: green;
+  color: white;
+}
+.find {
+  background: var(--blue);
+  color: white;
 }
 .head-options {
   display: flex;

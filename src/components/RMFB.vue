@@ -5,10 +5,10 @@
         <div class="head-options">
           <div style="text-align: center">
             <h3>Unit Performance Evaluation Rating</h3>
-            <h4>PPO / CPO Level</h4>
+            <h4>RMFB / PMFC Level</h4>
           </div>
           <div class="date-options">
-            <div>
+            <div class="d-flex gap-2">
               Select Month:
               <select class="month" name="month" v-model="month">
                 <option value="January">January</option>
@@ -39,11 +39,8 @@
                 <i class="bx bx-search"></i>Find
               </button>
             </div>
-            <button class="generate" @click="generateExcel">
+            <button class="generate" @click="generateRMFBReport">
               Generate Excel Report
-            </button>
-            <button class="generate" @click="generatePdf">
-              Generate Pdf Report
             </button>
           </div>
         </div>
@@ -162,6 +159,32 @@ export default {
         return rate[column];
       } else {
         return ""; // Return empty string if no corresponding rate is found
+      }
+    },
+
+    async generateRMFBReport() {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/generateRMFBOffice",
+          {
+            month: this.month,
+            year: this.year,
+          },
+          { responseType: "blob" }
+        );
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Construct the file name using the month and year values
+        const fileName = `RMFB_Report_${this.month}_${this.year}.xlsx`;
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error generating report:", error);
       }
     },
   },

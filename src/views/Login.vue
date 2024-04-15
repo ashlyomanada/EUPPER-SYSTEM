@@ -24,10 +24,7 @@
           <span>Password</span>
         </label>
         <button type="submit" class="submit" style="color: white">Login</button>
-        <p class="signin">
-          Don't have an account?
-          <router-link to="/register">Sign up</router-link>
-        </p>
+        <router-link to="/forgot" class="signin">Forgot Password?</router-link>
         <p class="error-message">{{ errorMessage }}</p>
       </form>
     </div>

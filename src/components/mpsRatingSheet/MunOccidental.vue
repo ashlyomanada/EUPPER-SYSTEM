@@ -61,7 +61,7 @@
     <div class="alertBox">
       <img class="checkImg" src="./img/check2.gif" alt="" />
       <h1 class="alertContent">Successfully Rated</h1>
-      <button class="backPPORate" @click="okayBtn">Okay</button>
+      <button class="btn btn-primary" @click="okayBtn">Okay</button>
     </div>
   </div>
 </template>

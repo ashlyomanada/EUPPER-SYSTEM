@@ -7,7 +7,7 @@
           <i class="fa-solid fa-power-off"></i>
           Change All User Status
         </button>
-        <div>
+        <div class="d-flex gap-2">
           <button class="find" @click="findData">
             <i class="bx bx-search"></i>Find
           </button>
@@ -59,7 +59,7 @@
               </button>
             </td>
             <td class="td-btn">
-              <button class="users-btn">
+              <button class="users-btn" @click="openForm2(UsersInfo)">
                 <i class="fa-solid fa-phone fa-lg"></i>
               </button>
             </td>
@@ -74,34 +74,82 @@
       id="modal-form3"
       :style="{ display: formVisible ? 'block' : 'none' }"
     >
-      <input
-        v-model="selectedUser.username"
-        type="text"
-        placeholder="Username"
-        class="input"
-      />
-      <input
-        v-model="selectedUser.office"
-        type="text"
-        placeholder="Office"
-        class="input"
-      />
-      <input
-        v-model="selectedUser.email"
-        type="text"
-        placeholder="Email"
-        class="input"
-      />
-      <input
-        v-model="selectedUser.phone_no"
-        type="text"
-        placeholder="Phone No."
-        class="input"
-      />
+      <div class="d-flex flex-column my-2">
+        <label for="">Username</label>
+        <input
+          v-model="selectedUser.username"
+          type="text"
+          placeholder="Username"
+          class="input"
+        />
+      </div>
+      <div class="d-flex flex-column my-2">
+        <label for="">Office:</label>
+        <input
+          v-model="selectedUser.office"
+          type="text"
+          placeholder="Office"
+          class="input"
+        />
+      </div>
+      <div class="d-flex flex-column my-2">
+        <label for="">Email:</label>
+        <input
+          v-model="selectedUser.email"
+          type="text"
+          placeholder="Email"
+          class="input"
+        />
+      </div>
+      <div class="d-flex flex-column my-2">
+        <label for="">Phone Number:</label>
+        <input
+          v-model="selectedUser.phone_no"
+          type="text"
+          placeholder="Phone No."
+          class="input"
+        />
+      </div>
 
       <div class="modal-buttons">
         <button @click.prevent="saveUser">Save</button>
         <button @click.prevent="closeForm">Close</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-background" :class="{ 'dim-overlay': formVisible2 }">
+    <form
+      class="form"
+      id="modal-form3"
+      :style="{ display: formVisible2 ? 'block' : 'none' }"
+    >
+      <div class="d-flex flex-column gap-2">
+        <label for=""> To </label>
+        <input
+          v-model="selectedUser.email"
+          type="text"
+          placeholder="Username"
+          class="input"
+          readonly
+          required
+        />
+        <label for=""> From </label>
+        <input
+          type="text"
+          placeholder="Username"
+          class="input"
+          value="PRO MIMAROPA ADMINISTRATOR"
+          readonly
+          required
+        />
+        <textarea required cols="30" rows="10" placeholder="Message here">
+        </textarea>
+      </div>
+
+      <div class="modal-buttons">
+        <button @click.prevent="saveUser">Save</button>
+        <button @click.prevent="closeForm2">Close</button>
       </div>
     </form>
   </div>
@@ -115,6 +163,7 @@ export default {
       UsersInfo: [],
       searchText: "",
       formVisible: false,
+      formVisible2: false,
       selectedUser: {
         id: null,
         username: "",
@@ -145,6 +194,11 @@ export default {
       this.formVisible = true;
     },
 
+    openForm2(UsersInfo) {
+      this.selectedUser = { ...UsersInfo };
+      this.formVisible2 = true;
+    },
+
     async saveUser() {
       try {
         const response = await axios.post("/api/saveUser", this.selectedUser);
@@ -169,6 +223,10 @@ export default {
 
     closeForm() {
       this.formVisible = false;
+    },
+
+    closeForm2() {
+      this.formVisible2 = false;
     },
 
     async changeAllUserStatus() {

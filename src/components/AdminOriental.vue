@@ -8,7 +8,7 @@
             <h4>Municipalities of Oriental Mindoro</h4>
           </div>
           <div class="date-options">
-            <div>
+            <div class="d-flex gap-2">
               Select Month:
               <select class="month" name="month" v-model="month">
                 <option value="January">January</option>
@@ -39,11 +39,8 @@
                 <i class="bx bx-search"></i>Find
               </button>
             </div>
-            <button class="generate" @click="generateExcel">
+            <button class="generate" @click="generateOrienReport">
               Generate Excel Report
-            </button>
-            <button class="generate" @click="generatePdf">
-              Generate Pdf Report
             </button>
           </div>
         </div>
@@ -54,19 +51,23 @@
             <th class="t-row">Office/Unit</th>
             <th
               class="t-row"
-              v-for="(office, index) in UsersOffice"
+              v-for="(office, index) in allOffices"
               :key="index"
             >
-              {{ office.office }}
+              {{ office }}
             </th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(column, colIndex) in columns" :key="colIndex">
             <td>{{ column.replace(/_/g, " ") }}</td>
-            <template v-for="(rate, rateIndex) in UsersRate" :key="rateIndex">
+            <template
+              v-for="(office, officeIndex) in allOffices"
+              :key="officeIndex"
+            >
               <td>
-                {{ rate[column] }}
+                <!-- Find the corresponding rate for this office and column -->
+                {{ findRateForOfficeAndColumn(office, column) }}
               </td>
             </template>
           </tr>
@@ -89,13 +90,15 @@ export default {
       month: "",
       year: "",
       userId: "",
+      allOffices: [], // Array to store all office names
     };
   },
   created() {
     this.fetchColumns();
-    this.getUsersOffice();
     this.getUsersRate();
+    this.getUsersOffice();
   },
+
   methods: {
     async fetchColumns() {
       try {
@@ -105,16 +108,6 @@ export default {
         );
       } catch (error) {
         console.error("Error fetching column names:", error);
-      }
-    },
-
-    async getUsersOffice() {
-      try {
-        const response = await axios.get("/getUsersOffice");
-        this.UsersOffice = response.data;
-        // console.log(this.UsersOffice);
-      } catch (e) {
-        console.log(e);
       }
     },
 
@@ -139,13 +132,59 @@ export default {
           Month: this.month,
           Year: this.year,
         });
-        this.UsersRate = response.data;
-        this.UsersRate.forEach((item) => {
-          item.userid = this.userId;
-        });
-        this.getUsersRateByOffice();
+        this.UsersRate = response.data.map(
+          ({ id, userid, month, year, ...rest }) => ({
+            ...rest, // Spread the rest of the properties
+          })
+        );
       } catch (error) {
         console.error("Error filtering users rate:", error);
+      }
+    },
+
+    async getUsersOffice() {
+      try {
+        const response = await axios.get("/getUsersOffice");
+        // Extract office names from the response
+        this.allOffices = response.data.map((office) => office.office);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    findRateForOfficeAndColumn(office, column) {
+      // Find the rate corresponding to the given office and column
+      const rate = this.UsersRate.find((rate) => rate.office === office);
+      if (rate) {
+        return rate[column];
+      } else {
+        return ""; // Return empty string if no corresponding rate is found
+      }
+    },
+
+    async generateOrienReport() {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/generateOcciReport",
+          {
+            month: this.month,
+            year: this.year,
+          },
+          { responseType: "blob" }
+        );
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Construct the file name using the month and year values
+        const fileName = `Municipality_of_Oriental_Mindoro_Report_${this.month}_${this.year}.xlsx`;
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error generating report:", error);
       }
     },
   },

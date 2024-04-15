@@ -8,7 +8,7 @@
             <h4>PPO / CPO Level</h4>
           </div>
           <div class="date-options">
-            <div>
+            <div class="d-flex gap-2">
               Select Month:
               <select class="month" name="month" v-model="month">
                 <option value="January">January</option>
@@ -41,9 +41,6 @@
             </div>
             <button class="generate" @click="generatePPOReport">
               Generate Excel Report
-            </button>
-            <button class="generate" @click="generatePdf">
-              Generate Pdf Report
             </button>
           </div>
         </div>
@@ -176,9 +173,13 @@ export default {
           { responseType: "blob" }
         );
         const url = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Construct the file name using the month and year values
+        const fileName = `RMFB_Report_${this.month}_${this.year}.xlsx`;
+
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("download", "report.xlsx");
+        link.setAttribute("download", fileName);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

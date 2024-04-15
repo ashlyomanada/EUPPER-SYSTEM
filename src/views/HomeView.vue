@@ -4,7 +4,7 @@
     <ul class="side-menu top" style="padding-left: 0">
       <div class="admin-logo2">
         <img src="./img/logo.png" alt="" id="logo2" />
-        <h3 id="adminName2">{{ userName }}</h3>
+        <h3 id="adminName2">{{ officeLocation }}</h3>
       </div>
       <li class="active" v-if="status === 'Enable'">
         <a href="#" id="btn" @click="toggleButtons">

@@ -13,75 +13,76 @@
         <form class="form1" @submit.prevent="submitForm">
           <p class="title">Register New User</p>
           <div class="inputContainer">
-            <div class="column">
-              <label>
-                <input
-                  required=""
-                  placeholder=""
-                  type="text"
-                  class="inputs"
-                  v-model="formData.username"
-                />
-                <span>Username</span>
-              </label>
+            <label>
+              <input
+                required=""
+                placeholder=""
+                type="text"
+                class="inputs"
+                v-model="formData.username"
+              />
+              <span>Username</span>
+            </label>
 
-              <label>
-                <input
-                  required=""
-                  placeholder=""
-                  type="text"
-                  class="inputs"
-                  v-model="formData.office"
-                />
-                <span>Office</span>
-              </label>
+            <label>
+              <input
+                required=""
+                placeholder=""
+                type="text"
+                class="inputs"
+                v-model="formData.office"
+              />
+              <span>Office</span>
+            </label>
 
-              <label>
-                <input
-                  required=""
-                  placeholder=""
-                  type="email"
-                  class="inputs"
-                  v-model="formData.email"
-                />
-                <span>Email</span>
-              </label>
-            </div>
+            <label>
+              <input
+                required=""
+                placeholder=""
+                type="email"
+                class="inputs"
+                v-model="formData.email"
+              />
+              <span>Email</span>
+            </label>
 
-            <div class="column">
-              <label>
-                <input
-                  required=""
-                  placeholder=""
-                  type="password"
-                  class="inputs"
-                  v-model="formData.password"
-                />
-                <span>Password</span>
-              </label>
-              <label>
-                <input
-                  required=""
-                  placeholder=""
-                  type="password"
-                  class="inputs"
-                  v-model="formData.confirmpassword"
-                />
-                <span>Confirm password</span>
-              </label>
-              <label>
-                <input
-                  required=""
-                  placeholder=""
-                  type="number"
-                  class="inputs"
-                  v-model="formData.phone_no"
-                />
-                <span>Phone Number</span>
-              </label>
-            </div>
+            <label>
+              <input
+                required=""
+                placeholder=""
+                type="password"
+                class="inputs"
+                v-model="formData.password"
+              />
+              <span>Password</span>
+            </label>
+            <label>
+              <input
+                required=""
+                placeholder=""
+                type="password"
+                class="inputs"
+                v-model="formData.confirmpassword"
+              />
+              <span>Confirm password</span>
+            </label>
+            <label>
+              <input
+                required=""
+                placeholder=""
+                type="number"
+                class="inputs"
+                v-model="formData.phone_no"
+              />
+              <span>Phone Number</span>
+            </label>
+
+            <label for="">
+              <input type="file" @change="handleFileChange" required />
+              <span>Profile Picture</span>
+            </label>
           </div>
-          <input type="file" @change="handleFileChange" />
+
           <!-- Add this input to your form -->
 
           <button type="submit" class="submit" style="color: white">
@@ -178,13 +179,14 @@ export default {
 <style>
 .newUserContainer {
   display: flex;
-  height: 100%;
+  height: 90%;
   width: 100%;
   justify-content: center;
 }
 .inputContainer {
   display: flex;
   gap: 0.5rem;
+  flex-direction: column;
 }
 .column {
   display: flex;

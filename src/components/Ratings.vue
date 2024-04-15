@@ -2,31 +2,41 @@
   <div class="table-data">
     <div class="order">
       <div id="evaluation-ratings">
-        <div>
-          <h3>Unit Performance Evaluation Rating</h3>
-          <h4>R1 - DPRM</h4>
-        </div>
         <div class="table-options">
           <div class="options-control">
-            Select User:
-            <select v-model="selectedUserId" class="month" name="month">
-              <option
-                v-for="user in users"
-                :key="user.user_id"
-                :value="user.user_id"
+            <div class="w-25 d-flex">
+              <h3>User Ratings</h3>
+            </div>
+            <div class="w-75 d-flex justify-content-end gap-2">
+              <label class="d-flex align-items-center" for="month"
+                >Select User:</label
               >
-                {{ user.username }}
-              </option>
-            </select>
-            Select Table:
-            <select v-model="selectedTable" class="month" name="month">
-              <option value="1">PPO CPO LEVEL</option>
-              <option value="2">RMFB PMFC LEVEL</option>
-              <option value="3">MPS CPS LEVEL</option>
-            </select>
-            <button @click="findData" class="find">
-              <i class="bx bx-search"></i>Find
-            </button>
+              <select class="month" name="month" v-model="selectedUser">
+                <option
+                  v-for="user in allUsersName"
+                  :key="user.user_id"
+                  :value="user.user_id"
+                >
+                  {{ user.username }}
+                </option>
+              </select>
+              <label class="d-flex align-items-center" for="month"
+                >Select Table:</label
+              >
+              <select v-model="selectedTable" class="month" name="month">
+                <option value="ppo">PPO CPO LEVEL</option>
+                <option value="2">RMFB PMFC LEVEL</option>
+                <option value="3">Occidental Mindoro PPO</option>
+                <option value="3">Oriental Mindoro PPO</option>
+                <option value="3">Marinduque PPO</option>
+                <option value="3">Romblon PPO</option>
+                <option value="3">Palawan PPO</option>
+                <option value="3">Puerto Princesa CPO</option>
+              </select>
+              <button @click="fetchData" class="find">
+                <i class="bx bx-search"></i>Find
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -34,45 +44,35 @@
         <thead>
           <tr>
             <th>Action</th>
-            <th>Office</th>
-            <th>Do</th>
-            <th>Didm</th>
-            <th>Di</th>
-            <th>Dpcr</th>
-            <th>Dl</th>
-            <th>Dhrdd</th>
-            <th>Dprm</th>
-            <th>Dictm</th>
-            <th>Dpl</th>
-            <th>Dc</th>
-            <th>Drd</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th v-for="(column, index) in columns" :key="index" class="t-row">
+              {{ column.replace(/_/g, " ") }}
+            </th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="UserRatings in UserRatings" :key="UserRatings.id">
-            <td class="td-btn">
-              <button class="pen-btn" @click="openForm(UserRatings)">
+        <tbody v-if="dataFetched && userRatings.length > 0">
+          <tr v-for="(rating, index) in userRatings" :key="index">
+            <td>
+              <button class="pen-btn" id="penButton">
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
-            <td>{{ UserRatings.office }}</td>
-            <td>{{ UserRatings.do }}</td>
-            <td>{{ UserRatings.didm }}.00</td>
-            <td>{{ UserRatings.di }}.00</td>
-            <td>{{ UserRatings.dpcr }}.00</td>
-            <td>{{ UserRatings.dl }}.00</td>
-            <td>{{ UserRatings.dhrdd }}.00</td>
-            <td>{{ UserRatings.dprm }}.00</td>
-            <td>{{ UserRatings.dictm }}</td>
-            <td>{{ UserRatings.dpl }}</td>
-            <td>{{ UserRatings.dc }}</td>
-            <td>{{ UserRatings.drd }}</td>
+            <td class="t-data">{{ rating.month }}</td>
+            <td class="t-data">{{ rating.year }}</td>
+            <td
+              v-for="(column, colIndex) in columns"
+              :key="colIndex"
+              class="t-data"
+            >
+              {{ rating[column] }}
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <form
+  <!-- <form
     class="form"
     id="rating-form-edit"
     :style="{ display: formVisible ? 'block' : 'none' }"
@@ -173,7 +173,7 @@
       <button @click.prevent="saveUserRates">Save</button>
       <button @click.prevent="closeForm">Close</button>
     </div>
-  </form>
+  </form> -->
 </template>
 
 <script>
@@ -181,97 +181,56 @@ import axios from "axios";
 export default {
   data() {
     return {
-      UserRatings: [],
-      users: [],
-      selectedUser: null,
-      selectedUserId: "",
-      selectedTable: 1,
-      formVisible: false,
-      selectedRatings: {
-        id: null,
-        office: "",
-        do: "",
-        didm: "",
-        di: "",
-        dpcr: "",
-        dl: "",
-        dhrdd: "",
-        dprm: "",
-        dictm: "",
-        dpl: "",
-        dc: "",
-        drd: "",
-      },
+      userRatings: [],
+      columns: [],
+      selectedTable: "",
+      selectedUser: 54,
+      allUsersName: "",
+      dataFetched: false,
     };
   },
 
   created() {
-    this.getUserRatings();
-    this.getUsers();
+    this.fetchColumns();
+    this.getUsername();
+    this.fetchData();
   },
 
   methods: {
-    async getUserRatings() {
+    async fetchColumns() {
       try {
-        const response = await axios.get("/getUserRatings");
-        this.UserRatings = response.data;
-      } catch (error) {
-        console.error("Error fetching Useratings data:", error);
-      }
-    },
-
-    async getUsers() {
-      try {
-        const response = await axios.get("/getUsers"); // Replace with your actual endpoint
-        this.users = response.data;
-      } catch (error) {
-        console.error("Error fetching users data:", error);
-      }
-    },
-
-    async saveUserRates() {
-      try {
-        const response = await axios.post(
-          "/api/saveUserRates",
-          this.selectedRatings
+        const response = await axios.get("/getColumnNamePPO");
+        this.columns = response.data.filter(
+          (column) => !["id", "userid", "month", "year"].includes(column)
         );
-
-        if (response.status === 200) {
-          const responseData = response.data;
-
-          if (responseData && responseData.success) {
-            console.log(responseData.message);
-            this.formVisible = false;
-            this.getUserRatings();
-          } else {
-            console.error("Save failed:", responseData.message);
-          }
-        } else {
-          console.error(`Unexpected response status: ${response.status}`);
-        }
       } catch (error) {
-        console.error("Error saving admin:", error);
+        console.error("Error fetching column names:", error);
       }
     },
 
-    openForm(UserRatings) {
-      this.selectedRatings = { ...UserRatings };
-      this.formVisible = true;
-    },
-
-    closeForm() {
-      this.formVisible = false;
-    },
-
-    async findData() {
+    async getUsername() {
       try {
-        // Make a request to fetch filtered data based on selected user and table
-        const response = await axios.get(
-          `/findData/${this.selectedUserId}/${this.selectedTable}`
-        );
-        this.UserRatings = response.data;
-      } catch (error) {
-        console.error("Error fetching filtered data:", error);
+        const response = await axios.get("/getAllUsersName");
+        this.allUsersName = response.data;
+        //console.log(response.data);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    fetchData() {
+      const userId = this.selectedUser;
+      console.log(userId);
+      if (userId) {
+        axios
+          .get(`/viewUserPPORates/${userId}`)
+          .then((response) => {
+            this.userRatings = response.data;
+            this.dataFetched = true;
+          })
+          .catch((error) => {
+            console.error("Error fetching user data:", error);
+          });
       }
     },
   },
@@ -301,11 +260,11 @@ export default {
 .table-options {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  padding: 1rem;
+  padding: 1rem 0rem;
 }
 .options-control {
+  width: 100%;
   display: flex;
   gap: 1rem;
 }

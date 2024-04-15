@@ -6,24 +6,6 @@
   </div>
 
   <div class="dash-box">
-    <div>
-      <pie-chart
-        :chart-data="pieChartData"
-        :chart-options="pieChartOptions"
-      ></pie-chart>
-      <form @submit.prevent="fetchData" class="year-container">
-        <span>Select Year:</span>
-        <input
-          type="number"
-          id="selectedYear"
-          v-model="selectedYear"
-          min="2000"
-          max="2100"
-          required
-        />
-        <button type="submit" class="findRate">Get Ratings</button>
-      </form>
-    </div>
     <ul class="box-info">
       <li>
         <i class="bx bxs-calendar-check"></i>
@@ -51,37 +33,21 @@
 </template>
 
 <script>
-import PieChart from "./PieChart.vue";
+import { defineComponent, PropType } from "vue";
 
-export default {
+export default defineComponent({
   data() {
     return {
       ratingCount: 0,
       userCount: 0,
-      selectedYear: new Date().getFullYear(),
-      pieChartData: {
-        labels: [],
-        datasets: [
-          {
-            data: [],
-            backgroundColor: [],
-            hoverBackgroundColor: [],
-          },
-        ],
-      },
-      pieChartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
-      },
     };
   },
-  components: {
-    PieChart,
-  },
+
+  components: {},
   mounted() {
     this.fetchRatingCount();
     this.fetchUserCount();
-    this.fetchData();
+    //this.fetchData();
   },
   methods: {
     async fetchRatingCount() {
@@ -122,7 +88,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 <style>
 .dash-box {

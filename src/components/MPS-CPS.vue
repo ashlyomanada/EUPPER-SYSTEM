@@ -84,7 +84,7 @@ export default {
 .mps-btn-container {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   padding: 0.5rem 1rem;
   gap: 1rem;

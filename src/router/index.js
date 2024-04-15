@@ -1,14 +1,22 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Register from "../views/Register.vue";
+import Register from "../views/ForgotPass.vue";
+import ResetPass from "../views/ResetPass.vue";
 
 const routes = [
   {
     path: "/",
+    name: "Login",
     component: () => import("../views/Login.vue"),
   },
   {
-    path: "/register",
+    path: "/forgot",
     component: Register,
+  },
+  {
+    path: "/resetPassword/:token", // Route with token parameter
+    name: "ResetPassword",
+    component: ResetPass,
+    props: true,
   },
   {
     path: "/admin",

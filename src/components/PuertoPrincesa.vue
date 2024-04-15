@@ -12,7 +12,7 @@
           <tr>
             <th>Month</th>
             <th>Year</th>
-            <th v-for="(column, index) in columns" :key="index">
+            <th v-for="(column, index) in columns" :key="index" class="t-row">
               {{ column.replace(/_/g, " ") }}
             </th>
           </tr>
@@ -51,7 +51,7 @@ export default {
   methods: {
     async fetchColumns() {
       try {
-        const response = await axios.get("/viewUserPuertoRates");
+        const response = await axios.get("/getColumnNamePuer");
         this.columns = response.data.filter(
           (column) => !["id", "userid", "month", "year"].includes(column)
         );
