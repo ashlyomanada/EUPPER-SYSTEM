@@ -13,7 +13,7 @@ class PpocpoModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['userid','month','year','occi','ormin','marin','rom','pal','puertop',];
+    protected $allowedFields    = [];
 
     // Dates
     protected $useTimestamps = false;

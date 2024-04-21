@@ -1,0 +1,40 @@
+CRITICAL - 2024-04-10 00:52:22 --> array_column(): Argument #1 ($array) must be of type array, CodeIgniter\Database\MySQLi\Result given
+in APPPATH\Controllers\AdminController.php on line 709.
+ 1 APPPATH\Controllers\AdminController.php(709): array_column(Object(CodeIgniter\Database\MySQLi\Result), 'office')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-10 00:53:12 --> array_column(): Argument #1 ($array) must be of type array, CodeIgniter\Database\MySQLi\Result given
+in APPPATH\Controllers\AdminController.php on line 709.
+ 1 APPPATH\Controllers\AdminController.php(709): array_column(Object(CodeIgniter\Database\MySQLi\Result), 'office')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-10 00:54:39 --> Undefined variable $officeIndex2
+in APPPATH\Controllers\AdminController.php on line 722.
+ 1 APPPATH\Controllers\AdminController.php(722): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $officeIndex2', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 722)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-10 00:54:45 --> Undefined variable $officeIndex2
+in APPPATH\Controllers\AdminController.php on line 722.
+ 1 APPPATH\Controllers\AdminController.php(722): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $officeIndex2', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 722)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-10 01:04:37 --> Undefined variable $officeIndex2
+in APPPATH\Controllers\AdminController.php on line 722.
+ 1 APPPATH\Controllers\AdminController.php(722): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $officeIndex2', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 722)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

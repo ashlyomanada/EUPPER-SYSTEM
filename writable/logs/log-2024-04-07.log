@@ -1,0 +1,677 @@
+CRITICAL - 2024-04-07 01:41:58 --> Undefined array key "some_value"
+in APPPATH\Controllers\AdminController.php on line 503.
+ 1 APPPATH\Controllers\AdminController.php(503): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "some_value"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 503)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 01:41:59 --> Undefined array key "some_value"
+in APPPATH\Controllers\AdminController.php on line 503.
+ 1 APPPATH\Controllers\AdminController.php(503): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "some_value"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 503)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 01:43:03 --> Undefined array key "some_value"
+in APPPATH\Controllers\AdminController.php on line 503.
+ 1 APPPATH\Controllers\AdminController.php(503): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "some_value"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 503)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 01:44:45 --> Undefined array key "60%"
+in APPPATH\Controllers\AdminController.php on line 501.
+ 1 APPPATH\Controllers\AdminController.php(501): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "60%"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 501)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 01:51:23 --> Undefined array key "sixty_percent"
+in APPPATH\Controllers\AdminController.php on line 468.
+ 1 APPPATH\Controllers\AdminController.php(468): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "sixty_percent"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 468)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 02:23:12 --> Undefined array key "column_b"
+in APPPATH\Controllers\AdminController.php on line 636.
+ 1 APPPATH\Controllers\AdminController.php(636): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "column_b"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 636)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 02:24:21 --> Cannot redeclare App\Controllers\AdminController::generatePPOOffice()
+in APPPATH\Controllers\AdminController.php on line 728.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-04-07 02:30:19 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 640.
+ 1 APPPATH\Controllers\AdminController.php(640): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 640)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 02:32:15 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 640.
+ 1 APPPATH\Controllers\AdminController.php(640): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 640)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:18:58 --> Cannot redeclare App\Controllers\AdminController::generatePPOOffice()
+in APPPATH\Controllers\AdminController.php on line 630.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-04-07 07:19:35 --> Undefined array key "office"
+in APPPATH\Controllers\AdminController.php on line 600.
+ 1 APPPATH\Controllers\AdminController.php(600): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "office"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 600)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:22:27 --> Undefined array key "office"
+in APPPATH\Controllers\AdminController.php on line 626.
+ 1 APPPATH\Controllers\AdminController.php(626): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "office"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 626)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:52:12 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 610.
+ 1 APPPATH\Controllers\AdminController.php(610): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 610)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:54:00 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 604.
+ 1 APPPATH\Controllers\AdminController.php(604): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 604)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:54:57 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 631.
+ 1 APPPATH\Controllers\AdminController.php(631): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 631)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:55:03 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 631.
+ 1 APPPATH\Controllers\AdminController.php(631): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 631)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 07:57:27 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 626.
+ 1 APPPATH\Controllers\AdminController.php(626): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 626)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:05:10 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 650.
+ 1 APPPATH\Controllers\AdminController.php(650): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 650)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:06:09 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 602.
+ 1 APPPATH\Controllers\AdminController.php(602): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 602)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 08:22:12 --> mysqli_sql_exception: Table 'project.ppo_tbl' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(962): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->countUserRatings()
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#12 {main}
+CRITICAL - 2024-04-07 08:22:12 --> Table 'project.ppo_tbl' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `ppo_tbl`', [], false)
+ 2 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Controllers\AdminController.php(962): CodeIgniter\BaseModel->findAll()
+ 5 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->countUserRatings()
+ 6 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 7 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 08:22:13 --> mysqli_sql_exception: Table 'project.ppo_tbl' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\projectbackend\app\Models\PpoModel.php(86): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(1006): App\Models\PpoModel->getMonthlyRatings('2024')
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#10 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#12 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#13 {main}
+CRITICAL - 2024-04-07 08:22:13 --> Table 'project.ppo_tbl' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `ppo_tbl`
+WHERE `year` = :year:', [...], false)
+ 2 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\PpoModel.php(86): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\AdminController.php(1006): App\Models\PpoModel->getMonthlyRatings('2024')
+ 6 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 7 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 8 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:31:05 --> Call to undefined function App\Controllers\calculateOperationalRatesFor60Percent()
+in APPPATH\Controllers\AdminController.php on line 600.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:38:39 --> Call to undefined function App\Controllers\calculateOperationalRatesFor60Percent()
+in APPPATH\Controllers\AdminController.php on line 597.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:38:52 --> Call to undefined function App\Controllers\calculateOperationalRatesFor60Percent()
+in APPPATH\Controllers\AdminController.php on line 597.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:50:57 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 600.
+ 1 APPPATH\Controllers\AdminController.php(600): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 600)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:51:08 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 600.
+ 1 APPPATH\Controllers\AdminController.php(600): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 600)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:54:52 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 606.
+ 1 APPPATH\Controllers\AdminController.php(606): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 606)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:56:48 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 606.
+ 1 APPPATH\Controllers\AdminController.php(606): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 606)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 08:58:07 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 606.
+ 1 APPPATH\Controllers\AdminController.php(606): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 606)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:02:49 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 603.
+ 1 APPPATH\Controllers\AdminController.php(603): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 603)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:05:12 --> Trait "App\Controllers\PhpOffice\PhpSpreadsheet\Spreadsheet" not found
+in APPPATH\Controllers\AdminController.php on line 26.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-04-07 09:15:03 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 651.
+ 1 APPPATH\Controllers\AdminController.php(651): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 651)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:19:30 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 671.
+ 1 APPPATH\Controllers\AdminController.php(671): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 671)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:29:43 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 650.
+ 1 APPPATH\Controllers\AdminController.php(650): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 650)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:36:52 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 650.
+ 1 APPPATH\Controllers\AdminController.php(650): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 650)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:44:23 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 650.
+ 1 APPPATH\Controllers\AdminController.php(650): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 650)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 09:44:36 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 650.
+ 1 APPPATH\Controllers\AdminController.php(650): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 650)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:25:55 --> syntax error, unexpected token "public"
+in APPPATH\Controllers\AdminController.php on line 656.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(285): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(263): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\AdminController')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\AdminController')
+ 4 SYSTEMPATH\CodeIgniter.php(877): class_exists('\\App\\Controllers\\AdminController', true)
+ 5 SYSTEMPATH\CodeIgniter.php(481): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:25:55 --> syntax error, unexpected token "public"
+in APPPATH\Controllers\AdminController.php on line 656.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(285): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(263): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\AdminController')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\AdminController')
+ 4 SYSTEMPATH\CodeIgniter.php(877): class_exists('\\App\\Controllers\\AdminController', true)
+ 5 SYSTEMPATH\CodeIgniter.php(481): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:26:12 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 581.
+ 1 APPPATH\Controllers\AdminController.php(581): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 581)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:27:44 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 577.
+ 1 APPPATH\Controllers\AdminController.php(577): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 577)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 14:31:19 --> mysqli_sql_exception: Table 'project.ppo_tbl' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(782): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->countUserRatings()
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#12 {main}
+CRITICAL - 2024-04-07 14:31:19 --> Table 'project.ppo_tbl' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `ppo_tbl`', [], false)
+ 2 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Controllers\AdminController.php(782): CodeIgniter\BaseModel->findAll()
+ 5 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->countUserRatings()
+ 6 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 7 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 14:31:20 --> mysqli_sql_exception: Table 'project.ppo_tbl' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\projectbackend\app\Models\PpoModel.php(86): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(826): App\Models\PpoModel->getMonthlyRatings('2024')
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#10 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#12 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#13 {main}
+CRITICAL - 2024-04-07 14:31:20 --> Table 'project.ppo_tbl' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `ppo_tbl`
+WHERE `year` = :year:', [...], false)
+ 2 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\PpoModel.php(86): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\AdminController.php(826): App\Models\PpoModel->getMonthlyRatings('2024')
+ 6 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 7 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 8 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 14:32:17 --> mysqli_sql_exception: Table 'project.ppo_tbl' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(782): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->countUserRatings()
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#12 {main}
+CRITICAL - 2024-04-07 14:32:17 --> Table 'project.ppo_tbl' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `ppo_tbl`', [], false)
+ 2 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Controllers\AdminController.php(782): CodeIgniter\BaseModel->findAll()
+ 5 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->countUserRatings()
+ 6 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 7 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 14:32:18 --> mysqli_sql_exception: Table 'project.ppo_tbl' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT *\nFROM `...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\laragon\www\projectbackend\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\laragon\www\projectbackend\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\laragon\www\projectbackend\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\laragon\www\projectbackend\app\Models\PpoModel.php(86): CodeIgniter\BaseModel->findAll()
+#7 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(826): App\Models\PpoModel->getMonthlyRatings('2024')
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#10 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#12 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#13 {main}
+CRITICAL - 2024-04-07 14:32:18 --> Table 'project.ppo_tbl' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `ppo_tbl`
+WHERE `year` = :year:', [...], false)
+ 2 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 3 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 4 APPPATH\Models\PpoModel.php(86): CodeIgniter\BaseModel->findAll()
+ 5 APPPATH\Controllers\AdminController.php(826): App\Models\PpoModel->getMonthlyRatings('2024')
+ 6 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 7 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 8 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 9 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+10 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:33:13 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 609.
+ 1 APPPATH\Controllers\AdminController.php(609): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 609)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:43:17 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 609.
+ 1 APPPATH\Controllers\AdminController.php(609): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 609)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-04-07 14:43:50 --> Undefined array key "ROD"
+in APPPATH\Controllers\AdminController.php on line 609.
+ 1 APPPATH\Controllers\AdminController.php(609): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "ROD"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 609)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generatePPOOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 14:57:51 --> mysqli_sql_exception: Unknown column 'usersoffice' in 'field list' in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('\n            SE...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('\n            SE...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('\n            SE...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(562): CodeIgniter\Database\BaseConnection->query('\n            SE...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 14:57:51 --> Unknown column 'usersoffice' in 'field list'
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(562): CodeIgniter\Database\BaseConnection->query('
+            SELECT DISTINCT usersoffice FROM tbl_users
+        ')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:07:47 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(578): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:07:47 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(578): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN OCCIDENTAL MINDORO PPO DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:17:03 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(588): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:17:03 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(588): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN OCCIDENTAL MINDORO PPO DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:18:49 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(588): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:18:49 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(588): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN OCCIDENTAL MINDORO PPO DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:21:08 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(591): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:21:08 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(591): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN OCCIDENTAL MINDORO PPO DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:25:00 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(586): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:25:00 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(586): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN OCCIDENTAL MINDORO PPO DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:26:53 --> mysqli_sql_exception: Unknown column 'usersoffice' in 'field list' in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('\n        SELECT...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('\n        SELECT...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('\n        SELECT...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(562): CodeIgniter\Database\BaseConnection->query('\n        SELECT...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:26:53 --> Unknown column 'usersoffice' in 'field list'
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(562): CodeIgniter\Database\BaseConnection->query('
+        SELECT DISTINCT usersoffice FROM tbl_users
+    ')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:28:01 --> mysqli_sql_exception: Duplicate column name 'ROD' in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(571): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:28:01 --> Duplicate column name 'ROD'
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(571): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN ROD DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-04-07 15:33:54 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('ALTER TABLE gen...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('ALTER TABLE gen...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('ALTER TABLE gen...')
+#3 C:\laragon\www\projectbackend\app\Controllers\AdminController.php(633): CodeIgniter\Database\BaseConnection->query('ALTER TABLE gen...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-04-07 15:33:54 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINDORO PPO DECIMAL(10,0) DEFAULT 0' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\AdminController.php(633): CodeIgniter\Database\BaseConnection->query('ALTER TABLE generatedReportPPO ADD COLUMN OCCIDENTAL MINDORO PPO DECIMAL(10,0) DEFAULT 0')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->createDynamicTable()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

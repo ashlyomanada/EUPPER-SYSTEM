@@ -10,11 +10,7 @@
 <body>
 
 
-    <form action="<?= base_url('/sendEmail') ?>" method="post">
-        <button type="submit">Send</button>
-    </form>
-
-    <a href="<?= base_url('/generatePdf') ?>">Generate PDF</a>
+    
 
 </body>
 

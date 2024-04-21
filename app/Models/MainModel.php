@@ -13,7 +13,7 @@ class MainModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['username','password','confirmpassword','office','phone_no','email','image','status','role'];
+    protected $allowedFields    = ['username','password','confirmpassword','office','phone_no','email','image','status','role','reset_token','token_expires_at'];
 
     // Dates
     protected $useTimestamps = false;

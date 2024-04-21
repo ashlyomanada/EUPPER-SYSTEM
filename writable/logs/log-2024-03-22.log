@@ -1,0 +1,48 @@
+CRITICAL - 2024-03-22 14:17:21 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 432.
+ 1 APPPATH\Controllers\AdminController.php(432): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-03-22 14:17:31 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 432.
+ 1 APPPATH\Controllers\AdminController.php(432): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-03-22 14:26:16 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 432.
+ 1 APPPATH\Controllers\AdminController.php(432): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-03-22 14:42:20 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 437.
+ 1 APPPATH\Controllers\AdminController.php(437): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-03-22 14:50:35 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 437.
+ 1 APPPATH\Controllers\AdminController.php(437): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-03-22 14:58:20 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 437.
+ 1 APPPATH\Controllers\AdminController.php(437): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

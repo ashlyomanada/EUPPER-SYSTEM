@@ -1,0 +1,56 @@
+CRITICAL - 2024-02-29 13:39:01 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-29 13:39:04 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-29 13:39:05 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-29 13:39:05 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-29 13:39:05 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-29 13:39:51 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-29 13:42:17 --> Undefined array key "occidental"
+in APPPATH\Controllers\AdminController.php on line 552.
+ 1 APPPATH\Controllers\AdminController.php(552): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "occidental"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 552)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->generateReport()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

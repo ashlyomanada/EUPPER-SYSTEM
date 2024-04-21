@@ -1,0 +1,181 @@
+CRITICAL - 2024-02-26 04:47:58 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 193.
+ 1 APPPATH\Controllers\AdminController.php(193): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 193)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->saveAdmin()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 04:48:00 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 193.
+ 1 APPPATH\Controllers\AdminController.php(193): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 193)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->saveAdmin()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 04:48:01 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 193.
+ 1 APPPATH\Controllers\AdminController.php(193): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 193)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->saveAdmin()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 04:48:13 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 193.
+ 1 APPPATH\Controllers\AdminController.php(193): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 193)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->saveAdmin()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 07:02:34 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 424.
+ 1 APPPATH\Controllers\AdminController.php(424): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2022')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 07:02:35 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 424.
+ 1 APPPATH\Controllers\AdminController.php(424): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2022')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 07:02:36 --> array_map() expects at least 2 arguments, 1 given
+in APPPATH\Controllers\AdminController.php on line 424.
+ 1 APPPATH\Controllers\AdminController.php(424): array_map(null)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->calculateRatings('2022')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 12:26:52 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 194.
+ 1 APPPATH\Controllers\AdminController.php(194): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 194)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->saveAdmin()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 12:26:54 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 194.
+ 1 APPPATH\Controllers\AdminController.php(194): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 194)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->saveAdmin()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 13:01:18 --> Class "App\Controllers\UserRMFBModel" not found
+in APPPATH\Controllers\AdminController.php on line 450.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRmfbRates()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 13:01:26 --> Class "App\Controllers\UserRMFBModel" not found
+in APPPATH\Controllers\AdminController.php on line 450.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRmfbRates()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 13:01:36 --> Class "App\Controllers\UserRMFBModel" not found
+in APPPATH\Controllers\AdminController.php on line 450.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRmfbRates()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:00:31 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 496.
+ 1 APPPATH\Controllers\AdminController.php(496): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 496)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:00:47 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 496.
+ 1 APPPATH\Controllers\AdminController.php(496): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 496)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:00:57 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 496.
+ 1 APPPATH\Controllers\AdminController.php(496): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 496)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:01:38 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 496.
+ 1 APPPATH\Controllers\AdminController.php(496): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 496)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:02:01 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 496.
+ 1 APPPATH\Controllers\AdminController.php(496): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 496)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:04:03 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 503.
+ 1 APPPATH\Controllers\AdminController.php(503): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 503)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:07:29 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 500.
+ 1 APPPATH\Controllers\AdminController.php(500): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 500)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:07:31 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 500.
+ 1 APPPATH\Controllers\AdminController.php(500): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 500)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:07:32 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 500.
+ 1 APPPATH\Controllers\AdminController.php(500): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 500)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:07:32 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 500.
+ 1 APPPATH\Controllers\AdminController.php(500): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 500)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-02-26 15:07:37 --> Undefined property: stdClass::$user_id
+in APPPATH\Controllers\AdminController.php on line 500.
+ 1 APPPATH\Controllers\AdminController.php(500): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$user_id', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 500)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->updateAdminInformation()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

@@ -13,6 +13,9 @@ use App\Models\MpsModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Mpdf\Mpdf;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\RequestOptions;
 
 class MainController extends ResourceController
 {
@@ -91,6 +94,8 @@ public function upload()
         'image' => $filePath,
         'status' => 'Enable',
         'role' => 'user',
+        'reset_token' => null,
+        'token_expires_at' => null,
     ];
 
     // Assuming you have a model named MainModel, you can use it to insert data into the database
@@ -131,6 +136,34 @@ public function sendEmail()
     }
 }
 
+public function getAllRates()
+{
+    $ratingModel = new \App\Models\RatingModel();
+    
+    // Fetch all ratings from the database
+    $data = $ratingModel->findAll();
+    
+    // Sort the ratings array by the 'total' field in descending order (highest to lowest)
+    usort($data, function($a, $b) {
+        // Convert 'total' values to float for numeric comparison
+        $totalA = floatval($a['total']);
+        $totalB = floatval($b['total']);
+        
+        // Compare 'total' values to determine order (descending)
+        if ($totalA < $totalB) {
+            return 1; // $a should come after $b (descending order)
+        } elseif ($totalA > $totalB) {
+            return -1; // $a should come before $b (descending order)
+        } else {
+            return 0; // $a and $b are equal
+        }
+    });
+
+    // Return sorted data in the response
+    return $this->respond($data, 200);
+}
+
+
 public function update($id = null)
 {
     if ($id === null) {
@@ -146,6 +179,244 @@ public function update($id = null)
     }
 }
 
+// public function updateUserRating()
+//     {
+//         $requestData = $this->request->getJSON();
+
+//         if (empty($requestData->id)) {
+//             return $this->fail('Rating ID is required', 400);
+//         }
+
+//         $db = \Config\Database::connect(); // Load the database connection
+
+//         // Prepare the update query
+//         $query = "UPDATE ppo_cpo SET ";
+//         $params = [];
+//         $firstParam = true;
+
+//         foreach ($requestData as $key => $value) {
+//             if ($key !== 'id') { // Exclude 'id' from update fields
+//                 if (!$firstParam) {
+//                     $query .= ", ";
+//                 }
+//                 $query .= "$key = ?";
+//                 $params[] = $value;
+//                 $firstParam = false;
+//             }
+//         }
+
+//         $query .= " WHERE id = ?";
+//         $params[] = $requestData->id;
+
+//         // Execute the update query
+//         try {
+//             $result = $db->query($query, $params);
+//             if ($db->affectedRows() > 0) {
+//                 return $this->respond(['success' => true], 200);
+//             } else {
+//                 return $this->failNotFound('Rating not found or no changes made');
+//             }
+//         } catch (\Exception $e) {
+//             return $this->failServerError('Error updating rating: ' . $e->getMessage());
+//         }
+//     }
+
+public function updateUserRating()
+{
+    $requestData = $this->request->getJSON();
+
+    if (empty($requestData->id)) {
+        return $this->fail('Rating ID is required', 400);
+    }
+
+    if (empty($requestData->TableName)) {
+        return $this->fail('Table Name is required', 400);
+    }
+
+    $tableName = $requestData->TableName;
+    $db = \Config\Database::connect(); // Load the database connection
+
+    // Prepare the update query
+    $query = "UPDATE $tableName SET ";
+    $params = [];
+    $firstParam = true;
+
+    foreach ($requestData as $key => $value) {
+        if ($key !== 'id' && $key !== 'TableName') { // Exclude 'id' and 'TableName' from update fields
+            if (!$firstParam) {
+                $query .= ", ";
+            }
+            $query .= "$key = ?";
+            $params[] = $value;
+            $firstParam = false;
+        }
+    }
+
+    $query .= " WHERE id = ?";
+    $params[] = $requestData->id;
+
+    // Execute the update query
+    try {
+        $result = $db->query($query, $params);
+        if ($db->affectedRows() > 0) {
+            return $this->respond(['success' => true], 200);
+        } else {
+            return $this->failNotFound('Rating not found or no changes made');
+        }
+    } catch (\Exception $e) {
+        return $this->failServerError('Error updating rating: ' . $e->getMessage());
+    }
+}
+
+
+    public function getColumnNamePerTbl()
+    {
+        $json = $this->request->getJSON();
+        $tableName = $json->TableName;
+        $db = db_connect();
+        $table = $tableName; 
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        $columnNames = array_column($columns, 'Field');
+        return $this->response->setJSON($columnNames);
+    }
+
+    public function viewUserByTblRates()
+{
+    $json = $this->request->getJSON();
+    $userId = $json->User;
+    $tableName = $json->TableName;
+
+    if (!empty($userId) && !empty($tableName)) {
+        $db = \Config\Database::connect(); // Load the database connection
+
+        // Use the database connection to execute the query
+        $query = $db->query("SELECT * FROM $tableName WHERE userid = ?", [$userId]);
+        $userRatings = $query->getResultArray();
+
+        if (!empty($userRatings)) {
+            return $this->respond($userRatings, 200);
+        } else {
+            return $this->failNotFound('User ratings not found');
+        }
+    } else {
+        return $this->fail('User id and TableName are required', 400);
+    }
+}
+
+// public function sendSMS()
+// {
+//     helper('Infobip\SmsHelper'); // Load the custom SMS helper
+
+//     $json = $this->request->getJSON();
+
+//     $recipient = $json->recipient; // Destination phone number
+//     $message = $json->message;
+
+//     $result = sendSms($recipient, $message);
+
+//     if ($result) {
+//         return $this->respond(['success' => true, 'message' => "SMS sent successfully. Message ID: {$result}"], 200);
+//     } else {
+//         return $this->fail('Failed to send SMS.', 400);
+//     }
+// }
+
+// public function sendSMS()
+//     {
+//         $apiKey = 'fdc0fc4b3cf35557937435f41a072b43-ab235ced-7004-4b69-b1b1-166957845f9b';
+//         $url = 'https://w1eley.api.infobip.com/sms/2/text/advanced';
+
+//         $client = new Client([
+//             'verify' => false, // Disable SSL certificate verification (use with caution)
+//         ]);
+
+//         try {
+//             $response = $client->post($url, [
+//                 'headers' => [
+//                     'Authorization' => 'App ' . $apiKey,
+//                     'Content-Type' => 'application/json',
+//                     'Accept' => 'application/json'
+//                 ],
+//                 'json' => [
+//                     'messages' => [
+//                         [
+//                             'destinations' => [
+//                                 ['to' => '639507335078']
+//                             ],
+//                             'from' => 'ServiceSMS',
+//                             'text' => 'Congratulations on sending your first message. Go ahead and check the delivery report in the next step.'
+//                         ]
+//                     ]
+//                 ]
+//             ]);
+
+//             $statusCode = $response->getStatusCode();
+//             $body = (string) $response->getBody();
+
+//             if ($statusCode == 200) {
+//                 echo $body;
+//             } else {
+//                 echo 'Unexpected HTTP status: ' . $statusCode;
+//             }
+//         } catch (RequestException $e) {
+//             echo 'Error: ' . $e->getMessage();
+//         }
+//     }
+    
+public function sendSMS()
+{
+    // Retrieve JSON payload sent from Vue.js frontend
+    $json = $this->request->getJSON();
+
+    // Extract required data from JSON payload
+    $senderName = "Euper";
+    $phoneNumber = $json->recipient;
+    $message = $json->message;
+
+    $apiKey = 'fdc0fc4b3cf35557937435f41a072b43-ab235ced-7004-4b69-b1b1-166957845f9b';
+    $url = 'https://w1eley.api.infobip.com/sms/2/text/advanced';
+
+    $client = new Client([
+        'verify' => false, // Disable SSL certificate verification (use with caution)
+    ]);
+
+    try {
+        $response = $client->post($url, [
+            'headers' => [
+                'Authorization' => 'App ' . $apiKey,
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'
+            ],
+            'json' => [
+                'messages' => [
+                    [
+                        'from' => $senderName,
+                        'destinations' => [
+                            ['to' => $phoneNumber]
+                        ],
+                        'text' => $message
+                    ]
+                ]
+            ]
+        ]);
+
+        $statusCode = $response->getStatusCode();
+        $body = (string) $response->getBody();
+
+        if ($statusCode == 200) {
+            return $this->respond([
+                'success' => true,
+                'message' => 'SMS sent successfully',
+                'response' => $body
+            ], 200);
+        } else {
+            return $this->failServerError('Unexpected HTTP status: ' . $statusCode);
+        }
+    } catch (RequestException $e) {
+        return $this->failServerError('Error: ' . $e->getMessage());
+    }
+}
 
 public function insertRating()
 {
@@ -213,6 +484,17 @@ public function getUserData($userId)
 {
     $main = new MainModel();
     $userData = $main->getUserById($userId);
+    if ($userData) {
+        return $this->response->setJSON($userData);
+    } else {
+        return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
+    }
+}
+
+public function getUserAdmin($userId)
+{
+    $main = new AdminModel();
+    $userData = $main->where('admin_id', $userId)->find();
     if ($userData) {
         return $this->response->setJSON($userData);
     } else {

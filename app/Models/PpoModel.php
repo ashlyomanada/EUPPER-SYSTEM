@@ -8,12 +8,12 @@ class PpoModel extends Model
 {
     protected $DBGroup          = 'default';
     protected $table            = 'ppo_tbl';
-    protected $primaryKey       = 'id';
+    protected $primaryKey       = 'officeId';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['userid','month','year','office','do','didm','di','dpcr','dl','dhrdd','dprm','dictm','dpl','dc','drd','operational','administrative','total'];
+    protected $allowedFields    = ['ppoOffices',];
 
     // Dates
     protected $useTimestamps = false;
