@@ -1,11 +1,9 @@
 <template>
-  <div class="head-title">
-    <div class="left">
-      <h1 id="dashboardTitle">Dashboard</h1>
-    </div>
-  </div>
+  <div class="head-title"></div>
 
   <div class="dash-box">
+    <BarChart />
+
     <ul class="box-info">
       <li>
         <i class="bx bxs-calendar-check"></i>
@@ -34,6 +32,7 @@
 
 <script>
 import { defineComponent, PropType } from "vue";
+import BarChart from "../components/BarChart.vue";
 
 export default defineComponent({
   data() {
@@ -43,7 +42,9 @@ export default defineComponent({
     };
   },
 
-  components: {},
+  components: {
+    BarChart,
+  },
   mounted() {
     this.fetchRatingCount();
     this.fetchUserCount();
@@ -94,7 +95,7 @@ export default defineComponent({
 .dash-box {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 0.5fr;
+  grid-template-rows: repeat(2, 1fr);
 }
 .findRate {
   background: green;

@@ -24,9 +24,6 @@
           <span>Password</span>
         </label>
         <button type="submit" class="submit" style="color: white">Login</button>
-        <p class="signin">
-          Don't have an account? <router-link to="/">Sign up</router-link>
-        </p>
         <p class="error-message">{{ errorMessage }}</p>
       </form>
     </div>
@@ -61,7 +58,7 @@ export default {
           if (response.data.message === "Login successful") {
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("id", response.data.id);
-            router.push("/admin");
+            router.push("/adminHome");
           }
         })
         .catch((error) => {

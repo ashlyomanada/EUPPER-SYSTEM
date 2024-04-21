@@ -101,8 +101,12 @@
     <!-- NAVBAR -->
     <nav>
       <i class="bx bx-menu"></i>
-      <a href="#" class="nav-link">PRO MIMAROPA E-UPER SYSTEM</a>
+      <div class="w-50 d-flex">
+        <a href="#" class="nav-link">PRO MIMAROPA E-UPER SYSTEM</a>
+      </div>
+
       <div class="nav-items">
+        <span class="time">{{ currentDateTime }}</span>
         <input type="checkbox" id="switch-mode" hidden />
         <label for="switch-mode" class="switch-mode"></label>
         <a
@@ -130,6 +134,14 @@
       <UserProfile v-if="selectedComponent === 'UserProfile'" />
       <RequestForm v-if="selectedComponent === 'RequestForm'" />
       <UserGmail v-if="selectedComponent === 'UserGmail'" />
+
+      <div class="modalBg" v-if="status === 'Disable'">
+        <div class="alertBox">
+          <!-- <img class="checkImg" src="./img/check2.gif" alt="" /> -->
+          <h3 class="alertContent">View Rates Only</h3>
+          <button class="btn btn-primary" @click="okayBtn">Okay</button>
+        </div>
+      </div>
     </main>
     <!-- MAIN -->
   </section>
@@ -159,16 +171,14 @@ export default {
     UserGmail,
     UserPPO,
     UserRMFB,
+    UserMPS,
     PPORatingSheet,
     RMFB,
     MPSRatingSheet,
-    UserMPS,
   },
   data() {
     return {
       selectedComponent: "PPORatingSheet",
-      showButtons: false,
-      showButtons2: false,
       userId: null,
       userName: "",
       officeLocation: "",
@@ -176,22 +186,17 @@ export default {
       email: "",
       profilePic: "",
       status: "",
+      currentDateTime: "", // To store current date and time
     };
   },
   async created() {
     await this.loadScripts(["/userscript.js"]);
-  },
-  mounted() {
-    // Retrieve user information from session storage
-    const storedUserId = sessionStorage.getItem("id");
 
-    // Check if the user is logged in
+    const storedUserId = sessionStorage.getItem("id");
     if (storedUserId) {
-      // Make an Axios request to fetch user data based on session ID
       axios
         .get(`/getUserData/${storedUserId}`)
         .then((response) => {
-          // Update the component's data with the fetched user data
           const userData = response.data;
           this.userId = userData.id;
           this.userName = userData.username;
@@ -204,7 +209,11 @@ export default {
           if (this.status === "Disable") {
             this.selectedComponent = "UserPPO";
           }
-          console.log(userData);
+
+          // Initial call to update currentDateTime
+          this.updateCurrentDateTime();
+          // Set interval to update currentDateTime every second (1000 ms)
+          setInterval(this.updateCurrentDateTime, 1000);
         })
         .catch((error) => {
           console.error("Error fetching user data:", error);
@@ -212,30 +221,36 @@ export default {
     }
   },
   methods: {
+    okayBtn() {
+      this.status = "Closed";
+    },
+    updateCurrentDateTime() {
+      const currentDate = new Date();
+      const options = {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      };
+      this.currentDateTime = currentDate.toLocaleDateString("en-US", options);
+    },
     logout() {
       router.push("/login");
     },
     showComponent(componentName) {
       this.selectedComponent = componentName;
     },
-    toggleButtons() {
-      this.showButtons = !this.showButtons;
-    },
-    toggleButtons2() {
-      this.showButtons2 = !this.showButtons2;
-    },
-    loadScripts: function (scriptUrls) {
-      // Changed arrow function to regular function
+    loadScripts(scriptUrls) {
       const head = document.getElementsByTagName("head")[0];
-
       return Promise.all(
-        scriptUrls.map(async (scriptUrl) => {
-          const script = document.createElement("script");
-          script.type = "text/javascript";
-          script.src = scriptUrl;
-          script.async = true;
-
+        scriptUrls.map((scriptUrl) => {
           return new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.type = "text/javascript";
+            script.src = scriptUrl;
+            script.async = true;
             script.onload = resolve;
             script.onerror = reject;
             head.appendChild(script);
@@ -243,6 +258,17 @@ export default {
         })
       );
     },
+
+    toggleButtons() {
+      this.showButtons = !this.showButtons;
+    },
+    toggleButtons2() {
+      this.showButtons2 = !this.showButtons2;
+    },
+  },
+  // Call updateCurrentDateTime() once the component is mounted
+  mounted() {
+    this.updateCurrentDateTime();
   },
 };
 </script>
@@ -261,11 +287,12 @@ a {
   background-color: white;
   border-radius: 50%;
 }
-#adminName2 {
+#adminName2,
+.time {
   color: var(--dark);
 }
 .nav-items {
-  width: 20%;
+  width: 40%;
   display: flex;
   justify-content: space-evenly;
 }

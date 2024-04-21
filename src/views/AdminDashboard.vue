@@ -2,9 +2,15 @@
   <!-- SIDEBAR -->
   <section id="sidebar">
     <ul class="side-menu top" style="padding-left: 0">
-      <div class="admin-logo">
+      <div
+        class="admin-logo"
+        v-for="userData in userData"
+        :key="userData.admin_id"
+      >
         <img src="./img/logo.png" alt="" id="logo" />
-        <h3 id="adminName">{{ userName }}</h3>
+        <h3 id="adminName">
+          {{ userData.username }}
+        </h3>
       </div>
       <li class="active">
         <a href="#" @click="showComponent('Dashboard')">
@@ -197,7 +203,7 @@ export default {
       showButtons: false,
       showButtons2: false,
       showButtons3: false,
-      userName: "",
+      userData: "",
     };
   },
   async created() {
@@ -244,11 +250,10 @@ export default {
       const storedUserId = sessionStorage.getItem("id");
       if (storedUserId) {
         try {
-          const response = await axios.get(`/getUserData/${storedUserId}`);
+          const response = await axios.get(`/getUserAdmin/${storedUserId}`);
           if (response.status === 200) {
-            const userData = response.data;
-            this.userName = userData.username;
-            //console.log(this.userName);
+            this.userData = response.data;
+            console.log(response.data);
           } else {
             console.error(`Unexpected response status: ${response.status}`);
           }

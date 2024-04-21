@@ -19,8 +19,12 @@ const routes = [
     props: true,
   },
   {
-    path: "/admin",
+    path: "/adminHome",
     component: () => import("../views/AdminDashboard.vue"),
+  },
+  {
+    path: "/admin",
+    component: () => import("../views/AdminLogin.vue"),
   },
   {
     path: "/home",

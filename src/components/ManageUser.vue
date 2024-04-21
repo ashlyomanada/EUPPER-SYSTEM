@@ -123,6 +123,7 @@
       class="form"
       id="modal-form3"
       :style="{ display: formVisible2 ? 'block' : 'none' }"
+      @submit.prevent="sendSms"
     >
       <div class="d-flex flex-column gap-2">
         <label for=""> To </label>
@@ -143,15 +144,28 @@
           readonly
           required
         />
-        <textarea required cols="30" rows="10" placeholder="Message here">
-        </textarea>
+        <textarea
+          v-model="messageContent"
+          cols="30"
+          rows="10"
+          placeholder="Enter message here"
+          required
+        ></textarea>
       </div>
 
       <div class="modal-buttons">
-        <button @click.prevent="saveUser">Save</button>
+        <button type="submit">Send</button>
         <button @click.prevent="closeForm2">Close</button>
       </div>
     </form>
+  </div>
+
+  <div class="modalBg" v-if="formVisible3">
+    <div class="alertBox">
+      <img class="checkImg" src="./img/check2.gif" alt="" />
+      <h1 class="alertContent">Successfully Send</h1>
+      <button class="btn btn-primary" @click="closeForm3">Okay</button>
+    </div>
   </div>
 </template>
 
@@ -164,6 +178,8 @@ export default {
       searchText: "",
       formVisible: false,
       formVisible2: false,
+      formVisible3: false,
+      messageContent: "",
       selectedUser: {
         id: null,
         username: "",
@@ -229,6 +245,10 @@ export default {
       this.formVisible2 = false;
     },
 
+    closeForm3() {
+      this.formVisible3 = false;
+    },
+
     async changeAllUserStatus() {
       try {
         const response = await axios.post("/changeAllUserStatus");
@@ -284,6 +304,32 @@ export default {
       this.UsersInfo = this.UsersInfo.filter((item) => {
         return item.username === searchText;
       });
+    },
+
+    async sendSms() {
+      try {
+        const { phone_no } = this.selectedUser;
+        const messageContent = this.messageContent; // Access messageContent directly
+
+        const response = await axios.post("/sendSMS", {
+          recipient: phone_no,
+          message: messageContent,
+        });
+
+        if (response.status === 200 && response.data.success) {
+          console.log("SMS sent successfully.");
+          this.formVisible2 = false; // Hide the SMS form after sending
+          this.messageContent = "";
+          this.formVisible3 = true;
+          setTimeout(() => {
+            this.formVisible3 = false;
+          }, 5000);
+        } else {
+          console.error("Failed to send SMS.");
+        }
+      } catch (error) {
+        console.error("Error sending SMS:", error);
+      }
     },
   },
 };

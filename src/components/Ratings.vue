@@ -23,17 +23,22 @@
               <label class="d-flex align-items-center" for="month"
                 >Select Table:</label
               >
-              <select v-model="selectedTable" class="month" name="month">
-                <option value="ppo">PPO CPO LEVEL</option>
-                <option value="2">RMFB PMFC LEVEL</option>
-                <option value="3">Occidental Mindoro PPO</option>
-                <option value="3">Oriental Mindoro PPO</option>
-                <option value="3">Marinduque PPO</option>
-                <option value="3">Romblon PPO</option>
-                <option value="3">Palawan PPO</option>
-                <option value="3">Puerto Princesa CPO</option>
+              <select
+                v-model="selectedTable"
+                class="month"
+                name="month"
+                required
+              >
+                <option value="ppo_cpo">PPO CPO LEVEL</option>
+                <option value="rmfb_tbl">RMFB PMFC LEVEL</option>
+                <option value="occidental_cps">Occidental Mindoro MPS</option>
+                <option value="oriental_cps">Oriental Mindoro MPS</option>
+                <option value="marinduque_cps">Marinduque MPS</option>
+                <option value="romblon_cps">Romblon MPS</option>
+                <option value="palawan_cps">Palawan MPS</option>
+                <option value="puertop_cps">Puerto Princesa MPS</option>
               </select>
-              <button @click="fetchData" class="find">
+              <button @click="fetchDataByTbl" class="find">
                 <i class="bx bx-search"></i>Find
               </button>
             </div>
@@ -43,150 +48,77 @@
       <table>
         <thead>
           <tr>
-            <th>Action</th>
-            <th>Month</th>
-            <th>Year</th>
-            <th v-for="(column, index) in columns" :key="index" class="t-row">
+            <th class="t-rate">Action</th>
+            <th class="t-rate">Month</th>
+            <th class="t-rate">Year</th>
+            <th v-for="(column, index) in columns" :key="index" class="t-rate">
               {{ column.replace(/_/g, " ") }}
             </th>
           </tr>
         </thead>
         <tbody v-if="dataFetched && userRatings.length > 0">
           <tr v-for="(rating, index) in userRatings" :key="index">
-            <td>
-              <button class="pen-btn" id="penButton">
+            <td class="t-rateData">
+              <button class="pen-btn" @click="editRating(index)">
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
-            <td class="t-data">{{ rating.month }}</td>
-            <td class="t-data">{{ rating.year }}</td>
+            <td class="t-rateData">{{ rating.month }}</td>
+            <td class="t-rateData">{{ rating.year }}</td>
             <td
               v-for="(column, colIndex) in columns"
               :key="colIndex"
-              class="t-data"
+              class="t-rateData"
             >
               {{ rating[column] }}
             </td>
           </tr>
         </tbody>
       </table>
+      <h5 v-if="!dataFetched" style="text-align: center">No Ratings Found</h5>
     </div>
   </div>
-  <!-- <form
-    class="form"
-    id="rating-form-edit"
-    :style="{ display: formVisible ? 'block' : 'none' }"
-  >
-    <div class="form-edit">
-      <label for="">Office:</label>
-      <input
-        v-model="selectedRatings.office"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">do:</label>
-      <input
-        v-model="selectedRatings.do"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">didm:</label>
-      <input
-        v-model="selectedRatings.didm"
-        type="text"
-        placeholder=" Mindoro"
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">di:</label>
-      <input
-        v-model="selectedRatings.di"
-        type="text"
-        placeholder=" Mindoro"
-        class="input"
-      />
-      <label for="">dpcr:</label>
-      <input
-        v-model="selectedRatings.dpcr"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dl:</label>
-      <input
-        v-model="selectedRatings.dl"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">dhrdd:</label>
-      <input
-        v-model="selectedRatings.dhrdd"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dprm:</label>
-      <input
-        v-model="selectedRatings.dprm"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dictm:</label>
-      <input
-        v-model="selectedRatings.dictm"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="form-edit">
-      <label for="">dpl:</label>
-      <input
-        v-model="selectedRatings.dpl"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">dc:</label>
-      <input
-        v-model="selectedRatings.dc"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-      <label for="">drd:</label>
-      <input
-        v-model="selectedRatings.drd"
-        type="text"
-        placeholder=""
-        class="input"
-      />
-    </div>
-    <div class="modal-buttons">
-      <button @click.prevent="saveUserRates">Save</button>
-      <button @click.prevent="closeForm">Close</button>
-    </div>
-  </form> -->
+  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
+    <form
+      class="form"
+      id="rating-form-edit"
+      :style="{ display: formVisible ? 'block' : 'none' }"
+    >
+      <div class="form-edit">
+        <label for="editMonth">Month:</label>
+        <input type="text" id="editMonth" v-model="selectedRating.month" />
+
+        <label for="editYear">Year:</label>
+        <input type="text" id="editYear" v-model="selectedRating.year" />
+
+        <!-- Loop through columns to dynamically render input fields -->
+        <template v-for="(column, colIndex) in columns" :key="colIndex">
+          <label :for="`edit${column}`">{{ column.replace(/_/g, " ") }}</label>
+          <input :type="number" v-model="selectedRating[column]" />
+        </template>
+
+        <div class="modal-buttons">
+          <button @click.prevent="saveUserRates">Save</button>
+          <button @click.prevent="closeForm">Close</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
       userRatings: [],
       columns: [],
-      selectedTable: "",
       selectedUser: 54,
-      allUsersName: "",
+      allUsersName: [],
       dataFetched: false,
+      formVisible: false,
+      selectedRating: {},
     };
   },
 
@@ -197,9 +129,25 @@ export default {
   },
 
   methods: {
+    closeForm() {
+      this.formVisible = false;
+    },
     async fetchColumns() {
       try {
         const response = await axios.get("/getColumnNamePPO");
+        this.columns = response.data.filter(
+          (column) => !["id", "userid", "month", "year"].includes(column)
+        );
+      } catch (error) {
+        console.error("Error fetching column names:", error);
+      }
+    },
+
+    async fetchColumnPerTbl() {
+      try {
+        const response = await axios.post("/getColumnNamePerTbl", {
+          TableName: this.selectedTable,
+        });
         this.columns = response.data.filter(
           (column) => !["id", "userid", "month", "year"].includes(column)
         );
@@ -212,15 +160,13 @@ export default {
       try {
         const response = await axios.get("/getAllUsersName");
         this.allUsersName = response.data;
-        //console.log(response.data);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error("Error fetching users:", error);
       }
     },
 
     fetchData() {
       const userId = this.selectedUser;
-      console.log(userId);
       if (userId) {
         axios
           .get(`/viewUserPPORates/${userId}`)
@@ -233,22 +179,102 @@ export default {
           });
       }
     },
+
+    async fetchDataByTbl() {
+      try {
+        const userId = this.selectedUser;
+        if (userId) {
+          const response = await axios.post(`/viewUserByTblRates`, {
+            User: this.selectedUser,
+            TableName: this.selectedTable,
+          });
+
+          if (response.status === 200) {
+            this.userRatings = response.data;
+            this.dataFetched = true;
+            this.fetchColumnPerTbl();
+          } else {
+            // If response status is not 200 (success), set dataFetched to false
+            this.dataFetched = false;
+            console.error(`Failed to fetch data. Status: ${response.status}`);
+          }
+        } else {
+          // Handle case where userId is not present
+          console.error("User id is required");
+        }
+      } catch (error) {
+        // Handle other errors (e.g., network error, server error)
+        console.error("Error fetching data:", error);
+        this.dataFetched = false;
+      }
+    },
+
+    editRating(index) {
+      // Set the selected rating data for editing
+      this.selectedRating = { ...this.userRatings[index] };
+      this.formVisible = true; // Show the edit form
+    },
+
+    async saveUserRates() {
+      try {
+        if (!this.selectedRating.id) {
+          console.error("Rating ID is required.");
+          return;
+        }
+
+        const requestData = {
+          ...this.selectedRating,
+          TableName: this.selectedTable, // Include TableName in the request data
+        };
+
+        const response = await axios.post(`/updateUserRating`, requestData);
+
+        if (response.data.success) {
+          console.log("Rating updated successfully!");
+          this.formVisible = false; // Hide the form after successful update
+          this.fetchDataByTbl(); // Refresh data after update
+        } else {
+          console.error("Failed to update rating.");
+        }
+      } catch (error) {
+        console.error("Error updating rating:", error);
+      }
+    },
   },
 };
 </script>
 
 <style>
+.dim-overlay {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  background: rgba(
+    0,
+    0,
+    0,
+    0.5
+  ); /* Adjust the last value for the desired transparency */
+  z-index: 1;
+  /* Make sure the overlay is above other elements */
+}
 #rating-form-edit {
   position: absolute;
-  width: 80%;
-  top: 15%;
-  left: 10%;
+  width: 50%;
+  top: 10%;
+  left: 35%;
   display: none;
 }
 .form-edit {
   display: flex;
-  gap: 2rem;
-  align-items: center;
+  flex-direction: column;
+  height: 50%;
+  gap: 0.5rem;
 }
 .evaluation-ratings {
   display: flex;
@@ -267,5 +293,11 @@ export default {
   width: 100%;
   display: flex;
   gap: 1rem;
+}
+.t-rate {
+  padding: 0 1rem;
+}
+.t-rateData {
+  text-align: center;
 }
 </style>

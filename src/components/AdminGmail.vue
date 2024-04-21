@@ -6,13 +6,14 @@
       </div>
       <form class="form" id="form">
         <label for="">To:</label>
-        <input type="text" placeholder="All User" class="input" />
+        <input type="text" placeholder="All User" class="input" readonly />
         <label for="">From:</label>
         <input
           type="text"
           placeholder="PRO MIMAROPA Announcement"
           class="input"
           value="PRO MIMAROPA Announcement"
+          readonly
         />
         <textarea placeholder="Type message"></textarea>
         <button type="submit">Send</button>

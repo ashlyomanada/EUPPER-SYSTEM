@@ -17,13 +17,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr
+            v-for="selectedAdmin in selectedAdmin"
+            :key="selectedAdmin.admin_id"
+          >
             <td>{{ selectedAdmin.username }}</td>
             <td></td>
             <td>{{ selectedAdmin.email }}</td>
             <td>{{ selectedAdmin.phone_no }}</td>
             <td class="td-btn">
-              <button class="pen-btn" @click="openForm()">
+              <button class="pen-btn" @click="openForm(selectedAdmin)">
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
@@ -38,26 +41,30 @@
       id="modal-form"
       :style="{ display: formVisible ? 'block' : 'none' }"
     >
+      <label for="">Username</label>
       <input
-        v-model="selectedAdmin.username"
+        v-model="selectedUser.username"
         type="text"
         placeholder="Username"
         class="input"
       />
+      <label for="">Password</label>
       <input
-        v-model="selectedAdmin.password"
+        v-model="selectedUser.password"
         type="text"
         placeholder="Password"
         class="input"
       />
+      <label for="">Email</label>
       <input
-        v-model="selectedAdmin.email"
+        v-model="selectedUser.email"
         type="text"
         placeholder="Email"
         class="input"
       />
+      <label for="">Phone No</label>
       <input
-        v-model="selectedAdmin.phone_no"
+        v-model="selectedUser.phone_no"
         type="text"
         placeholder="Phone No."
         class="input"
@@ -77,14 +84,14 @@ export default {
   data() {
     return {
       formVisible: false,
-      selectedAdmin: {
-        admin_id: null,
+      selectedAdmin: "",
+      storedId: "",
+      selectedUser: {
         username: "",
         password: "",
         email: "",
         phone_no: "",
       },
-      storedId: "",
     };
   },
 
@@ -98,7 +105,7 @@ export default {
       const adminStoredId = sessionStorage.getItem("id");
       if (adminStoredId) {
         try {
-          const response = await axios.get(`/getUserData/${adminStoredId}`);
+          const response = await axios.get(`/getUserAdmin/${adminStoredId}`);
           if (response.status === 200) {
             this.selectedAdmin = response.data;
           }
@@ -108,20 +115,21 @@ export default {
       }
     },
 
-    openForm() {
+    openForm(selectedAdmin) {
+      this.selectedUser = { ...selectedAdmin };
       this.formVisible = true;
     },
 
     async saveAdmin() {
       try {
         const response = await axios.post(
-          `/updateAdminInformation/${this.storedId}`,
-          this.selectedAdmin
+          `/updateAdminInformation`,
+          this.selectedUser
         );
 
         if (response.status === 200) {
           const responseData = response.data;
-          console.log(this.selectedAdmin);
+          this.getAdminsData();
 
           if (responseData && responseData.success) {
             console.log(responseData.message);

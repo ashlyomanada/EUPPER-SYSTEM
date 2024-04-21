@@ -65,7 +65,9 @@ export default {
         alert(response.data.message); // Show success message
 
         // Redirect to login page or other route after successful password reset
-        this.$router.push({ name: "Login" });
+        //this.$router.push("/");
+        this.password = "";
+        this.confirmPassword = "";
       } catch (error) {
         console.error("Failed to reset password:", error);
         this.errorMessage = "Failed to reset password. Please try again.";

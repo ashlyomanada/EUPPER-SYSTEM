@@ -37,24 +37,28 @@
       id="modal-form2"
       :style="{ display: formVisible ? 'block' : 'none' }"
     >
+      <label for="">Username</label>
       <input
         v-model="selectedUser.username"
         type="text"
         placeholder="Username"
         class="input"
       />
+      <label for="">Office</label>
       <input
         v-model="selectedUser.office"
         type="text"
         placeholder="Office"
         class="input"
       />
+      <label for="">Email</label>
       <input
         v-model="selectedUser.email"
         type="text"
         placeholder="Email"
         class="input"
       />
+      <label for="">Phone Number</label>
       <input
         v-model="selectedUser.phone_no"
         type="text"

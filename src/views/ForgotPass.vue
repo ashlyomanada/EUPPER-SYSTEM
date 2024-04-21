@@ -8,7 +8,11 @@
           <h2>PRO MIMAROPA</h2>
         </div>
       </div>
-      <form class="form1" @submit.prevent="sendPasswordResetEmail">
+      <form
+        class="form1"
+        @submit.prevent="sendPasswordResetEmail"
+        :class="{ processing: processing }"
+      >
         <p class="title">Request Reset Password</p>
 
         <label>
@@ -16,8 +20,9 @@
           <span>Email</span>
         </label>
 
-        <button type="submit" class="submit text-white">
-          Send Password Reset
+        <button type="submit" class="submit text-white" :disabled="processing">
+          <span v-if="!processing">Send Password Reset</span>
+          <span v-else>Sending...</span>
         </button>
         <p class="signin">
           Already have an account? <router-link to="/">Sign in</router-link>
@@ -39,28 +44,34 @@ export default {
     return {
       email: "",
       registrationStatus: null,
+      processing: false, // Flag to track form processing state
     };
   },
   methods: {
     async sendPasswordResetEmail() {
+      if (this.processing) return; // Prevent duplicate requests
+
       try {
+        this.processing = true; // Set processing flag to true
+
         const response = await axios.post("/sendPasswordResetEmail", {
           email: this.email,
         });
 
-        // Check if response status is successful
         if (response.status === 200) {
-          // Reset registrationStatus to null
           this.registrationStatus = "success";
-          // Show success message
+          this.email = "";
+          this.processing = false;
           alert("Check your email for verification");
-          // Redirect to reset password page with token
           const token = response.data.token;
           router.push({ name: "ResetPassword", params: { token } });
+        } else {
+          this.registrationStatus = "error";
+          this.email = "";
+          this.processing = true;
         }
       } catch (e) {
-        console.log("Failed to send reset email:", e);
-        this.registrationStatus = "error";
+        console.log(e);
       }
     },
   },
@@ -68,6 +79,11 @@ export default {
 </script>
 
 <style>
+/* Add style for the processing state */
+.form1.processing button:disabled {
+  opacity: 0.7; /* Reduce opacity when button is disabled during processing */
+  cursor: not-allowed; /* Change cursor to not-allowed */
+}
 .row {
   display: flex;
   gap: 0.5rem;

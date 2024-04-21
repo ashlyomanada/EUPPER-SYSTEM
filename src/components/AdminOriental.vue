@@ -165,7 +165,7 @@ export default {
     async generateOrienReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateOcciReport",
+          "http://localhost:8080/generateOrminReport",
           {
             month: this.month,
             year: this.year,

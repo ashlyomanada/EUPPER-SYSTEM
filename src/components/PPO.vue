@@ -73,6 +73,7 @@
           </tr>
         </tbody>
       </table>
+      <h3 v-if="noData">No data found</h3>
     </div>
   </div>
 </template>
@@ -87,6 +88,7 @@ export default {
       UsersOffice: [],
       columns: [],
       UsersRate: [],
+      noData: false,
       month: "",
       year: "",
       userId: "",
@@ -132,11 +134,15 @@ export default {
           Month: this.month,
           Year: this.year,
         });
-        this.UsersRate = response.data.map(
-          ({ id, userid, month, year, ...rest }) => ({
-            ...rest, // Spread the rest of the properties
-          })
-        );
+        if (response.status === 200) {
+          this.UsersRate = response.data.map(
+            ({ id, userid, month, year, ...rest }) => ({
+              ...rest, // Spread the rest of the properties
+            })
+          );
+        } else {
+          return (this.noData = true);
+        }
       } catch (error) {
         console.error("Error filtering users rate:", error);
       }
@@ -175,7 +181,7 @@ export default {
         const url = window.URL.createObjectURL(new Blob([response.data]));
 
         // Construct the file name using the month and year values
-        const fileName = `RMFB_Report_${this.month}_${this.year}.xlsx`;
+        const fileName = `PPO_Report_${this.month}_${this.year}.xlsx`;
 
         const link = document.createElement("a");
         link.href = url;
