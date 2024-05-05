@@ -51,6 +51,7 @@
             required
             min="0"
             :max="getMaxRateByOffice(office)"
+            step="any"
           />
         </div>
         <button class="submitPPORate" type="submit">Submit</button>
@@ -109,7 +110,7 @@ export default {
           return 35;
         case "RCD":
           return 25;
-        case "RAD":
+        case "RRD":
           return 20;
         default:
           return 0;

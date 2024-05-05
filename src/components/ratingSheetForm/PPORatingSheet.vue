@@ -51,6 +51,7 @@
             required
             min="0"
             :max="getMaxRateByOffice(office)"
+            step="0.01"
           />
         </div>
         <button class="submitPPORate" type="submit">Submit</button>

@@ -4,7 +4,7 @@
       <div class="head">
         <h3>Announcement To All Users</h3>
       </div>
-      <form class="form" id="form">
+      <form class="form" id="form" @submit.prevent="sendSms">
         <label for="">To:</label>
         <input type="text" placeholder="All User" class="input" readonly />
         <label for="">From:</label>
@@ -15,7 +15,10 @@
           value="PRO MIMAROPA Announcement"
           readonly
         />
-        <textarea placeholder="Type message"></textarea>
+        <textarea
+          placeholder="Type message"
+          v-model="messageContent"
+        ></textarea>
         <button type="submit">Send</button>
       </form>
     </div>
@@ -23,7 +26,43 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      messageContent: "",
+    };
+  },
+
+  methods: {
+    async sendSms() {
+      try {
+        const messageContent = this.messageContent; // Access messageContent directly
+
+        this.sendingInProgress = true;
+        const response = await axios.post("/sendSMSToAllUser", {
+          message: messageContent,
+        });
+
+        if (response.status === 200 && response.data.success) {
+          console.log("SMS sent successfully.");
+          this.formVisible2 = false; // Hide the SMS form after sending
+          this.messageContent = "";
+          this.formVisible3 = true;
+          setTimeout(() => {
+            this.formVisible3 = false;
+          }, 5000);
+        } else {
+          console.error("Failed to send SMS.");
+        }
+      } catch (error) {
+        console.error("Error sending SMS:", error);
+      } finally {
+        // Set sendingInProgress to false once the process completes
+        this.sendingInProgress = false;
+      }
+    },
+  },
+};
 </script>
 
 <style>

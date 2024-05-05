@@ -4,7 +4,7 @@
   <div class="dash-box">
     <BarChart />
 
-    <ul class="box-info">
+    <!-- <ul class="box-info">
       <li>
         <i class="bx bxs-calendar-check"></i>
         <span class="text">
@@ -26,7 +26,7 @@
           <p>Announcements</p>
         </span>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
@@ -94,8 +94,8 @@ export default defineComponent({
 <style>
 .dash-box {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 1fr);
 }
 .findRate {
   background: green;

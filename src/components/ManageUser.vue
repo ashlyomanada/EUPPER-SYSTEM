@@ -3,6 +3,8 @@
     <div class="order">
       <div class="head">
         <h3>List of Users</h3>
+        <input type="datetime-local" v-model="dueDate" />
+        <button class="find" @click="SetDate">Set Closing</button>
         <button class="find" @click="changeAllUserStatus">
           <i class="fa-solid fa-power-off"></i>
           Change All User Status
@@ -128,7 +130,7 @@
       <div class="d-flex flex-column gap-2">
         <label for=""> To </label>
         <input
-          v-model="selectedUser.email"
+          v-model="selectedUser.phone_no"
           type="text"
           placeholder="Username"
           class="input"
@@ -154,7 +156,7 @@
       </div>
 
       <div class="modal-buttons">
-        <button type="submit">Send</button>
+        <button type="submit" :disabled="sendingInProgress">Send</button>
         <button @click.prevent="closeForm2">Close</button>
       </div>
     </form>
@@ -188,18 +190,81 @@ export default {
         email: "",
         password: "",
       },
+      sendingInProgress: false,
+      dueDate: "",
+      selectedDue: "",
+      lastInsertedDate: null,
+      currentTime: null,
     };
   },
 
   created() {
     this.getUsersInfo();
+    this.getDueDate();
+    setInterval(() => {
+      this.getDueDate();
+      this.checkTime(); // Call checkTime periodically
+    }, 600);
   },
+
   methods: {
+    async SetDate() {
+      try {
+        const response = await axios.post("/insertDue", {
+          dueDate: this.dueDate,
+        });
+
+        if (response.status === 200) {
+          console.log("Successfully set date");
+        } else {
+          console.log("Unsuccessfully set date");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
+    async getDueDate() {
+      try {
+        const response = await axios.get("/selectDue");
+        this.lastInsertedDate = response.data.date;
+        //console.log(this.lastInsertedDate);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    checkTime() {
+      // Fetch the current time
+      const currentDate = new Date();
+
+      // Parse the last inserted date from the database and convert it to a Date object
+      const lastInsertedDate = new Date(this.lastInsertedDate);
+
+      // Format the current date to match the database date format
+      const formattedCurrentDate = `${currentDate.getFullYear()}-${String(
+        currentDate.getMonth() + 1
+      ).padStart(2, "0")}-${String(currentDate.getDate()).padStart(
+        2,
+        "0"
+      )} ${String(currentDate.getHours()).padStart(2, "0")}:${String(
+        currentDate.getMinutes()
+      ).padStart(2, "0")}:${String(currentDate.getSeconds()).padStart(2, "0")}`;
+
+      //console.log(formattedCurrentDate + " " + this.lastInsertedDate);
+
+      // Check if the formatted current date matches the last inserted date
+      if (formattedCurrentDate === this.lastInsertedDate) {
+        // If they match, execute your other method
+        this.changeAllUserStatus();
+        this.dueDate = "";
+      }
+    },
+
     async getUsersInfo() {
       try {
         const UsersInfo = await axios.get("getUsersInfo");
         this.UsersInfo = UsersInfo.data;
-        console.log(this.UsersInfo);
+        //console.log(this.UsersInfo);
       } catch (e) {
         console.log(e);
       }
@@ -311,7 +376,8 @@ export default {
         const { phone_no } = this.selectedUser;
         const messageContent = this.messageContent; // Access messageContent directly
 
-        const response = await axios.post("/sendSMS", {
+        this.sendingInProgress = true;
+        const response = await axios.post("/sendSMSToUser", {
           recipient: phone_no,
           message: messageContent,
         });
@@ -329,6 +395,9 @@ export default {
         }
       } catch (error) {
         console.error("Error sending SMS:", error);
+      } finally {
+        // Set sendingInProgress to false once the process completes
+        this.sendingInProgress = false;
       }
     },
   },

@@ -39,9 +39,14 @@
                 <i class="bx bx-search"></i>Find
               </button>
             </div>
-            <button class="generate" @click="generateMarinReport">
-              Generate Excel Report
-            </button>
+            <div class="d-flex gap-2">
+              <button class="generate" @click="generateMarinReport">
+                Generate Excel Report
+              </button>
+              <button class="generate" @click="generatePdf">
+                Generate PDF Report
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -58,7 +63,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="!noData">
           <tr v-for="(column, colIndex) in columns" :key="colIndex">
             <td>{{ column.replace(/_/g, " ") }}</td>
             <template
@@ -73,6 +78,7 @@
           </tr>
         </tbody>
       </table>
+      <h5 style="text-align: center" v-if="noData">No data found</h5>
     </div>
   </div>
 </template>
@@ -87,6 +93,7 @@ export default {
       UsersOffice: [],
       columns: [],
       UsersRate: [],
+      noData: false,
       month: "",
       year: "",
       userId: "",
@@ -113,32 +120,65 @@ export default {
 
     async getUsersRate() {
       try {
-        const response = await axios.get("/getUsersRateMarin");
-        // Exclude specified properties from each object in the response data
-        this.UsersRate = response.data.map(
-          ({ id, userid, month, year, ...rest }) => ({
-            ...rest, // Spread the rest of the properties
-          })
-        );
-        //console.log(this.UsersRate);
-      } catch (e) {
-        console.log(e);
+        const currentDate = new Date();
+        const currentMonth = currentDate.toLocaleString("default", {
+          month: "long",
+        }); // Get full month name (e.g., "April")
+        const currentYear = currentDate.getFullYear(); // Get the current year (e.g., 2024)
+
+        // Make a POST request to fetch users' rate data for the current month and year
+        const response = await axios.post("/getUsersRateMarin", {
+          Month: currentMonth,
+          Year: currentYear,
+        });
+        if (response.status === 200) {
+          this.UsersRate = response.data.map(
+            ({ id, userid, month, year, ...rest }) => ({
+              ...rest, // Spread the rest of the properties
+            })
+          );
+
+          // Check if there are any users' rates for the selected month and year
+          this.noData = this.UsersRate.length === 0;
+        } else {
+          // If the response status is not 200, handle it as an error
+          console.error("Error: Unexpected status code", response.status);
+          this.noData = true;
+          this.UsersRate = []; // Reset UsersRate to an empty array
+        }
+      } catch (error) {
+        console.error("Error filtering users rate:", error);
+        this.noData = true; // Set noData to true in case of any error
+        this.UsersRate = []; // Reset UsersRate to an empty array
       }
     },
 
     async getUsersRateByMonth() {
       try {
-        const response = await axios.post("/getUsersRateByMonth", {
+        const response = await axios.post("/getUsersRateMarinByMonth", {
           Month: this.month,
           Year: this.year,
         });
-        this.UsersRate = response.data.map(
-          ({ id, userid, month, year, ...rest }) => ({
-            ...rest, // Spread the rest of the properties
-          })
-        );
+
+        if (response.status === 200) {
+          this.UsersRate = response.data.map(
+            ({ id, userid, month, year, ...rest }) => ({
+              ...rest, // Spread the rest of the properties
+            })
+          );
+
+          // Check if there are any users' rates for the selected month and year
+          this.noData = this.UsersRate.length === 0;
+        } else {
+          // If the response status is not 200, handle it as an error
+          console.error("Error: Unexpected status code", response.status);
+          this.noData = true;
+          this.UsersRate = []; // Reset UsersRate to an empty array
+        }
       } catch (error) {
         console.error("Error filtering users rate:", error);
+        this.noData = true; // Set noData to true in case of any error
+        this.UsersRate = []; // Reset UsersRate to an empty array
       }
     },
 
@@ -165,7 +205,7 @@ export default {
     async generateMarinReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateOcciReport",
+          "http://localhost:8080/generateMarinReport",
           {
             month: this.month,
             year: this.year,
@@ -175,7 +215,7 @@ export default {
         const url = window.URL.createObjectURL(new Blob([response.data]));
 
         // Construct the file name using the month and year values
-        const fileName = `RMFB_Report_${this.month}_${this.year}.xlsx`;
+        const fileName = `Marinduque_Report_${this.month}_${this.year}.xlsx`;
 
         const link = document.createElement("a");
         link.href = url;
@@ -186,6 +226,35 @@ export default {
       } catch (error) {
         console.error("Error generating report:", error);
       }
+    },
+
+    generatePdf() {
+      // Replace 'your-server-url' with the actual URL of your server
+      axios
+        .post(
+          "/generatePdfMarinduque",
+          {
+            month: this.month,
+            year: this.year,
+          },
+          {
+            responseType: "blob", // Set the response type to 'blob' to handle binary data
+          }
+        )
+        .then((response) => {
+          // Handle the PDF response here, e.g., initiate download
+          const blob = new Blob([response.data], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `Marinduque_Report_${this.month}_${this.year}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error("Error generating PDF:", error);
+        });
     },
   },
 };

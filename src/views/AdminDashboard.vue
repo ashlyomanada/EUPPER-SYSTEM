@@ -2,13 +2,13 @@
   <!-- SIDEBAR -->
   <section id="sidebar">
     <ul class="side-menu top" style="padding-left: 0">
-      <div
-        class="admin-logo"
-        v-for="userData in userData"
-        :key="userData.admin_id"
-      >
+      <div class="admin-logo">
         <img src="./img/logo.png" alt="" id="logo" />
-        <h3 id="adminName">
+        <h3
+          v-for="userData in userData"
+          :key="userData.admin_id"
+          id="adminName"
+        >
           {{ userData.username }}
         </h3>
       </div>

@@ -94,7 +94,7 @@
         <!-- Loop through columns to dynamically render input fields -->
         <template v-for="(column, colIndex) in columns" :key="colIndex">
           <label :for="`edit${column}`">{{ column.replace(/_/g, " ") }}</label>
-          <input :type="number" v-model="selectedRating[column]" />
+          <input :type="number" v-model="selectedRating[column]" step="any" />
         </template>
 
         <div class="modal-buttons">
@@ -125,7 +125,7 @@ export default {
   created() {
     this.fetchColumns();
     this.getUsername();
-    this.fetchData();
+    // this.fetchData();
   },
 
   methods: {
@@ -165,20 +165,20 @@ export default {
       }
     },
 
-    fetchData() {
-      const userId = this.selectedUser;
-      if (userId) {
-        axios
-          .get(`/viewUserPPORates/${userId}`)
-          .then((response) => {
-            this.userRatings = response.data;
-            this.dataFetched = true;
-          })
-          .catch((error) => {
-            console.error("Error fetching user data:", error);
-          });
-      }
-    },
+    // fetchData() {
+    //   const userId = this.selectedUser;
+    //   if (userId) {
+    //     axios
+    //       .get(`/viewUserPPORates/${userId}`)
+    //       .then((response) => {
+    //         this.userRatings = response.data;
+    //         this.dataFetched = true;
+    //       })
+    //       .catch((error) => {
+    //         console.error("Error fetching user data:", error);
+    //       });
+    //   }
+    // },
 
     async fetchDataByTbl() {
       try {

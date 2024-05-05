@@ -87,10 +87,10 @@
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <router-link to="/" class="logout">
+        <a @click="logout" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
-        </router-link>
+        </a>
       </li>
     </ul>
   </section>
@@ -187,40 +187,36 @@ export default {
       profilePic: "",
       status: "",
       currentDateTime: "", // To store current date and time
+      dynamicallyLoadedScripts: [], // Array to store loaded script elements
     };
   },
   async created() {
     await this.loadScripts(["/userscript.js"]);
-
-    const storedUserId = sessionStorage.getItem("id");
-    if (storedUserId) {
-      axios
-        .get(`/getUserData/${storedUserId}`)
-        .then((response) => {
+    await this.loadData();
+  },
+  methods: {
+    async loadData() {
+      try {
+        const storedUserId = sessionStorage.getItem("id");
+        if (storedUserId) {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
           const userData = response.data;
-          this.userId = userData.id;
-          this.userName = userData.username;
           this.officeLocation = userData.office;
-          this.phoneNumber = userData.phone_no;
-          this.email = userData.email;
           this.profilePic = userData.image;
           this.status = userData.status;
-
           if (this.status === "Disable") {
             this.selectedComponent = "UserPPO";
           }
-
-          // Initial call to update currentDateTime
-          this.updateCurrentDateTime();
-          // Set interval to update currentDateTime every second (1000 ms)
-          setInterval(this.updateCurrentDateTime, 1000);
-        })
-        .catch((error) => {
-          console.error("Error fetching user data:", error);
-        });
-    }
-  },
-  methods: {
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    },
+    async logout() {
+      this.unloadScripts();
+      sessionStorage.removeItem("id");
+      router.push("/");
+    },
     okayBtn() {
       this.status = "Closed";
     },
@@ -236,22 +232,32 @@ export default {
       };
       this.currentDateTime = currentDate.toLocaleDateString("en-US", options);
     },
-    logout() {
-      router.push("/login");
-    },
+
     showComponent(componentName) {
       this.selectedComponent = componentName;
     },
-    loadScripts(scriptUrls) {
+    unloadScripts() {
+      // Remove all dynamically loaded script elements from the DOM
       const head = document.getElementsByTagName("head")[0];
-      return Promise.all(
+      this.dynamicallyLoadedScripts.forEach((script) => {
+        head.removeChild(script);
+      });
+      // Clear the array tracking loaded script elements
+      this.dynamicallyLoadedScripts = [];
+    },
+    async loadScripts(scriptUrls) {
+      const head = document.getElementsByTagName("head")[0];
+      await Promise.all(
         scriptUrls.map((scriptUrl) => {
           return new Promise((resolve, reject) => {
             const script = document.createElement("script");
             script.type = "text/javascript";
             script.src = scriptUrl;
             script.async = true;
-            script.onload = resolve;
+            script.onload = () => {
+              this.dynamicallyLoadedScripts.push(script);
+              resolve();
+            };
             script.onerror = reject;
             head.appendChild(script);
           });
