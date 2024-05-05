@@ -4,16 +4,16 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class RatingModel extends Model
+class DueModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'rates';
+    protected $table            = 'dueTbl';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['month','year','offices','percentage_60','percentage_40','total','level'];
+    protected $allowedFields    = ['date',];
 
     // Dates
     protected $useTimestamps = false;

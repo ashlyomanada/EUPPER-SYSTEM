@@ -5,15 +5,6 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\RestFul\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\OccidentalModel;
-use App\Models\OrientalModel;
-use App\Models\PalawanModel;
-use App\Models\RomblonModel;
-use App\Models\MarinduqueModel;
-use App\Models\UserPPOModel;
-use App\Models\UserRMFBModel;
-use App\Models\PuertoPrinsesaModel;
-use App\Models\PpocpoModel;
 use App\Models\MainModel;
 use CodeIgniter\I18n\Time;
 use Config\Services;
@@ -101,7 +92,6 @@ class UserController extends ResourceController
         return $this->response->setJSON($columnNames);
     }
 
-  
     public function insertDataPPO()
     {
         $request = service('request');
@@ -291,7 +281,6 @@ class UserController extends ResourceController
         }
     }
 
-
     public function viewUserRMFBRates($userId)
     {
         if (!empty($userId)) {
@@ -456,33 +445,32 @@ class UserController extends ResourceController
        
     }
 
-
     protected function sendResetEmail($email, $token)
-{
-    $emailConfig = config('Email');
-    $emailService = Services::email();
-    $emailService->initialize($emailConfig);
+    {
+        $emailConfig = config('Email');
+        $emailService = Services::email();
+        $emailService->initialize($emailConfig);
 
-    $emailService->setFrom('your_email@example.com', 'Your Name');
-    $emailService->setTo($email);
-    $emailService->setSubject('Reset Your Password');
+        $emailService->setFrom('your_email@example.com', 'Your Name');
+        $emailService->setTo($email);
+        $emailService->setSubject('Reset Your Password');
 
-    // Replace 'http://your_frontend_url/reset-password' with your actual frontend reset password URL
-    $resetLink = 'http://localhost:8081/resetPassword/' . $token;
+        // Replace 'http://your_frontend_url/reset-password' with your actual frontend reset password URL
+        $resetLink = 'http://localhost:8081/resetPassword/' . $token;
 
-    $emailService->setMessage("Click this link to reset your password: $resetLink");
+        $emailService->setMessage("Click this link to reset your password: $resetLink");
 
-    try {
-        $emailService->send();
-    } catch (\Exception $e) {
-        // Handle email sending failure
-        log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
-        // You can also throw an exception to handle it in the frontend
-        throw new \Exception('Failed to send password reset email');
+        try {
+            $emailService->send();
+        } catch (\Exception $e) {
+            // Handle email sending failure
+            log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
+            // You can also throw an exception to handle it in the frontend
+            throw new \Exception('Failed to send password reset email');
+        }
     }
-}
 
-public function resetPassword()
+    public function resetPassword()
     {
         $json = $this->request->getJSON();
         $token = $json->token;

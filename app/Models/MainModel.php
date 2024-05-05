@@ -44,5 +44,10 @@ class MainModel extends Model
         return $this->find($userId);
     }
 
+    public function getAllPhoneNumbers()
+    {
+        return $this->select('phone_no')->findAll();
+    }
+
    
 }
