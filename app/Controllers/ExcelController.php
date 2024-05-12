@@ -190,6 +190,15 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -341,7 +350,7 @@ class ExcelController extends ResourceController
                 }
 
 
-
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -368,7 +377,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'PPO')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -385,6 +397,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'PPO',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -395,6 +408,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -1000,6 +1014,14 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -1152,6 +1174,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -1178,7 +1201,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'RMFB')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -1195,6 +1221,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'RMFB',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -1205,6 +1232,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -1782,6 +1810,15 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -1934,6 +1971,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -1960,7 +1998,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'Occidental')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -1977,6 +2018,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'Occidental',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -1987,6 +2029,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -2524,6 +2567,15 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -2676,6 +2728,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -2702,7 +2755,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'Oriental')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -2719,6 +2775,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'Oriental',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -2729,6 +2786,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -3266,6 +3324,15 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -3418,6 +3485,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -3444,7 +3512,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'Marinduque')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -3461,6 +3532,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'Marinduque',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -3471,6 +3543,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -4008,6 +4081,15 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -4160,6 +4242,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -4186,7 +4269,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'Romblon')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -4203,6 +4289,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'Romblon',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -4213,6 +4300,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -4751,6 +4839,15 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
+
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
@@ -4903,6 +5000,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -4929,7 +5027,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'Palawan')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -4946,6 +5047,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'Palawan',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -4956,6 +5058,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 
@@ -5493,11 +5596,19 @@ class ExcelController extends ResourceController
         $sheet->getStyle('P7')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
         $sheet->getStyle('P7')->getAlignment()->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
         $sheet->getColumnDimension('P')->setWidth(10); 
+        $spreadsheet->getActiveSheet()->getPageSetup()->setPrintArea('A1:P100'); // Adjust the range as needed
+
+        // Set scaling to fit all columns on one page
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToWidth(1);
+        $spreadsheet->getActiveSheet()->getPageSetup()->setFitToHeight(0);
+
+        // Insert page break after row 50
+        $spreadsheet->getActiveSheet()->setBreak('A50', \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::BREAK_ROW);
 
         // Use the database connection to execute the query to fetch user offices
         
         $usersAllOffices = $db->query("SELECT DISTINCT office FROM tbl_users");
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4");
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4 ");
         $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4");
         
         $userOffices =$usersAllOffices->getResultArray();
@@ -5646,6 +5757,7 @@ class ExcelController extends ResourceController
 
 
 
+                $counter = 1;
                 foreach ($columnNames as $columnName) {
                     // Skip the columns 'id', 'userid', 'month', 'year', and 'office'
                     if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
@@ -5672,7 +5784,10 @@ class ExcelController extends ResourceController
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
                             ->where('level', 'Puerto')
-                            ->set(['total' => $totalPercentage, 'percentage_60' => $averageSums[$columnName], 'percentage_40' => $averageSums2[$columnName]])
+                            ->set(['total' => $totalPercentage, 
+                                   'percentage_60' => $averageSums[$columnName], 
+                                   'percentage_40' => $averageSums2[$columnName],
+                                   'foreignOfficeId' => $counter,])
                             ->update();
                 
                         if (!$updated) {
@@ -5689,6 +5804,7 @@ class ExcelController extends ResourceController
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
                             'level' => 'Puerto',
+                            'foreignOfficeId' => $counter,
                         ];
                 
                         // Perform insert
@@ -5699,6 +5815,7 @@ class ExcelController extends ResourceController
                             return $this->failServerError('Failed to insert data into rates table.');
                         }
                     }
+                    $counter++;
                 }
                 
                 

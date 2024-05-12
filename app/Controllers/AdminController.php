@@ -15,13 +15,13 @@ class AdminController extends ResourceController
 {
     public function getUsers(){
         $main = new MainModel();
-        $data = $main->findall();
+        $data = $main->where('role','user')->findAll();
         return $this->respond($data,200);
     }
 
     public function getUsersInfo(){
         $main = new MainModel();
-        $data = $main->findAll();
+        $data = $main->where('role','user')->findAll();
         return $this->respond($data, 200);
     }
     
@@ -132,7 +132,7 @@ class AdminController extends ResourceController
         $db = \Config\Database::connect(); // Load the database connection
 
         // Use the database connection to execute the query
-        $query = $db->query("SELECT office FROM tbl_users");
+        $query = $db->query("SELECT office FROM tbl_users WHERE role = 'user'");
         $userOffices = $query->getResultArray();
 
         if (!empty($userOffices)) {
@@ -476,7 +476,7 @@ class AdminController extends ResourceController
 
     public function getAllUsersName(){
         $model = new MainModel();
-        $data = $model->findAll();
+        $data = $model->where('role','user')->findAll();
         return $this->respond($data,200);
     }
 

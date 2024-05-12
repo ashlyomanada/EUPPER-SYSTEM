@@ -1,0 +1,40 @@
+ERROR - 2024-05-11 12:01:48 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE role = 'user'' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT DISTINCT...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT DISTINCT...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT DISTINCT...')
+#3 C:\laragon\www\projectbackend\app\Controllers\ExcelController.php(1028): CodeIgniter\Database\BaseConnection->query('SELECT DISTINCT...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\ExcelController->generateRMFBOffice()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\ExcelController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-05-11 12:01:48 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE role = 'user'' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\ExcelController.php(1028): CodeIgniter\Database\BaseConnection->query('SELECT DISTINCT office FROM tbl_users LIMIT 4 WHERE role = \'user\'')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\ExcelController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\ExcelController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-05-11 12:01:55 --> mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE role = 'user'' at line 1 in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('SELECT DISTINCT...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('SELECT DISTINCT...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT DISTINCT...')
+#3 C:\laragon\www\projectbackend\app\Controllers\ExcelController.php(1028): CodeIgniter\Database\BaseConnection->query('SELECT DISTINCT...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\ExcelController->generateRMFBOffice()
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\ExcelController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-05-11 12:01:55 --> You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE role = 'user'' at line 1
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\ExcelController.php(1028): CodeIgniter\Database\BaseConnection->query('SELECT DISTINCT office FROM tbl_users LIMIT 4 WHERE role = \'user\'')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\ExcelController->generateRMFBOffice()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\ExcelController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

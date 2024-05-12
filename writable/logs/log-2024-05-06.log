@@ -1,0 +1,24 @@
+CRITICAL - 2024-05-06 07:02:43 --> A non-numeric value encountered
+in APPPATH\Controllers\MainController.php on line 164.
+ 1 APPPATH\Controllers\MainController.php(164): CodeIgniter\Debug\Exceptions->errorHandler(2, 'A non-numeric value encountered', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\MainController.php', 164, [...])
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->getAllRates()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-06 07:36:35 --> Illegal string offset 'Field'
+in APPPATH\Controllers\MainController.php on line 222.
+ 1 APPPATH\Controllers\MainController.php(222): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Illegal string offset \'Field\'', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\MainController.php', 222, [...])
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->getAllRates()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-06 09:16:34 --> Invalid argument supplied for foreach()
+in APPPATH\Controllers\MainController.php on line 205.
+ 1 APPPATH\Controllers\MainController.php(205): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Invalid argument supplied for foreach()', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\MainController.php', 205, [...])
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->getAllRates()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

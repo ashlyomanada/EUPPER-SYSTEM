@@ -67,6 +67,15 @@ $routes->post('insertDataPuer', 'UserController::insertDataPuer');
 $routes->post('sendPasswordResetEmail', 'UserController::sendPasswordResetEmail');
 $routes->post('resetPassword', 'UserController::resetPassword');
 
+$routes->get('/getAllAverageRatesPPO/(:num)', 'MainController::getAllAverageRatesPPO/$1');
+$routes->get('/getAllAverageRatesRMFB/(:num)', 'MainController::getAllAverageRatesRMFB/$1');
+$routes->get('/getAllAverageRatesOccidental/(:num)', 'MainController::getAllAverageRatesOccidental/$1');
+$routes->get('/getAllAverageRatesOriental/(:num)', 'MainController::getAllAverageRatesOriental/$1');
+$routes->get('/getAllAverageRatesMarinduque/(:num)', 'MainController::getAllAverageRatesMarinduque/$1');
+$routes->get('/getAllAverageRatesRomblon/(:num)', 'MainController::getAllAverageRatesRomblon/$1');
+$routes->get('/getAllAverageRatesPalawan/(:num)', 'MainController::getAllAverageRatesPalawan/$1');
+$routes->get('/getAllAverageRatesPuerto/(:num)', 'MainController::getAllAverageRatesPuerto/$1');
+
 $routes->get('/getAllRatesPPO', 'MainController::getAllRatesPPO');
 $routes->get('/getAllRatesRMFB', 'MainController::getAllRatesRMFB');
 $routes->get('/getAllRatesOccidental', 'MainController::getAllRatesOccidental');

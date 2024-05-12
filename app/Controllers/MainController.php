@@ -85,7 +85,6 @@ class MainController extends ResourceController
         $userData = [
             'username' => $request->getPost('username'),
             'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
-            'confirmpassword' => $request->getPost('confirmpassword'),
             'office' => $request->getPost('office'),
             'phone_no' => $request->getPost('phone_no'),
             'email' => $request->getPost('email'),
@@ -133,6 +132,380 @@ class MainController extends ResourceController
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
+
+    // public function getAllRates()
+    // {
+    //     $json = $this->request->getJSON();
+    //     $year = 2024;
+    //     $ratingModel = new \App\Models\RatingModel();
+        
+    //     $db = \Config\Database::connect();
+
+    //     $table = 'ppo_cpo';
+    //     $query = $db->query("DESCRIBE $table");
+    //     $columns = $query->getResultArray();
+
+    //     $iterate = 1;
+    //     $columnData = [];
+    //     $data = [];
+    //     foreach($columns as $column) {
+    //         $columnName = $column['Field'];
+    //         if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+    //             continue;
+    //         }
+    //         $columnData[] = $columnName;
+    //         $data[$iterate] = $ratingModel->where('year', $year)
+    //                                     ->where('level', 'PPO')
+    //                                     ->where('foreignOfficeId', $iterate)
+    //                                     ->findAll();
+    //         $iterate++;
+    //     }
+
+    //     // Calculate total sum
+    //     $totalSum = 0;
+    //     foreach ($data as $entry) {
+    //         foreach ($entry as $datas) {
+    //             $totalSum += $datas['total'];
+    //         }
+    //     }
+
+    //     // Calculate average total
+    //     $averageTotal = $totalSum / 12;
+
+    //     // Create an associative array to hold both data, columnData, and averageTotal
+    //     $responseData = [
+    //         'data' => $data,
+    //         'columnData' => $columnData,
+    //         'averageTotal' => $averageTotal
+    //     ];
+
+    //     // Return the associative array in the response
+    //     return $this->respond($responseData, 200);
+
+
+    // }
+
+
+    public function getAllAverageRatesPPO($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'ppo_cpo';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'PPO')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesRMFB($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'rmfb_tbl';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'RMFB')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesOccidental($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'occidental_cps';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'Occidental')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesOriental($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'oriental_cps';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'Oriental')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesMarinduque($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'marinduque_cps';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'Marindque')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesRomblon($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'romblon_cps';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'Romblon')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesPalawan($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'palawan_cps';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'Palawan')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function getAllAverageRatesPuerto($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'puertop_cps';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'Puerto')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
 
     public function getAllRatesPPO()
     {
@@ -636,6 +1009,7 @@ class MainController extends ResourceController
             return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
         }
     }
+
 
     public function getUserAdmin($userId)
     {
