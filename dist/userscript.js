@@ -1,10 +1,12 @@
-const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li a");
+const allSideMenuLinks = document.querySelectorAll(
+  "#sidebar .side-menu.top li a"
+);
 
-allSideMenu.forEach((item) => {
+allSideMenuLinks.forEach((item) => {
   const li = item.parentElement;
 
   item.addEventListener("click", function () {
-    allSideMenu.forEach((i) => {
+    allSideMenuLinks.forEach((i) => {
       i.parentElement.classList.remove("active");
     });
     li.classList.add("active");
@@ -42,9 +44,19 @@ if (window.innerWidth < 768) {
   adminName.style.visibility = "hidden";
 }
 
+const profile = document.getElementById("profile");
+
+profile.addEventListener("click", () => {
+  allSideMenuLinks.forEach((item) => {
+    const li = item.parentElement;
+    li.classList.remove("active");
+  });
+  // Assuming userprof is a specific link you want to mark as active
+  profile.parentElement.classList.add("active");
+});
+
 const switchMode = document.getElementById("switch-mode");
 const main = document.getElementById("usermain");
-const form = document.getElementById("form");
 
 switchMode.addEventListener("change", function () {
   if (this.checked) {
@@ -54,15 +66,4 @@ switchMode.addEventListener("change", function () {
     document.body.classList.remove("dark");
     main.style.backgroundColor = "#fbfbfb";
   }
-});
-
-const userprof = document.getElementById("userprof");
-const profile = document.getElementById("profile");
-
-profile.addEventListener("click", () => {
-  allSideMenu.forEach((item) => {
-    const li = item.parentElement;
-    li.classList.remove("active");
-  });
-  userprof.classList.add("active");
 });
