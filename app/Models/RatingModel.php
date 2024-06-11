@@ -7,13 +7,13 @@ use CodeIgniter\Model;
 class RatingModel extends Model
 {
     protected $DBGroup          = 'default';
-    protected $table            = 'rates';
+    protected $table            = 'ratings';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['month','year','offices','percentage_60','percentage_40','total','level','foreignOfficeId'];
+    protected $allowedFields    = ['month','year','office','do',' didm',' di',' dpcr',' dl',' dhrdd','dprm',' dictm','dpl',' dc','drd'];
 
     // Dates
     protected $useTimestamps = false;

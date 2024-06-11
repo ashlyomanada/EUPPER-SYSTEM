@@ -13,7 +13,7 @@ class MainModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['username','password','office','phone_no','email','image','status','role','reset_token','token_expires_at'];
+    protected $allowedFields    = ['username','password','confirmpassword','office','phone_no','email','image','status','role'];
 
     // Dates
     protected $useTimestamps = false;
@@ -42,12 +42,6 @@ class MainModel extends Model
     public function getUserById($userId)
     {
         return $this->find($userId);
-    }
-
-
-    public function getAllPhoneNumbers()
-    {
-        return $this->select('phone_no')->findAll();
     }
 
    
