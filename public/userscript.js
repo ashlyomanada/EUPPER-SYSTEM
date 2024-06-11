@@ -44,6 +44,17 @@ if (window.innerWidth < 768) {
   adminName.style.visibility = "hidden";
 }
 
+const profile = document.getElementById("profile");
+
+profile.addEventListener("click", () => {
+  allSideMenuLinks.forEach((item) => {
+    const li = item.parentElement;
+    li.classList.remove("active");
+  });
+  // Assuming userprof is a specific link you want to mark as active
+  profile.parentElement.classList.add("active");
+});
+
 const switchMode = document.getElementById("switch-mode");
 const main = document.getElementById("usermain");
 
@@ -55,15 +66,4 @@ switchMode.addEventListener("change", function () {
     document.body.classList.remove("dark");
     main.style.backgroundColor = "#fbfbfb";
   }
-});
-
-const profile = document.getElementById("profile");
-
-profile.addEventListener("click", () => {
-  allSideMenuLinks.forEach((item) => {
-    const li = item.parentElement;
-    li.classList.remove("active");
-  });
-  // Assuming userprof is a specific link you want to mark as active
-  profile.parentElement.classList.add("active");
 });

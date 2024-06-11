@@ -37,7 +37,7 @@
 
 <script>
 import axios from "axios";
-import { router } from "../router"; // Import Vue Router instance
+import { useRouter } from "vue-router"; // Import Vue Router instance
 
 export default {
   data() {
@@ -46,6 +46,10 @@ export default {
       registrationStatus: null,
       processing: false, // Flag to track form processing state
     };
+  },
+  setup() {
+    const router = useRouter(); // Correctly use Vue Router's useRouter hook
+    return { router };
   },
   methods: {
     async sendPasswordResetEmail() {
@@ -64,14 +68,15 @@ export default {
           this.processing = false;
           alert("Check your email for verification");
           const token = response.data.token;
-          router.push({ name: "ResetPassword", params: { token } });
+          this.router.push({ name: "ResetPassword", params: { token } }); // Use this.router to navigate
         } else {
           this.registrationStatus = "error";
           this.email = "";
           this.processing = true;
         }
       } catch (e) {
-        console.log(e);
+        // console.log(e);
+        this.processing = false; // Reset processing flag on error
       }
     },
   },

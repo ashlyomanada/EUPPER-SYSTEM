@@ -1,38 +1,56 @@
 <template>
-  <div class="head-title"></div>
-
-  <div class="dash-box">
-    <BarChart />
-
-    <!-- <ul class="box-info">
-      <li>
+  <div class="head-title">
+    <ul class="box-info">
+      <!-- <li>
         <i class="bx bxs-calendar-check"></i>
         <span class="text">
           <h3>{{ ratingCount }}</h3>
           <p>Ratings</p>
         </span>
-      </li>
-      <li>
+      </li> -->
+      <!-- <li>
         <i class="bx bxs-group"></i>
         <span class="text">
           <h3>{{ userCount }}</h3>
           <p>Users</p>
         </span>
-      </li>
-      <li>
+      </li> -->
+      <!-- <li>
         <i class="bx bxs-calendar-check"></i>
         <span class="text">
           <h3>0</h3>
           <p>Announcements</p>
         </span>
-      </li>
-    </ul> -->
+      </li> -->
+    </ul>
+  </div>
+
+  <div class="dash-box">
+    <BarChart />
+    <div class="mainDashboard">
+      <PPOBarChart />
+      <RMFBBarChart />
+      <OccidentalBarChart />
+      <OrientalBarChart />
+      <MarinduqueBarChart />
+      <RomblonBarChart />
+      <PalawanBarChart />
+      <PuertoBarChart />
+    </div>
   </div>
 </template>
 
 <script>
 import { defineComponent, PropType } from "vue";
-import BarChart from "../components/BarChart.vue";
+import BarChart from "./Charts/BarChart.vue";
+import PPOBarChart from "./Charts/PPOBarChart.vue";
+import RMFBBarChart from "./Charts/RMFBBarChart.vue";
+import OccidentalBarChart from "./Charts/OccidentalBarChart.vue";
+import OrientalBarChart from "./Charts/OrientalBarChart.vue";
+import MarinduqueBarChart from "./Charts/MarinduqueBarChart.vue";
+import RomblonBarChart from "./Charts/RomblonBarChart.vue";
+import PalawanBarChart from "./Charts/PalawanBarChart.vue";
+import PuertoBarChart from "./Charts/PuertoBarChart.vue";
 
 export default defineComponent({
   data() {
@@ -44,6 +62,14 @@ export default defineComponent({
 
   components: {
     BarChart,
+    PPOBarChart,
+    RMFBBarChart,
+    OccidentalBarChart,
+    OrientalBarChart,
+    MarinduqueBarChart,
+    RomblonBarChart,
+    PalawanBarChart,
+    PuertoBarChart,
   },
   mounted() {
     this.fetchRatingCount();
@@ -92,6 +118,14 @@ export default defineComponent({
 });
 </script>
 <style>
+.mainDashboard {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
 .dash-box {
   display: grid;
   grid-template-columns: repeat(1, 1fr);

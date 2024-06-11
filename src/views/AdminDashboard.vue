@@ -4,11 +4,7 @@
     <ul class="side-menu top" style="padding-left: 0">
       <div class="admin-logo">
         <img src="./img/logo.png" alt="" id="logo" />
-        <h3
-          v-for="userData in userData"
-          :key="userData.admin_id"
-          id="adminName"
-        >
+        <h3 id="adminName" class="text-center">
           {{ userData.username }}
         </h3>
       </div>
@@ -21,7 +17,11 @@
       <li>
         <a href="#" id="rate-btn" @click="toggleButtons">
           <div class="rate">
-            <i class="bx bxs-shopping-bag-alt"></i>
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Ratings</span>
           </div>
           <i v-if="showButtons" class="fa-solid fa-chevron-down"></i>
@@ -30,20 +30,32 @@
       </li>
       <div v-show="showButtons" class="li-div">
         <li>
-          <a href="#" @click="showComponent('PPO')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('PPORates')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">PPO CPO Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('RMFB')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('RMFBRates')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">RMFB PMFC Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('MPS')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('MPSRates')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">MPS CPS Ratings</span>
           </a>
         </li>
@@ -51,7 +63,11 @@
       <li>
         <a href="#" id="rate-btn2" @click="toggleButtons2">
           <div class="rate">
-            <i class="bx bxs-group"></i>
+            <i
+              class="fa fa-user"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Manage User</span>
           </div>
           <i v-if="showButtons2" class="fa-solid fa-chevron-down"></i>
@@ -67,19 +83,41 @@
         </li>
         <li>
           <a href="#" @click="showComponent('Ratings')">
-            <i class="bx bxs-group"></i>
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">User Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('AdminGmail')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('Announcement')">
+            <i
+              class="fa fa-bullhorn"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Announcement</span>
           </a>
         </li>
         <li>
+          <a href="#" @click="showComponent('AddAdmin')">
+            <i
+              class="fa fa-plus"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
+            <span class="text">Add Admin</span>
+          </a>
+        </li>
+        <li>
           <a href="#" @click="showComponent('AddUser')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+            <i
+              class="fa fa-plus"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Add User</span>
           </a>
         </li>
@@ -87,7 +125,11 @@
       <li>
         <a href="#" id="rate-btn" @click="toggleButtons3">
           <div class="rate">
-            <i class="bx bxs-shopping-bag-alt"></i>
+            <i
+              class="fa fa-briefcase"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Manage Offices</span>
           </div>
           <i v-if="showButtons3" class="fa-solid fa-chevron-down"></i>
@@ -97,43 +139,63 @@
       <div v-show="showButtons3" class="li-div">
         <li>
           <a href="#" @click="showComponent('AddPPO')">
-            <i class="bx bxs-message-dots"></i>
+            <i
+              class="fa fa-briefcase"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Manage PPO</span>
           </a>
         </li>
         <li>
           <a href="#" @click="showComponent('AddRMFB')">
-            <i class="bx bxs-message-dots"></i>
+            <i
+              class="fa fa-briefcase"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Manage RMFB</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('AddMPS')">
-            <i class="bx bxs-message-dots"></i>
+          <a href="#" @click="showComponent('AdminOccidental')">
+            <i
+              class="fa fa-briefcase"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">Manage MPS</span>
           </a>
         </li>
       </div>
       <li>
         <a href="#" @click="showComponent('ManageAdmin')">
-          <i class="bx bxs-message-dots"></i>
+          <i
+            class="fa fa-user-circle"
+            aria-hidden="true"
+            style="padding: 0.5rem 0.8rem"
+          ></i>
           <span class="text">Manage Admin</span>
         </a>
       </li>
 
       <li>
         <a href="https://mail.google.com/" target="blank">
-          <i class="bx bxs-group"></i>
+          <i
+            class="fa fa-envelope"
+            aria-hidden="true"
+            style="padding: 0.5rem 0.8rem"
+          ></i>
           <span class="text">Your Gmail</span>
         </a>
       </li>
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <router-link to="/" class="logout">
+        <a style="cursor: pointer" @click="logout" to="/" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
-        </router-link>
+        </a>
       </li>
     </ul>
   </section>
@@ -149,15 +211,16 @@
     <main id="main">
       <Dashboard v-if="selectedComponent === 'Dashboard'" />
       <Ratings v-if="selectedComponent === 'Ratings'" />
-      <PPO v-if="selectedComponent === 'PPO'" />
-      <RMFB v-if="selectedComponent === 'RMFB'" />
-      <MPS v-if="selectedComponent === 'MPS'" />
+      <PPORates v-if="selectedComponent === 'PPORates'" />
+      <RMFBRates v-if="selectedComponent === 'RMFBRates'" />
+      <MPSRates v-if="selectedComponent === 'MPSRates'" />
       <ManageUser v-if="selectedComponent === 'ManageUser'" />
       <ManageAdmin v-if="selectedComponent === 'ManageAdmin'" />
-      <AdminGmail v-if="selectedComponent === 'AdminGmail'" />
+      <Announcement v-if="selectedComponent === 'Announcement'" />
       <AddPPO v-if="selectedComponent === 'AddPPO'" />
       <AddRMFB v-if="selectedComponent === 'AddRMFB'" />
-      <AddMPS v-if="selectedComponent === 'AddMPS'" />
+      <AdminOccidental v-if="selectedComponent === 'AdminOccidental'" />
+      <AddAdmin v-if="selectedComponent === 'AddAdmin'" />
       <AddUser v-if="selectedComponent === 'AddUser'" />
     </main>
     <!-- MAIN -->
@@ -172,14 +235,16 @@ import Dashboard from "../components/Dashboard.vue";
 import Ratings from "../components/Ratings.vue";
 import ManageUser from "../components/ManageUser.vue";
 import ManageAdmin from "../components/ManageAdmin.vue";
-import AdminGmail from "../components/AdminGmail.vue";
-import PPO from "../components/PPO.vue";
-import RMFB from "../components/RMFB.vue";
-import MPS from "../components/MPS-CPS.vue";
+import Announcement from "../components/AdminGmail.vue";
+import PPORates from "../components/PPO.vue";
+import RMFBRates from "../components/RMFB.vue";
+import MPSRates from "../components/MPS-CPS.vue";
 import AddPPO from "../components/AddPPO.vue";
 import AddRMFB from "../components/AddRMFB.vue";
-import AddMPS from "../components/AddMPS.vue";
+import AdminOccidental from "../components/AddMPS.vue";
 import AddUser from "../components/AddUser.vue";
+import AddAdmin from "../components/AddAdmin.vue";
+import router from "@/router";
 
 export default {
   components: {
@@ -188,15 +253,17 @@ export default {
     Ratings,
     ManageUser,
     ManageAdmin,
-    AdminGmail,
-    PPO,
-    RMFB,
-    MPS,
+    Announcement,
+    PPORates,
+    RMFBRates,
+    MPSRates,
     AddPPO,
     AddRMFB,
-    AddMPS,
+    AdminOccidental,
     AddUser,
+    AddAdmin,
   },
+
   data() {
     return {
       selectedComponent: "Dashboard",
@@ -206,54 +273,67 @@ export default {
       userData: "",
     };
   },
+  watch: {
+    selectedComponent: function (newComponent) {
+      // Update document title based on the selected component
+      document.title = "EUPER - " + newComponent;
+    },
+  },
   async created() {
-    await this.loadScripts(["/script.js"]);
+    this.toggle();
   },
   mounted() {
     this.fetchUserData();
   },
   methods: {
+    async logout() {
+      sessionStorage.removeItem("id");
+      router.push("/");
+    },
     showComponent(componentName) {
       this.selectedComponent = componentName;
     },
     toggleButtons() {
       this.showButtons = !this.showButtons;
+      this.showButtons2 = false;
+      this.showButtons3 = false;
     },
     toggleButtons2() {
       this.showButtons2 = !this.showButtons2;
+      this.showButtons = false;
+      this.showButtons3 = false;
     },
     toggleButtons3() {
       this.showButtons3 = !this.showButtons3;
+      this.showButtons2 = false;
+      this.showButtons = false;
     },
 
-    loadScripts: function (scriptUrls) {
-      // Changed arrow function to regular function
-      const head = document.getElementsByTagName("head")[0];
-
-      return Promise.all(
-        scriptUrls.map(async (scriptUrl) => {
-          const script = document.createElement("script");
-          script.type = "text/javascript";
-          script.src = scriptUrl;
-          script.async = true;
-
-          return new Promise((resolve, reject) => {
-            script.onload = resolve;
-            script.onerror = reject;
-            head.appendChild(script);
-          });
-        })
+    toggle() {
+      const allSideMenu = document.querySelectorAll(
+        "#sidebar .side-menu.top li a"
       );
+
+      allSideMenu.forEach((item) => {
+        const li = item.parentElement;
+
+        item.addEventListener("click", function () {
+          allSideMenu.forEach((i) => {
+            i.parentElement.classList.remove("active");
+          });
+          li.classList.add("active");
+        });
+      });
     },
 
     async fetchUserData() {
       const storedUserId = sessionStorage.getItem("id");
       if (storedUserId) {
         try {
-          const response = await axios.get(`/getUserAdmin/${storedUserId}`);
+          const response = await axios.get(`/getUserData/${storedUserId}`);
           if (response.status === 200) {
             this.userData = response.data;
-            console.log(response.data);
+            // console.log(response.data);
           } else {
             console.error(`Unexpected response status: ${response.status}`);
           }

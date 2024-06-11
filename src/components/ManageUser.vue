@@ -3,14 +3,18 @@
     <div class="order">
       <div class="head">
         <h3>List of Users</h3>
-        <input type="datetime-local" v-model="dueDate" />
+        <input
+          type="datetime-local"
+          v-model="dueDate"
+          style="background: var(--light); color: var(--dark)"
+        />
         <button class="find" @click="SetDate">Set Closing</button>
         <button class="find" @click="changeAllUserStatus">
           <i class="fa-solid fa-power-off"></i>
           Change All User Status
         </button>
         <div class="d-flex gap-2">
-          <button class="find" @click="findData">
+          <button class="find d-flex align-items-center" @click="findData">
             <i class="bx bx-search"></i>Find
           </button>
           <input
@@ -70,117 +74,199 @@
       </table>
     </div>
   </div>
-  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
-    <form
-      class="form"
-      id="modal-form3"
-      :style="{ display: formVisible ? 'block' : 'none' }"
-    >
-      <div class="d-flex flex-column my-2">
-        <label for="">Username</label>
-        <input
-          v-model="selectedUser.username"
-          type="text"
-          placeholder="Username"
-          class="input"
-        />
-      </div>
-      <div class="d-flex flex-column my-2">
-        <label for="">Office:</label>
-        <input
-          v-model="selectedUser.office"
-          type="text"
-          placeholder="Office"
-          class="input"
-        />
-      </div>
-      <div class="d-flex flex-column my-2">
-        <label for="">Email:</label>
-        <input
-          v-model="selectedUser.email"
-          type="text"
-          placeholder="Email"
-          class="input"
-        />
-      </div>
-      <div class="d-flex flex-column my-2">
-        <label for="">Phone Number:</label>
-        <input
-          v-model="selectedUser.phone_no"
-          type="text"
-          placeholder="Phone No."
-          class="input"
-        />
-      </div>
 
-      <div class="modal-buttons">
-        <button @click.prevent="saveUser">Save</button>
-        <button @click.prevent="closeForm">Close</button>
+  <!-- Bootstrap Modal for Editing User -->
+  <div
+    class="modal fade"
+    id="editUserModal"
+    tabindex="-1"
+    aria-labelledby="editUserModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content text-start"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+        </div>
+        <div class="modal-body text-start">
+          <form @submit.prevent="saveUser">
+            <div class="mb-3">
+              <label class="form-label text-start" for="username"
+                >Username</label
+              >
+              <input
+                v-model="selectedUser.username"
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Username"
+                required
+                style="background: var(--light); color: var(--dark)"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-start" for="office">Office</label>
+              <input
+                v-model="selectedUser.office"
+                type="text"
+                class="form-control"
+                id="office"
+                placeholder="Office"
+                required
+                style="background: var(--light); color: var(--dark)"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-start" for="email">Email</label>
+              <input
+                v-model="selectedUser.email"
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+                required
+                style="background: var(--light); color: var(--dark)"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-start" for="phone_no"
+                >Phone No.</label
+              >
+              <input
+                v-model="selectedUser.phone_no"
+                type="text"
+                class="form-control"
+                id="phone_no"
+                placeholder="Phone No."
+                required
+                style="background: var(--light); color: var(--dark)"
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 
-  <div class="modal-background" :class="{ 'dim-overlay': formVisible2 }">
-    <form
-      class="form"
-      id="modal-form3"
-      :style="{ display: formVisible2 ? 'block' : 'none' }"
-      @submit.prevent="sendSms"
-    >
-      <div class="d-flex flex-column gap-2">
-        <label for=""> To </label>
-        <input
-          v-model="selectedUser.phone_no"
-          type="text"
-          placeholder="Username"
-          class="input"
-          readonly
-          required
-        />
-        <label for=""> From </label>
-        <input
-          type="text"
-          placeholder="Username"
-          class="input"
-          value="PRO MIMAROPA ADMINISTRATOR"
-          readonly
-          required
-        />
-        <textarea
-          v-model="messageContent"
-          cols="30"
-          rows="10"
-          placeholder="Enter message here"
-          required
-        ></textarea>
+  <!-- Bootstrap Modal for Sending SMS -->
+  <div
+    class="modal fade"
+    id="sendSmsModal"
+    tabindex="-1"
+    aria-labelledby="sendSmsModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="sendSmsModalLabel">Send SMS</h5>
+        </div>
+        <div class="modal-body text-start">
+          <form @submit.prevent="sendSms">
+            <div class="mb-3">
+              <label class="form-label text-start" for="to">To</label>
+              <input
+                v-model="selectedUser.phone_no"
+                type="text"
+                class="form-control"
+                id="to"
+                readonly
+                required
+                style="background: var(--light); color: var(--dark)"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-start" for="from">From</label>
+              <input
+                type="text"
+                class="form-control"
+                id="from"
+                value="PRO MIMAROPA ADMINISTRATOR"
+                readonly
+                required
+                style="background: var(--light); color: var(--dark)"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-start" for="message">Message</label>
+              <textarea
+                v-model="messageContent"
+                class="form-control"
+                id="message"
+                cols="30"
+                rows="5"
+                placeholder="Enter message here"
+                required
+                style="background: var(--light); color: var(--dark)"
+              ></textarea>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                :disabled="sendingInProgress"
+              >
+                Send
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-
-      <div class="modal-buttons">
-        <button type="submit" :disabled="sendingInProgress">Send</button>
-        <button @click.prevent="closeForm2">Close</button>
-      </div>
-    </form>
+    </div>
   </div>
 
-  <div class="modalBg" v-if="formVisible3">
-    <div class="alertBox">
-      <img class="checkImg" src="./img/check2.gif" alt="" />
-      <h1 class="alertContent">Successfully Send</h1>
-      <button class="btn btn-primary" @click="closeForm3">Okay</button>
+  <!-- Bootstrap Modal for Success Alert -->
+  <div
+    class="modal fade"
+    id="successModal"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <img class="checkImg" src="./img/check2.gif" alt="Success" />
+          <h1 class="alertContent">Successfully Sent</h1>
+          <button class="btn btn-primary" @click="closeForm3">Okay</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { Modal } from "bootstrap";
+
 export default {
   data() {
     return {
       UsersInfo: [],
       searchText: "",
-      formVisible: false,
-      formVisible2: false,
-      formVisible3: false,
       messageContent: "",
       selectedUser: {
         id: null,
@@ -192,9 +278,11 @@ export default {
       },
       sendingInProgress: false,
       dueDate: "",
-      selectedDue: "",
       lastInsertedDate: null,
       currentTime: null,
+      editUserModal: null,
+      sendSmsModal: null,
+      successModal: null,
     };
   },
 
@@ -203,7 +291,7 @@ export default {
     this.getDueDate();
     setInterval(() => {
       this.getDueDate();
-      this.checkTime(); // Call checkTime periodically
+      this.checkTime();
     }, 600);
   },
 
@@ -228,19 +316,14 @@ export default {
       try {
         const response = await axios.get("/selectDue");
         this.lastInsertedDate = response.data.date;
-        //console.log(this.lastInsertedDate);
       } catch (e) {
         console.log(e);
       }
     },
+
     checkTime() {
-      // Fetch the current time
       const currentDate = new Date();
-
-      // Parse the last inserted date from the database and convert it to a Date object
       const lastInsertedDate = new Date(this.lastInsertedDate);
-
-      // Format the current date to match the database date format
       const formattedCurrentDate = `${currentDate.getFullYear()}-${String(
         currentDate.getMonth() + 1
       ).padStart(2, "0")}-${String(currentDate.getDate()).padStart(
@@ -250,11 +333,7 @@ export default {
         currentDate.getMinutes()
       ).padStart(2, "0")}:${String(currentDate.getSeconds()).padStart(2, "0")}`;
 
-      //console.log(formattedCurrentDate + " " + this.lastInsertedDate);
-
-      // Check if the formatted current date matches the last inserted date
       if (formattedCurrentDate === this.lastInsertedDate) {
-        // If they match, execute your other method
         this.changeAllUserStatus();
         this.dueDate = "";
       }
@@ -264,7 +343,6 @@ export default {
       try {
         const UsersInfo = await axios.get("getUsersInfo");
         this.UsersInfo = UsersInfo.data;
-        //console.log(this.UsersInfo);
       } catch (e) {
         console.log(e);
       }
@@ -272,12 +350,14 @@ export default {
 
     openForm(UsersInfo) {
       this.selectedUser = { ...UsersInfo };
-      this.formVisible = true;
+      this.editUserModal = new Modal(document.getElementById("editUserModal"));
+      this.editUserModal.show();
     },
 
     openForm2(UsersInfo) {
       this.selectedUser = { ...UsersInfo };
-      this.formVisible2 = true;
+      this.sendSmsModal = new Modal(document.getElementById("sendSmsModal"));
+      this.sendSmsModal.show();
     },
 
     async saveUser() {
@@ -289,7 +369,7 @@ export default {
 
           if (responseData && responseData.success) {
             console.log(responseData.message);
-            this.formVisible = false;
+            this.editUserModal.hide();
             this.getUsersInfo();
           } else {
             console.error("Save failed:", responseData.message);
@@ -302,18 +382,6 @@ export default {
       }
     },
 
-    closeForm() {
-      this.formVisible = false;
-    },
-
-    closeForm2() {
-      this.formVisible2 = false;
-    },
-
-    closeForm3() {
-      this.formVisible3 = false;
-    },
-
     async changeAllUserStatus() {
       try {
         const response = await axios.post("/changeAllUserStatus");
@@ -321,8 +389,7 @@ export default {
           const responseData = response.data;
 
           if (responseData && responseData.success) {
-            // console.log(responseData.message);
-            this.getUsersInfo(); // Refresh the user list after the status change
+            this.getUsersInfo();
           } else {
             console.error("Status change failed:", responseData.message);
           }
@@ -335,19 +402,16 @@ export default {
     },
 
     async toggleUserStatus(userInfo) {
-      //console.log("userInfo:", userInfo);
-
       try {
         const response = await axios.post("/toggleUserStatus/", {
           userId: userInfo,
         });
-        //console.log("Server response:", response);
+
         if (response.status === 200) {
           const responseData = response.data;
 
           if (responseData && responseData.success) {
-            //console.log(responseData.message);
-            this.getUsersInfo(); // Refresh the user list after the status change
+            this.getUsersInfo();
           } else {
             console.error("Status change failed:", responseData.message);
           }
@@ -374,7 +438,7 @@ export default {
     async sendSms() {
       try {
         const { phone_no } = this.selectedUser;
-        const messageContent = this.messageContent; // Access messageContent directly
+        const messageContent = this.messageContent;
 
         this.sendingInProgress = true;
         const response = await axios.post("/sendSMSToUser", {
@@ -384,59 +448,36 @@ export default {
 
         if (response.status === 200 && response.data.success) {
           console.log("SMS sent successfully.");
-          this.formVisible2 = false; // Hide the SMS form after sending
+          this.sendSmsModal.hide();
           this.messageContent = "";
-          this.formVisible3 = true;
-          setTimeout(() => {
-            this.formVisible3 = false;
-          }, 5000);
+          this.showSuccessModal();
         } else {
           console.error("Failed to send SMS.");
         }
       } catch (error) {
         console.error("Error sending SMS:", error);
       } finally {
-        // Set sendingInProgress to false once the process completes
         this.sendingInProgress = false;
+      }
+    },
+
+    showSuccessModal() {
+      this.successModal = new Modal(document.getElementById("successModal"));
+      this.successModal.show();
+    },
+
+    closeForm3() {
+      if (this.successModal) {
+        this.successModal.hide();
       }
     },
   },
 };
 </script>
 
-<style>
-.dim-overlay {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Adjust the last value for the desired transparency */
-  z-index: 1;
-  /* Make sure the overlay is above other elements */
-}
-#modal-form3 {
-  position: absolute;
-  width: 50%;
-  top: 25%;
-  left: 37%;
-  display: none;
-  z-index: 2;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: end;
-  width: 100%;
-  gap: 1rem;
-  padding-top: 1rem;
+<style scoped>
+.labels {
+  color: var(--dark);
 }
 .td-btn {
   text-align: center;

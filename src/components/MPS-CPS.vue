@@ -32,6 +32,33 @@ export default {
       number: 0,
     };
   },
+  watch: {
+    number: function (newComponent) {
+      // Update document title based on the selected component
+
+      switch (newComponent) {
+        case 0:
+          document.title = "EUPER - AdminOccidental";
+          break;
+
+        case 1:
+          document.title = "EUPER - AdminOriental";
+          break;
+        case 2:
+          document.title = "EUPER - AdminMarinduque";
+          break;
+        case 3:
+          document.title = "EUPER - AdminRomblon";
+          break;
+        case 4:
+          document.title = "EUPER - AdminPalawan";
+          break;
+        case 5:
+          document.title = "EUPER - AdminPuerto";
+          break;
+      }
+    },
+  },
   components: {
     AdminOccidental,
     AdminOriental,

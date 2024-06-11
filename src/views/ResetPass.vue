@@ -65,7 +65,7 @@ export default {
         alert(response.data.message); // Show success message
 
         // Redirect to login page or other route after successful password reset
-        //this.$router.push("/");
+        this.$router.push("/");
         this.password = "";
         this.confirmPassword = "";
       } catch (error) {

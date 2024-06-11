@@ -11,6 +11,7 @@
           placeholder="Username"
           class="input"
           required
+          readonly
         />
         <input
           v-model="formData.sender"
@@ -18,6 +19,7 @@
           placeholder="Email"
           class="input"
           required
+          readonly
         />
         <textarea
           v-model="formData.message"

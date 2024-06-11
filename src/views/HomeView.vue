@@ -6,10 +6,14 @@
         <img src="./img/logo.png" alt="" id="logo2" />
         <h3 id="adminName2">{{ officeLocation }}</h3>
       </div>
-      <li class="active" v-if="status === 'Enable'">
+      <li v-if="status === 'Enable'" class="active">
         <a href="#" id="btn" @click="toggleButtons">
           <div class="rate">
-            <i class="bx bxs-dashboard"></i>
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">UPER</span>
           </div>
           <i v-if="showButtons" class="fa-solid fa-chevron-down"></i>
@@ -19,19 +23,31 @@
       <div v-show="showButtons" class="li-div">
         <li>
           <a href="#" @click="showComponent('PPORatingSheet')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">PPO CPO Level</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('RMFB')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('RMFBRatingSheet')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">RMFB PMFC Level</span>
           </a>
         </li>
         <li>
           <a href="#" @click="showComponent('MPSRatingSheet')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">MPS CPS Level</span>
           </a>
         </li>
@@ -39,7 +55,11 @@
       <li>
         <a href="#" id="btn2" @click="toggleButtons2">
           <div class="rate">
-            <i class="bx bxs-shopping-bag-alt"></i>
+            <i
+              class="fa fa-eye"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">View Ratings</span>
           </div>
           <i v-if="showButtons2" class="fa-solid fa-chevron-down"></i>
@@ -48,33 +68,53 @@
       </li>
       <div v-show="showButtons2" class="li-div">
         <li>
-          <a href="#" @click="showComponent('UserPPO')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('UserPPORates')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">PPO CPO Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('UserRMFB')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('UserRMFBRates')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">RMFB PMFC Ratings</span>
           </a>
         </li>
         <li>
-          <a href="#" @click="showComponent('UserMPS')">
-            <i class="bx bxs-shopping-bag-alt"></i>
+          <a href="#" @click="showComponent('UserMPSRates')">
+            <i
+              class="fa fa-star"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
             <span class="text">MPS CPS Ratings</span>
           </a>
         </li>
       </div>
       <li>
         <a href="#" id="userprof" @click="showComponent('UserProfile')">
-          <i class="bx bxs-doughnut-chart"></i>
+          <i
+            class="fa fa-user-circle"
+            aria-hidden="true"
+            style="padding: 0.5rem 0.8rem"
+          ></i>
           <span class="text">User Profile</span>
         </a>
       </li>
       <li>
         <a href="#" @click="showComponent('RequestForm')">
-          <i class="bx bxs-message-dots"></i>
+          <i
+            class="fa fa-envelope-open"
+            aria-hidden="true"
+            style="padding: 0.5rem 0.8rem"
+          ></i>
           <span class="text">Request Form</span>
         </a>
       </li>
@@ -87,7 +127,7 @@
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <a @click="logout" class="logout">
+        <a style="cursor: pointer" @click="logout" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </a>
@@ -100,7 +140,7 @@
   <section id="content">
     <!-- NAVBAR -->
     <nav>
-      <i class="bx bx-menu"></i>
+      <i class="bx bx-menu" @click="toggle"></i>
       <div class="w-50 d-flex">
         <a href="#" class="nav-link">PRO MIMAROPA E-UPER SYSTEM</a>
       </div>
@@ -108,7 +148,11 @@
       <div class="nav-items">
         <span class="time">{{ currentDateTime }}</span>
         <input type="checkbox" id="switch-mode" hidden />
-        <label for="switch-mode" class="switch-mode"></label>
+        <label
+          for="switch-mode"
+          @click="toggleSwitch"
+          class="switch-mode"
+        ></label>
         <a
           href="#"
           class="profile"
@@ -125,10 +169,10 @@
     <main id="usermain">
       <PPORatingSheet v-if="selectedComponent === 'PPORatingSheet'" />
       <Uper v-if="selectedComponent === 'Uper'" />
-      <UserPPO v-if="selectedComponent === 'UserPPO'" />
-      <UserRMFB v-if="selectedComponent === 'UserRMFB'" />
-      <RMFB v-if="selectedComponent === 'RMFB'" />
-      <UserMPS v-if="selectedComponent === 'UserMPS'" />
+      <UserPPORates v-if="selectedComponent === 'UserPPORates'" />
+      <UserRMFBRates v-if="selectedComponent === 'UserRMFBRates'" />
+      <UserMPSRates v-if="selectedComponent === 'UserMPSRates'" />
+      <RMFBRatingSheet v-if="selectedComponent === 'RMFBRatingSheet'" />
       <MPSRatingSheet v-if="selectedComponent === 'MPSRatingSheet'" />
       <ViewRatings v-if="selectedComponent === 'ViewRatings'" />
       <UserProfile v-if="selectedComponent === 'UserProfile'" />
@@ -153,15 +197,18 @@ import ViewRatings from "../components/ViewRatings.vue";
 import UserProfile from "../components/UserProfile.vue";
 import RequestForm from "../components/RequestForm.vue";
 import UserGmail from "../components/UserGmail.vue";
-import UserPPO from "../components/UserPPO.vue";
-import UserRMFB from "../components/UserRMFB.vue";
-import UserMPS from "../components/UserMPS.vue";
+import UserPPORates from "../components/UserPPO.vue";
+import UserRMFBRates from "../components/UserRMFB.vue";
+import UserMPSRates from "../components/UserMPS.vue";
 import PPORatingSheet from "../components/ratingSheetForm/PPORatingSheet.vue";
-import RMFB from "../components/ratingSheetForm/RMFBRatingSheet.vue";
+import RMFBRatingSheet from "../components/ratingSheetForm/RMFBRatingSheet.vue";
 import axios from "axios";
 import router from "@/router";
 import MPSRatingSheet from "../components/ratingSheetForm/MPSRatingSheet.vue";
+import Vue from "vue";
+
 // Components
+
 export default {
   components: {
     Uper,
@@ -169,12 +216,18 @@ export default {
     UserProfile,
     RequestForm,
     UserGmail,
-    UserPPO,
-    UserRMFB,
-    UserMPS,
+    UserPPORates,
+    UserRMFBRates,
+    UserMPSRates,
     PPORatingSheet,
-    RMFB,
+    RMFBRatingSheet,
     MPSRatingSheet,
+  },
+  watch: {
+    selectedComponent: function (newComponent) {
+      // Update document title based on the selected component
+      document.title = "EUPER - " + newComponent;
+    },
   },
   data() {
     return {
@@ -191,8 +244,9 @@ export default {
     };
   },
   async created() {
-    await this.loadScripts(["/userscript.js"]);
+    // await this.loadScripts(["/userscript.js"]);
     await this.loadData();
+    this.toggle();
   },
   methods: {
     async loadData() {
@@ -205,7 +259,7 @@ export default {
           this.profilePic = userData.image;
           this.status = userData.status;
           if (this.status === "Disable") {
-            this.selectedComponent = "UserPPO";
+            this.selectedComponent = "UserPPORates";
           }
         }
       } catch (error) {
@@ -267,14 +321,80 @@ export default {
 
     toggleButtons() {
       this.showButtons = !this.showButtons;
+      this.showButtons2 = false;
     },
     toggleButtons2() {
       this.showButtons2 = !this.showButtons2;
+      this.showButtons = false;
+    },
+
+    toggle() {
+      const allSideMenu = document.querySelectorAll(
+        "#sidebar .side-menu.top li a"
+      );
+
+      allSideMenu.forEach((item) => {
+        const li = item.parentElement;
+
+        item.addEventListener("click", function () {
+          allSideMenu.forEach((i) => {
+            i.parentElement.classList.remove("active");
+          });
+          li.classList.add("active");
+        });
+      });
+
+      // TOGGLE SIDEBAR
+      const menuBar = document.querySelector("#content nav .bx.bx-menu");
+      const sidebar = document.getElementById("sidebar");
+      const logo = document.getElementById("logo2");
+      const adminName = document.getElementById("adminName2");
+
+      menuBar.addEventListener("click", function () {
+        sidebar.classList.toggle("hide");
+        if (sidebar.classList.contains("hide")) {
+          logo.style.height = "38px";
+          adminName.style.visibility = "hidden";
+        } else {
+          logo.style.height = "120px";
+          adminName.style.visibility = "unset";
+        }
+      });
+
+      const searchButton = document.querySelector(
+        "#content nav form .form-input button"
+      );
+      const searchButtonIcon = document.querySelector(
+        "#content nav form .form-input button .bx"
+      );
+      const searchForm = document.querySelector("#content nav form");
+
+      if (window.innerWidth < 768) {
+        sidebar.classList.add("hide");
+        logo.style.height = "38px";
+        adminName.style.visibility = "hidden";
+      }
+    },
+
+    toggleSwitch() {
+      const switchMode = document.getElementById("switch-mode");
+      const main = document.getElementById("usermain");
+
+      switchMode.addEventListener("change", function () {
+        if (this.checked) {
+          document.body.classList.add("dark");
+          main.style.backgroundColor = "#060714";
+        } else {
+          document.body.classList.remove("dark");
+          main.style.backgroundColor = "#fbfbfb";
+        }
+      });
     },
   },
   // Call updateCurrentDateTime() once the component is mounted
   mounted() {
     this.updateCurrentDateTime();
+    setInterval(this.updateCurrentDateTime, 1000);
   },
 };
 </script>

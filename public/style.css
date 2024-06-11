@@ -54,7 +54,6 @@ body {
   width: 280px;
   height: 100%;
   background: var(--light);
-  z-index: 2000;
   font-family: var(--lato);
   transition: 0.3s ease;
   overflow-x: hidden;
@@ -180,7 +179,6 @@ body {
   position: sticky;
   top: 0;
   left: 0;
-  z-index: 1000;
 }
 #content nav::before {
   content: "";
@@ -300,6 +298,17 @@ body {
   max-height: calc(100vh - 56px);
   height: 100vh;
   overflow-y: auto;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: #555555 #f4f4f4; /* For Firefox */
+}
+main::-webkit-scrollbar-track {
+  background-color: rgba(244, 244, 244, 0.5); /* For Chrome/Safari/Edge */
+}
+
+/* Style for the scrollbar thumb */
+main::-webkit-scrollbar-thumb {
+  background-color: rgba(244, 244, 244, 0.5); /* For Chrome/Safari/Edge */
+  border-radius: 5px;
 }
 #content main .head-title {
   display: flex;

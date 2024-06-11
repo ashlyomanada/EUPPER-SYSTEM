@@ -23,13 +23,22 @@
       </form>
     </div>
   </div>
+  <div class="modalBg" v-if="formVisible">
+    <div class="alertBox">
+      <img class="checkImg" src="./img/check2.gif" alt="" />
+      <h1 class="alertContent">Successfully Send</h1>
+      <button class="btn btn-primary" @click="closeForm">Okay</button>
+    </div>
+  </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       messageContent: "",
+      formVisible: false,
     };
   },
 
@@ -43,13 +52,13 @@ export default {
           message: messageContent,
         });
 
-        if (response.status === 200 && response.data.success) {
+        if (response.status === 200) {
           console.log("SMS sent successfully.");
           this.formVisible2 = false; // Hide the SMS form after sending
           this.messageContent = "";
-          this.formVisible3 = true;
+          this.formVisible = true;
           setTimeout(() => {
-            this.formVisible3 = false;
+            this.formVisible = false;
           }, 5000);
         } else {
           console.error("Failed to send SMS.");
@@ -60,6 +69,9 @@ export default {
         // Set sendingInProgress to false once the process completes
         this.sendingInProgress = false;
       }
+    },
+    closeForm() {
+      this.formVisible = false;
     },
   },
 };

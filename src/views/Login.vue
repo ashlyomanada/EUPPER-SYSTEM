@@ -60,7 +60,7 @@ export default {
             const role = response.data.role;
             sessionStorage.setItem("token", response.data.token);
             sessionStorage.setItem("id", response.data.id);
-            router.push(role === "user" ? "/home" : "/admin");
+            router.push(role === "user" ? "/home" : "/adminHome");
           }
         })
 

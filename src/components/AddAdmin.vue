@@ -10,8 +10,8 @@
         </div> -->
       </div>
       <div class="newUserContainer">
-        <form class="formUser" @submit.prevent="submitForm">
-          <p class="title">Register New User</p>
+        <form class="formAdmin" @submit.prevent="submitForm">
+          <p class="title">Register New Admin</p>
           <div class="d-flex w-100 gap-3">
             <div class="inputContainer">
               <label>
@@ -72,26 +72,16 @@
               </label>
 
               <label>
-                <select class="inputs" v-model="formData.officeType" required>
-                  <option value="Operational Office">Operational Office</option>
-                  <option value="Administrative Office">
-                    Administrative Office
-                  </option>
-                </select>
-                <span>Office Type</span>
+                <input
+                  type="file"
+                  placeholder="Profile picture"
+                  @change="handleFileChange"
+                  class="inputs"
+                  required
+                />
               </label>
             </div>
           </div>
-
-          <label>
-            <input
-              type="file"
-              placeholder="Profile picture"
-              @change="handleFileChange"
-              class="inputs"
-              required
-            />
-          </label>
 
           <!-- Add this input to your form -->
 
@@ -130,7 +120,6 @@ export default {
         email: "",
         password: "",
         phone_no: "",
-        officeType: "",
         file: null,
       },
       registrationStatus: null,
@@ -152,7 +141,7 @@ export default {
 
       // Use axios or fetch to send the form data to your CodeIgniter backend
       axios
-        .post("/upload", formData, {
+        .post("/uploadAdmin", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -165,7 +154,6 @@ export default {
             email: "",
             password: "",
             phone_no: "",
-            officeType: "",
             file: null, // Reset the file input
           };
           this.registrationStatus = "success";
@@ -236,15 +224,18 @@ export default {
 .loginLogo {
   height: 200px;
 }
-.formUser {
+.inputs {
+  color: var(--dark);
+}
+.formAdmin {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  background-color: var(--light);
   padding: 20px;
   border-radius: 20px;
   position: relative;
   width: 100vw;
-  background-color: var(--light);
 }
 
 .title {
@@ -305,16 +296,11 @@ export default {
   gap: 6px;
 }
 
-.formUser label {
+.formAdmin label {
   position: relative;
-  color: var(--light);
 }
 
-.inputs {
-  color: var(--dark);
-}
-
-.formUser label .inputs {
+.formAdmin label .inputs {
   width: 100%;
   padding: 10px 10px 20px 10px;
   outline: 0;
@@ -322,7 +308,7 @@ export default {
   border-radius: 10px;
 }
 
-.formUser label .inputs + span {
+.formAdmin label .inputs + span {
   position: absolute;
   left: 10px;
   top: 15px;
@@ -332,19 +318,19 @@ export default {
   transition: 0.3s ease;
 }
 
-.formUser label .inputs:placeholder-shown + span {
+.formAdmin label .inputs:placeholder-shown + span {
   top: 15px;
   font-size: 0.9em;
 }
 
-.formUser label .inputs:focus + span,
-.formUser label .inputs:valid + span {
+.formAdmin label .inputs:focus + span,
+.formAdmin label .inputs:valid + span {
   top: 30px;
   font-size: 0.7em;
   font-weight: 600;
 }
 
-.formUser label .inputs:valid + span {
+.formAdmin label .inputs:valid + span {
   color: green;
 }
 
@@ -383,7 +369,7 @@ export default {
   .picture-container {
     display: none;
   }
-  .formUser {
+  .formAdmin {
     width: 100vw;
   }
   .register {

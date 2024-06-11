@@ -2,7 +2,7 @@
   <div class="main-profile-container">
     <div class="profile-container">
       <div class="cover-container">
-        <img src="./img/cover.png" alt="" srcset="" class="cover-photo" />
+        <img src="./img/cover.png" alt="" class="cover-photo" />
       </div>
       <div class="img-container">
         <div class="img-left">
@@ -11,6 +11,17 @@
             alt=""
             id="profile-pic"
           />
+          <i
+            style="
+              position: absolute;
+              bottom: 10%;
+              left: 30%;
+              font-size: 2rem;
+              color: green;
+            "
+            class="fa-solid fa-pencil fa-lg"
+            @click="editProfile"
+          ></i>
           <h2 class="name">{{ userName }}</h2>
         </div>
         <div class="img-right">
@@ -31,50 +42,146 @@
       </div>
     </div>
   </div>
-  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
-    <form
-      class="form"
-      id="modal-form2"
-      :style="{ display: formVisible ? 'block' : 'none' }"
-    >
-      <label for="">Username</label>
-      <input
-        v-model="selectedUser.username"
-        type="text"
-        placeholder="Username"
-        class="input"
-      />
-      <label for="">Office</label>
-      <input
-        v-model="selectedUser.office"
-        type="text"
-        placeholder="Office"
-        class="input"
-      />
-      <label for="">Email</label>
-      <input
-        v-model="selectedUser.email"
-        type="text"
-        placeholder="Email"
-        class="input"
-      />
-      <label for="">Phone Number</label>
-      <input
-        v-model="selectedUser.phone_no"
-        type="text"
-        placeholder="Phone No."
-        class="input"
-      />
-      <div class="modal-buttons">
-        <button @click.prevent="saveUser">Save</button>
-        <button @click.prevent="closeForm">Close</button>
+
+  <!-- Bootstrap Modal for Editing User Details -->
+  <div
+    class="modal fade"
+    id="editProfileModal"
+    tabindex="-1"
+    aria-labelledby="editProfileModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.username"
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Username"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="office" class="form-label">Office</label>
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.office"
+                type="text"
+                class="form-control"
+                id="office"
+                placeholder="Office"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.email"
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.phone_no"
+                type="text"
+                class="form-control"
+                id="phone"
+                placeholder="Phone No."
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click.prevent="saveUser"
+          >
+            Save changes
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
       </div>
-    </form>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal for Editing Profile Picture -->
+  <div
+    class="modal fade"
+    id="editProfilePicModal"
+    tabindex="-1"
+    aria-labelledby="editProfilePicModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfilePicModalLabel">
+            Edit Profile Picture
+          </h5>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex flex-column align-items-center gap-5">
+            <label class="labels" for="">Profile Picture</label>
+            <img
+              v-if="profilePicUrl"
+              style="height: 10rem; border-radius: 50%"
+              :src="profilePicUrl"
+            />
+            <img
+              v-else
+              style="height: 10rem; border-radius: 50%"
+              :src="`http://localhost:8080/${profilePic}`"
+            />
+            <input
+              id="editProfileInput"
+              type="file"
+              style="background: var(--light); color: var(--dark)"
+              @change="onFileChange"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click.prevent="saveProfilePic"
+          >
+            Save changes
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { Modal } from "bootstrap"; // Import Modal from Bootstrap
 
 export default {
   data() {
@@ -86,6 +193,8 @@ export default {
       phoneNumber: "",
       email: "",
       formVisible: false,
+      formVisible2: false,
+      profilePicUrl: "",
       selectedUser: {
         user_id: null,
         username: "",
@@ -93,6 +202,7 @@ export default {
         phone_no: "",
         email: "",
       },
+      file: null,
     };
   },
   mounted() {
@@ -123,9 +233,22 @@ export default {
       }
     },
 
+    onFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.file = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.profilePicUrl = e.target.result; // Set the image URL to the result of FileReader
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+
     openForm() {
-      // When the "Edit profile" button is clicked, set the formVisible to true
-      this.formVisible = true;
+      // Show Bootstrap modal
+      const modal = new Modal(document.getElementById("editProfileModal"));
+      modal.show();
 
       // Populate the form fields with the current user's data
       this.selectedUser = {
@@ -136,9 +259,32 @@ export default {
         email: this.email,
       };
     },
+
     closeForm() {
-      this.formVisible = false;
+      // Hide Bootstrap modal
+      const modal = Modal.getInstance(
+        document.getElementById("editProfileModal")
+      );
+      modal.hide();
     },
+
+    closeForm2() {
+      // Hide Bootstrap modal
+      const modal = Modal.getInstance(
+        document.getElementById("editProfilePicModal")
+      );
+      modal.hide();
+      this.profilePicUrl = "";
+      const editProfileInput = document.getElementById("editProfileInput");
+      editProfileInput.value = "";
+    },
+
+    editProfile() {
+      // Show Bootstrap modal
+      const modal = new Modal(document.getElementById("editProfilePicModal"));
+      modal.show();
+    },
+
     async saveUser() {
       try {
         const response = await axios.post("/api/saveUser", this.selectedUser);
@@ -148,7 +294,7 @@ export default {
 
           if (responseData && responseData.success) {
             //console.log(responseData.message);
-            this.formVisible = false;
+            this.closeForm();
             this.fetchUserData();
           } else {
             console.error("Save failed:", responseData.message);
@@ -160,11 +306,53 @@ export default {
         console.error("Error saving admin:", error);
       }
     },
+
+    async saveProfilePic() {
+      try {
+        if (!this.file) {
+          alert("Please select a file.");
+          return;
+        }
+
+        // Get user ID from session storage
+        const storedUserId = sessionStorage.getItem("id");
+        if (!storedUserId) {
+          alert("User ID not found.");
+          return;
+        }
+
+        // Prepare form data to send with the file
+        const formData = new FormData();
+        formData.append("file", this.file);
+        formData.append("userId", storedUserId); // Append user ID to the form data
+
+        // Make POST request using Axios
+        const response = await axios.post("/uploadProfile", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        // Assuming your backend returns the new profile picture path or URL
+        if (response.status === 200) {
+          this.profilePic = response.data.profilePicPath;
+          this.profilePicUrl = `http://localhost:8080/${response.data.profilePicPath}`;
+          alert("Profile picture uploaded successfully!");
+          this.closeForm2();
+        }
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        alert("Failed to upload profile picture.");
+      }
+    },
   },
 };
 </script>
 
 <style>
+.labels {
+  color: var(--dark);
+}
 .dim-overlay {
   position: fixed;
   display: flex;
@@ -194,6 +382,15 @@ export default {
   width: 50%;
   top: 25%;
   left: 37%;
+  display: none;
+  z-index: 2;
+}
+
+#modal-form3 {
+  position: absolute;
+  width: 30%;
+  top: 25%;
+  left: 45%;
   display: none;
   z-index: 2;
 }
@@ -240,6 +437,7 @@ export default {
   width: 75%;
   align-items: center;
   gap: 1rem;
+  position: relative;
 }
 .img-right {
   display: flex;

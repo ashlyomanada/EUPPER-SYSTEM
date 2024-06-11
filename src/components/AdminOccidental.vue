@@ -8,7 +8,7 @@
             <h4>Municipalities of Occidental Mindoro</h4>
           </div>
           <div class="date-options">
-            <div class="d-flex gap-2">
+            <div class="d-flex gap-2 align-items-center">
               Select Month:
               <select class="month" name="month" v-model="month">
                 <option value="January">January</option>
@@ -35,7 +35,10 @@
                 placeholder="Year"
                 v-model="year"
               />
-              <button class="find" @click="getUsersRateByMonth">
+              <button
+                class="find d-flex align-items-center"
+                @click="getUsersRateByMonth"
+              >
                 <i class="bx bx-search"></i>Find
               </button>
             </div>

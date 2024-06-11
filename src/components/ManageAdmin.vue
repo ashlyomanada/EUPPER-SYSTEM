@@ -3,30 +3,28 @@
     <div class="order">
       <div class="head">
         <h3>Manage Admin</h3>
-        <i class="bx bx-search"></i>
-        <i class="bx bx-filter"></i>
       </div>
       <table>
         <thead>
           <tr>
             <th>Username</th>
-            <th>Password</th>
             <th>Email</th>
             <th>Phone No.</th>
             <th>Update</th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            v-for="selectedAdmin in selectedAdmin"
-            :key="selectedAdmin.admin_id"
-          >
+          <tr>
             <td>{{ selectedAdmin.username }}</td>
-            <td></td>
             <td>{{ selectedAdmin.email }}</td>
             <td>{{ selectedAdmin.phone_no }}</td>
             <td class="td-btn">
-              <button class="pen-btn" @click="openForm(selectedAdmin)">
+              <button
+                class="btn btn-primary"
+                @click="openForm(selectedAdmin)"
+                data-bs-toggle="modal"
+                data-bs-target="#adminModal"
+              >
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
@@ -35,77 +33,110 @@
       </table>
     </div>
   </div>
-  <div class="modal-background" :class="{ 'dim-overlay': formVisible }">
-    <form
-      class="form"
-      id="modal-form"
-      :style="{ display: formVisible ? 'block' : 'none' }"
-    >
-      <label for="">Username</label>
-      <input
-        v-model="selectedUser.username"
-        type="text"
-        placeholder="Username"
-        class="input"
-      />
-      <label for="">Password</label>
-      <input
-        v-model="selectedUser.password"
-        type="text"
-        placeholder="Password"
-        class="input"
-      />
-      <label for="">Email</label>
-      <input
-        v-model="selectedUser.email"
-        type="text"
-        placeholder="Email"
-        class="input"
-      />
-      <label for="">Phone No</label>
-      <input
-        v-model="selectedUser.phone_no"
-        type="text"
-        placeholder="Phone No."
-        class="input"
-      />
-      <div class="modal-buttons">
-        <button @click.prevent="saveAdmin">Save</button>
-        <button @click.prevent="closeForm">Close</button>
+
+  <!-- Bootstrap Modal -->
+  <div
+    class="modal fade"
+    id="adminModal"
+    tabindex="-1"
+    aria-labelledby="adminModalLabel"
+    aria-hidden="true"
+    ref="adminModal"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="adminModalLabel">Edit Admin</h5>
+        </div>
+        <div class="modal-body text-start">
+          <form @submit.prevent="saveAdmin">
+            <div class="mb-3">
+              <label for="username" class="form-label text-start"
+                >Username</label
+              >
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.username"
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Username"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label text-start">Email</label>
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.email"
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+              />
+            </div>
+            <div class="mb-3">
+              <label for="phone_no" class="form-label text-start"
+                >Phone No.</label
+              >
+              <input
+                style="background: var(--light); color: var(--dark)"
+                v-model="selectedUser.phone_no"
+                type="text"
+                class="form-control"
+                id="phone_no"
+                placeholder="Phone No."
+              />
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Save</button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { Modal } from "bootstrap";
 
 export default {
   data() {
     return {
-      formVisible: false,
       selectedAdmin: "",
       storedId: "",
       selectedUser: {
         username: "",
-        password: "",
         email: "",
         phone_no: "",
       },
+      modalInstance: null,
     };
   },
 
   mounted() {
     this.storedId = sessionStorage.getItem("id");
     this.getAdminsData();
+    this.initializeModal();
   },
 
   methods: {
     async getAdminsData() {
-      const adminStoredId = sessionStorage.getItem("id");
+      const adminStoredId = this.storedId;
       if (adminStoredId) {
         try {
-          const response = await axios.get(`/getUserAdmin/${adminStoredId}`);
+          const response = await axios.get(`/getUserData/${adminStoredId}`);
           if (response.status === 200) {
             this.selectedAdmin = response.data;
           }
@@ -117,15 +148,11 @@ export default {
 
     openForm(selectedAdmin) {
       this.selectedUser = { ...selectedAdmin };
-      this.formVisible = true;
     },
 
     async saveAdmin() {
       try {
-        const response = await axios.post(
-          `/updateAdminInformation`,
-          this.selectedUser
-        );
+        const response = await axios.post("/api/saveUser", this.selectedUser);
 
         if (response.status === 200) {
           const responseData = response.data;
@@ -133,7 +160,7 @@ export default {
 
           if (responseData && responseData.success) {
             console.log(responseData.message);
-            this.formVisible = false;
+            this.closeForm();
           } else {
             console.error("Save failed:", responseData.message);
           }
@@ -146,44 +173,23 @@ export default {
     },
 
     closeForm() {
-      this.formVisible = false;
+      if (this.modalInstance) {
+        this.modalInstance.hide();
+      }
+    },
+
+    initializeModal() {
+      const modalElement = this.$refs.adminModal;
+      if (modalElement) {
+        this.modalInstance = new Modal(modalElement);
+      }
     },
   },
 };
 </script>
 
 <style>
-.dim-overlay {
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(
-    0,
-    0,
-    0,
-    0.5
-  ); /* Adjust the last value for the desired transparency */
-  z-index: 1;
-  /* Make sure the overlay is above other elements */
-}
-#modal-form {
-  position: absolute;
-  width: 50%;
-  top: 25%;
-  left: 37%;
-  display: none;
-  z-index: 2;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: end;
-  width: 100%;
-  gap: 1rem;
-  padding-top: 1rem;
+.labels {
+  color: var(--dark);
 }
 </style>
