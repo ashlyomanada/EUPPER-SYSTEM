@@ -208,7 +208,7 @@ export default {
     async generatePalReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generatePalReport",
+          "http://euper.infinityfreeapp.com/projectbackend/generatePalReport",
           {
             month: this.month,
             year: this.year,
