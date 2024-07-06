@@ -208,7 +208,7 @@ export default {
     async generateMarinReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateMarinReport",
+          "http://euper.infinityfreeapp.com/projectbackend/generateMarinReport",
           {
             month: this.month,
             year: this.year,
