@@ -208,7 +208,7 @@ export default {
     async generatePuerReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generatePuerReport",
+          "http://euper.infinityfreeapp.com/projectbackend/generatePuerReport",
           {
             month: this.month,
             year: this.year,
