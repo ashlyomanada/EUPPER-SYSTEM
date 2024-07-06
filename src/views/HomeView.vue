@@ -159,7 +159,7 @@
           id="profile"
           @click="showComponent('UserProfile')"
         >
-          <img :src="`http://localhost:8080/${profilePic}`" />
+          <img :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`" />
         </a>
       </div>
     </nav>
