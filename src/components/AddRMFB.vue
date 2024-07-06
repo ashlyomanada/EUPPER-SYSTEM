@@ -159,8 +159,9 @@
         </div>
         <div class="modal-body">
           <p>
-            Are you sure you want to delete
-            {{ formatOfficeName(columnToDelete) }}?
+            If you delete this {{ formatOfficeName(columnToDelete) }}, all of
+            the records will be permanently deleted and cannot be recovered. Are
+            you sure you want to proceed?
           </p>
         </div>
         <div class="modal-footer">

@@ -179,11 +179,39 @@
       <RequestForm v-if="selectedComponent === 'RequestForm'" />
       <UserGmail v-if="selectedComponent === 'UserGmail'" />
 
-      <div class="modalBg" v-if="status === 'Disable'">
-        <div class="alertBox">
-          <!-- <img class="checkImg" src="./img/check2.gif" alt="" /> -->
-          <h3 class="alertContent">View Rates Only</h3>
-          <button class="btn btn-primary" @click="okayBtn">Okay</button>
+      <!-- Bootstrap Modal -->
+      <div
+        class="modal fade"
+        id="viewRatesModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                View Rates Only
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">You can only view rates at the moment.</div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-dismiss="modal"
+                @click="okayBtn"
+              >
+                Okay
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -191,6 +219,7 @@
   </section>
   <!-- CONTENT -->
 </template>
+
 <script>
 import Uper from "../components/Uper.vue";
 import ViewRatings from "../components/ViewRatings.vue";
@@ -206,8 +235,7 @@ import axios from "axios";
 import router from "@/router";
 import MPSRatingSheet from "../components/ratingSheetForm/MPSRatingSheet.vue";
 import Vue from "vue";
-
-// Components
+import * as bootstrap from "bootstrap";
 
 export default {
   components: {
@@ -225,7 +253,6 @@ export default {
   },
   watch: {
     selectedComponent: function (newComponent) {
-      // Update document title based on the selected component
       document.title = "EUPER - " + newComponent;
     },
   },
@@ -239,14 +266,24 @@ export default {
       email: "",
       profilePic: "",
       status: "",
-      currentDateTime: "", // To store current date and time
-      dynamicallyLoadedScripts: [], // Array to store loaded script elements
+      currentDateTime: "",
+      dynamicallyLoadedScripts: [],
     };
   },
   async created() {
-    // await this.loadScripts(["/userscript.js"]);
     await this.loadData();
     this.toggle();
+    if (this.status === "Disable") {
+      this.$nextTick(() => {
+        var myModal = new bootstrap.Modal(
+          document.getElementById("viewRatesModal"),
+          {
+            keyboard: false,
+          }
+        );
+        myModal.show();
+      });
+    }
   },
   methods: {
     async loadData() {
@@ -286,17 +323,14 @@ export default {
       };
       this.currentDateTime = currentDate.toLocaleDateString("en-US", options);
     },
-
     showComponent(componentName) {
       this.selectedComponent = componentName;
     },
     unloadScripts() {
-      // Remove all dynamically loaded script elements from the DOM
       const head = document.getElementsByTagName("head")[0];
       this.dynamicallyLoadedScripts.forEach((script) => {
         head.removeChild(script);
       });
-      // Clear the array tracking loaded script elements
       this.dynamicallyLoadedScripts = [];
     },
     async loadScripts(scriptUrls) {
@@ -318,7 +352,6 @@ export default {
         })
       );
     },
-
     toggleButtons() {
       this.showButtons = !this.showButtons;
       this.showButtons2 = false;
@@ -327,15 +360,12 @@ export default {
       this.showButtons2 = !this.showButtons2;
       this.showButtons = false;
     },
-
     toggle() {
       const allSideMenu = document.querySelectorAll(
         "#sidebar .side-menu.top li a"
       );
-
       allSideMenu.forEach((item) => {
         const li = item.parentElement;
-
         item.addEventListener("click", function () {
           allSideMenu.forEach((i) => {
             i.parentElement.classList.remove("active");
@@ -343,13 +373,10 @@ export default {
           li.classList.add("active");
         });
       });
-
-      // TOGGLE SIDEBAR
       const menuBar = document.querySelector("#content nav .bx.bx-menu");
       const sidebar = document.getElementById("sidebar");
       const logo = document.getElementById("logo2");
       const adminName = document.getElementById("adminName2");
-
       menuBar.addEventListener("click", function () {
         sidebar.classList.toggle("hide");
         if (sidebar.classList.contains("hide")) {
@@ -360,7 +387,6 @@ export default {
           adminName.style.visibility = "unset";
         }
       });
-
       const searchButton = document.querySelector(
         "#content nav form .form-input button"
       );
@@ -368,18 +394,15 @@ export default {
         "#content nav form .form-input button .bx"
       );
       const searchForm = document.querySelector("#content nav form");
-
       if (window.innerWidth < 768) {
         sidebar.classList.add("hide");
         logo.style.height = "38px";
         adminName.style.visibility = "hidden";
       }
     },
-
     toggleSwitch() {
       const switchMode = document.getElementById("switch-mode");
       const main = document.getElementById("usermain");
-
       switchMode.addEventListener("change", function () {
         if (this.checked) {
           document.body.classList.add("dark");
@@ -391,13 +414,13 @@ export default {
       });
     },
   },
-  // Call updateCurrentDateTime() once the component is mounted
   mounted() {
     this.updateCurrentDateTime();
     setInterval(this.updateCurrentDateTime, 1000);
   },
 };
 </script>
+
 <style>
 a {
   text-decoration: none;
@@ -441,6 +464,11 @@ a {
     width: 60%;
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .time {
+    display: none;
   }
 }
 </style>

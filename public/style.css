@@ -412,7 +412,7 @@ main::-webkit-scrollbar-thumb {
 }
 #content main .table-data .head {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   grid-gap: 16px;
   margin-bottom: 24px;
 }
@@ -526,6 +526,30 @@ main::-webkit-scrollbar-thumb {
     display: none;
   }
 
+  #sidebar {
+    width: 250px;
+    z-index: 1;
+  }
+
+  .list-items {
+    display: flex;
+    gap: 1rem;
+  }
+  .manageItems {
+    align-items: start;
+    min-width: 420px;
+    flex-direction: column;
+    justify-content: start;
+    gap: 1rem;
+  }
+
+  #content main .table-data .order table th {
+    padding: 1rem;
+  }
+
+  #content main .table-data .order table td {
+    padding: 1rem;
+  }
   #content nav form .form-input button {
     width: auto;
     height: auto;
@@ -557,11 +581,50 @@ main::-webkit-scrollbar-thumb {
 
   #content main .table-data .head {
     min-width: 420px;
+    width: 100%;
+    flex-direction: row;
   }
   #content main .table-data .order table {
     min-width: 420px;
   }
   #content main .table-data .todo .todo-list {
     min-width: 420px;
+  }
+
+  .options-control {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-options {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .optionsItems {
+    flex-direction: column;
+  }
+
+  #content main .table-data .order {
+    display: flex;
+    flex-direction: column;
+  }
+  .date-options {
+    width: 100%;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .rating-header > div {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .newUserContainer {
+    width: 100vw;
+  }
+
+  #content nav .bx.bx-menu {
+    padding-left: 1.5rem;
   }
 }

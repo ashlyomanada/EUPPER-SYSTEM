@@ -1,6 +1,6 @@
 <template>
   <!-- SIDEBAR -->
-  <section id="sidebar">
+  <section id="sidebar" class="sideBar">
     <ul class="side-menu top" style="padding-left: 0">
       <div class="admin-logo">
         <img src="./img/logo.png" alt="" id="logo" />
@@ -311,17 +311,14 @@ export default {
 
     toggle() {
       const allSideMenu = document.querySelectorAll(
-        "#sidebar .side-menu.top li a"
+        ".sideBar .side-menu.top li a"
       );
-
       allSideMenu.forEach((item) => {
-        const li = item.parentElement;
-
         item.addEventListener("click", function () {
           allSideMenu.forEach((i) => {
             i.parentElement.classList.remove("active");
           });
-          li.classList.add("active");
+          item.parentElement.classList.add("active");
         });
       });
     },

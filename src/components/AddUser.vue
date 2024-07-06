@@ -389,5 +389,9 @@ export default {
   .register {
     background-color: transparent;
   }
+
+  .newUserContainer {
+    width: 100vw;
+  }
 }
 </style>

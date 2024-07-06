@@ -1,34 +1,44 @@
 <template>
-  <div class="register-container">
-    <div class="register">
-      <div class="picture-container">
+  <v-app>
+    <div class="register-container">
+      <div class="register">
         <div class="picture-container">
-          <img src="./img/logo.png" class="loginLogo" alt="" />
-          <div>
-            <h1 class="login-title">EUPER SYSTEM</h1>
-            <h2 class="title-name">PRO MIMAROPA</h2>
+          <div class="picture-container">
+            <img src="./img/logo.png" class="loginLogo" alt="" />
+            <div>
+              <h1 class="login-title">EUPER SYSTEM</h1>
+              <h2 class="title-name">PRO MIMAROPA</h2>
+            </div>
           </div>
         </div>
+        <form class="form1" @submit.prevent="login">
+          <p class="title">Login</p>
+          <p class="message">Sign in now and get full access to the app.</p>
+
+          <label>
+            <input required type="email" class="inputs" v-model="email" />
+            <span>Email</span>
+          </label>
+
+          <label>
+            <input required type="password" class="inputs" v-model="password" />
+            <span>Password</span>
+          </label>
+          <button type="submit" class="submit" style="color: white">
+            Login
+          </button>
+          <router-link to="/forgot" class="signin"
+            >Forgot Password?</router-link
+          >
+        </form>
       </div>
-      <form class="form1" @submit.prevent="login">
-        <p class="title">Login</p>
-        <p class="message">Sign in now and get full access to the app.</p>
-
-        <label>
-          <input required type="email" class="inputs" v-model="email" />
-          <span>Email</span>
-        </label>
-
-        <label>
-          <input required type="password" class="inputs" v-model="password" />
-          <span>Password</span>
-        </label>
-        <button type="submit" class="submit" style="color: white">Login</button>
-        <router-link to="/forgot" class="signin">Forgot Password?</router-link>
-        <p class="error-message">{{ errorMessage }}</p>
-      </form>
+      <div class="alert-container">
+        <v-alert v-if="errorMessage" type="error" class="error-message">{{
+          errorMessage
+        }}</v-alert>
+      </div>
     </div>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -41,6 +51,12 @@ export default {
       password: "",
       errorMessage: "",
     };
+  },
+
+  mounted() {
+    setInterval(() => {
+      this.errorMessage = null;
+    }, 5000);
   },
   methods: {
     login() {
@@ -66,12 +82,15 @@ export default {
 
         .catch((error) => {
           console.error(error);
+          this.email = "";
+          this.password = "";
           this.errorMessage = "Invalid email or password, try again!";
         });
     },
   },
 };
 </script>
+
 <style>
 .login-title {
   white-space: nowrap;
@@ -81,7 +100,12 @@ export default {
 }
 
 .error-message {
-  color: red;
   margin-top: 10px;
+}
+.alert-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
 }
 </style>

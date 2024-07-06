@@ -1,28 +1,36 @@
 <template>
   <div class="table-data">
     <div class="order">
-      <div class="head">
+      <div class="head d-flex flex-column">
         <h3>List of Users</h3>
-        <input
-          type="datetime-local"
-          v-model="dueDate"
-          style="background: var(--light); color: var(--dark)"
-        />
-        <button class="find" @click="SetDate">Set Closing</button>
-        <button class="find" @click="changeAllUserStatus">
-          <i class="fa-solid fa-power-off"></i>
-          Change All User Status
-        </button>
-        <div class="d-flex gap-2">
-          <button class="find d-flex align-items-center" @click="findData">
-            <i class="bx bx-search"></i>Find
+        <div class="manageItems d-flex justify-content-between"></div>
+        <div class="manageItems d-flex justify-content-between">
+          <div class="list-items">
+            <input
+              type="datetime-local"
+              v-model="dueDate"
+              style="background: var(--light); color: var(--dark)"
+            />
+            <button class="find px-2" @click="SetDate">Set Closing</button>
+          </div>
+          <button class="find" @click="changeAllUserStatus">
+            <i class="fa-solid fa-power-off"></i>
+            Change All User Status
           </button>
-          <input
-            v-model="searchText"
-            type="text"
-            class="year"
-            id="searchText"
-          />
+          <div class="d-flex gap-2">
+            <input
+              v-model="searchText"
+              type="text"
+              class="year"
+              id="searchText"
+            />
+            <button
+              class="find d-flex align-items-center px-4"
+              @click="findData"
+            >
+              <i class="bx bx-search"></i>Find
+            </button>
+          </div>
         </div>
       </div>
       <table>
@@ -496,5 +504,10 @@ export default {
 }
 .red-btn {
   color: rgb(233, 70, 70);
+}
+@media screen and (max-width: 768px) {
+  .manageItems {
+    align-items: center;
+  }
 }
 </style>

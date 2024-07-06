@@ -166,10 +166,8 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .nav-items {
-    width: 60%;
-    display: flex;
-    justify-content: space-evenly;
+  .time2 {
+    display: none;
   }
 }
 </style>

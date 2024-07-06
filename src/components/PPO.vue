@@ -300,4 +300,12 @@ option {
   display: flex;
   justify-content: space-between;
 }
+
+@media screen and (max-width: 768px) {
+  .date-options {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+}
 </style>

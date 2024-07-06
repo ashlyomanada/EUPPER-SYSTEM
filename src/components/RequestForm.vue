@@ -13,6 +13,7 @@
           required
           readonly
         />
+
         <input
           v-model="formData.sender"
           type="text"
@@ -21,30 +22,100 @@
           required
           readonly
         />
+
+        <div class="d-flex gap-1">
+          <input
+            v-if="showButton1"
+            type="button"
+            value="I need to request enabling a form in the system."
+            @click="
+              addToTextarea(
+                'I need to request enabling a form in the system.',
+                1
+              )
+            "
+            readonly
+          />
+          <input
+            v-if="showButton2"
+            type="button"
+            value="Could you please enable the form for me?"
+            @click="
+              addToTextarea('Could you please enable the form for me?', 2)
+            "
+            readonly
+          />
+        </div>
+
         <textarea
           v-model="formData.message"
           placeholder="Type message"
           required
         ></textarea>
+
         <button type="submit" :disabled="loading">
-          <!-- Use a loader icon when loading is true -->
           <span v-if="loading">Requesting...</span>
           <span v-else>Submit Request</span>
         </button>
       </form>
     </div>
+    <div class="alert-container">
+      <v-alert v-if="errors.username" type="error" class="error">{{
+        errors.username
+      }}</v-alert>
+    </div>
+    <div class="alert-container">
+      <v-alert v-if="errors.sender" type="error" class="error">{{
+        errors.sender
+      }}</v-alert>
+    </div>
+    <div class="alert-container">
+      <v-alert v-if="errors.message" type="error" class="error">{{
+        errors.message
+      }}</v-alert>
+    </div>
   </div>
-  <div class="modalBg" v-if="showAlert">
-    <div class="alertBox">
-      <img class="checkImg" src="./img/check2.gif" alt="" />
-      <h4 class="alertContent">{{ alertMessage }}</h4>
-      <button class="btn btn-primary" @click="okayBtn">Okay</button>
+
+  <!-- Bootstrap Modal -->
+  <div
+    class="modal fade"
+    id="alertModal"
+    tabindex="-1"
+    aria-labelledby="alertModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body text-center">
+          <img class="checkImg" src="./img/check2.gif" alt="" />
+          <h4 class="alertContent">{{ alertMessage }}</h4>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="okayBtn"
+            data-bs-dismiss="modal"
+          >
+            Okay
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import * as bootstrap from "bootstrap";
 
 export default {
   data() {
@@ -54,27 +125,50 @@ export default {
         sender: "",
         message: "",
       },
+      errors: {},
       showAlert: false,
       alertMessage: "",
-      loading: false, // Loading state to track form submission
+      loading: false,
+      showButton1: true,
+      showButton2: true,
     };
   },
   mounted() {
-    this.fetchUserData(); // Fetch user data when the component is mounted
+    this.fetchUserData();
+    setInterval(() => {
+      this.errors = {};
+    }, 5000);
   },
   methods: {
     okayBtn() {
       this.showAlert = false;
+      const modal = document.getElementById("alertModal");
+      const bootstrapModal = bootstrap.Modal.getInstance(modal);
+      if (bootstrapModal) bootstrapModal.hide();
+    },
+    validateForm() {
+      this.errors = {};
+      let valid = true;
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!this.formData.sender || !emailPattern.test(this.formData.sender)) {
+        this.errors.sender = "Please enter a valid email address.";
+        valid = false;
+      }
+
+      if (!this.formData.message || this.formData.message.length < 5) {
+        this.errors.message = "Message must be at least 5 characters long.";
+        valid = false;
+      }
+
+      return valid;
     },
     submitForm() {
-      // Disable form submission if already loading
       if (this.loading) return;
+      if (!this.validateForm()) return;
 
-      // Set loading to true to show loader
       this.loading = true;
 
-      // Send form data to server
-      console.log("Form data:", this.formData);
       axios
         .post("/sendEmail", this.formData, {
           headers: {
@@ -83,7 +177,7 @@ export default {
         })
         .then((response) => {
           console.log(response.data);
-          this.formData = { username: "", sender: "", message: "" };
+          this.formData.message = "";
           this.showAlertMessage("Request Successfully Sent!");
         })
         .catch((error) => {
@@ -91,16 +185,16 @@ export default {
           this.showAlertMessage("Error submitting the form. Please try again.");
         })
         .finally(() => {
-          // Reset loading state after form submission completes
           this.loading = false;
         });
     },
     showAlertMessage(message) {
       this.showAlert = true;
       this.alertMessage = message;
+      const modal = new bootstrap.Modal(document.getElementById("alertModal"));
+      modal.show();
       setTimeout(() => {
-        this.showAlert = false;
-        this.alertMessage = "";
+        this.okayBtn();
       }, 5000);
     },
     async fetchUserData() {
@@ -122,86 +216,27 @@ export default {
         }
       }
     },
+    addToTextarea(value, buttonNumber) {
+      this.formData.message = value;
+      if (buttonNumber === 1) {
+        this.showButton1 = false;
+      } else if (buttonNumber === 2) {
+        this.showButton2 = false;
+      }
+    },
   },
 };
 </script>
 
 <style>
-.modalBg {
-  height: 100vh;
-  width: 100%;
+.alert-container {
   position: absolute;
   top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(70, 70, 70, 0.473);
-}
-.alertBox {
-  height: 30%;
-  width: 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background-color: white;
-  gap: 0.5rem;
-  border-radius: 1rem;
+  right: 0;
+  z-index: 100;
 }
 .checkImg {
   height: 4rem;
-}
-.rating-header {
-  display: flex;
-  align-items: center;
-  grid-gap: 16px;
-  margin-bottom: 24px;
-  justify-content: center;
-}
-.head-subtitle {
-  text-align: center;
-}
-.ratingsheet-container {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-.rate-month,
-.year-rate {
-  border: 1px solid var(--dark);
-  padding: 0.2rem 0.5rem;
-  color: var(--dark);
-  background: var(--light);
-  width: 16%;
-}
-.rateDate {
-  width: 60%;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  align-items: center;
-}
-.rateMonth,
-.rateYear {
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
-  border-radius: 0.5rem;
-}
-.rateInput {
-  width: 60%;
-  border: 1px solid var(--dark);
-  padding: 0.3rem 0.5rem;
-  text-align: center;
-  color: var(--dark);
-  border-radius: 0.5rem;
-}
-.submitPPORate {
-  background: green;
-  padding: 0.5rem 1rem;
-  color: white;
-  border-radius: 0.5rem;
 }
 .form {
   position: relative;
@@ -231,6 +266,14 @@ export default {
   resize: none;
 }
 
+.d-flex {
+  display: flex;
+}
+
+.gap-1 {
+  gap: 10px;
+}
+
 .form button {
   align-self: flex-end;
   padding: 8px;
@@ -244,11 +287,12 @@ export default {
   cursor: pointer;
 }
 
-.alert {
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  background-color: lightyellow;
-  border: 1px solid #ccc;
+.modal-body {
+  text-align: center;
+}
+
+.error {
+  color: red;
+  font-size: 0.875em;
 }
 </style>

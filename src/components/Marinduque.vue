@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(rating, index) in userRatings" :key="index">
+          <tr v-for="(rating, index) in paginatedRatings" :key="index">
             <td class="t-data">{{ rating.month }}</td>
             <td class="t-data">{{ rating.year }}</td>
             <td
@@ -32,24 +32,95 @@
         </tbody>
       </table>
       <h4 v-else style="text-align: center">No Ratings Yet</h4>
+
+      <!-- Bootstrap Pagination -->
+      <nav
+        v-if="dataFetched"
+        class="d-flex justify-content-center align-items-center"
+      >
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a class="page-link" href="#" @click.prevent="changePage(1)">
+              First
+            </a>
+          </li>
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="changePage(currentPage - 1)"
+            >
+              Previous
+            </a>
+          </li>
+          <li
+            v-for="page in totalPages"
+            :key="page"
+            class="page-item"
+            :class="{ active: currentPage === page }"
+          >
+            <a class="page-link" href="#" @click.prevent="changePage(page)">
+              {{ page }}
+            </a>
+          </li>
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPages }"
+          >
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="changePage(currentPage + 1)"
+            >
+              Next
+            </a>
+          </li>
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPages }"
+          >
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="changePage(totalPages)"
+            >
+              Last
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
       dataFetched: false,
       userRatings: [],
       columns: [],
+      currentPage: 1,
+      itemsPerPage: 12,
     };
   },
 
   mounted() {
     this.fetchData();
     this.fetchColumns();
+  },
+
+  computed: {
+    totalPages() {
+      return Math.ceil(this.userRatings.length / this.itemsPerPage);
+    },
+    paginatedRatings() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.userRatings.slice(start, end);
+    },
   },
 
   methods: {
@@ -78,6 +149,12 @@ export default {
           });
       }
     },
+
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
   },
 };
 </script>
@@ -98,5 +175,8 @@ export default {
 }
 .pen-btn {
   color: rgb(233, 70, 70);
+}
+.pagination {
+  margin-top: 20px;
 }
 </style>

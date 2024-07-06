@@ -64,6 +64,7 @@
                 class="form-control"
                 id="username"
                 placeholder="Username"
+                required
               />
             </div>
             <div class="mb-3">
@@ -75,6 +76,7 @@
                 class="form-control"
                 id="email"
                 placeholder="Email"
+                required
               />
             </div>
             <div class="mb-3">
@@ -88,6 +90,7 @@
                 class="form-control"
                 id="phone_no"
                 placeholder="Phone No."
+                required
               />
             </div>
             <div class="modal-footer">

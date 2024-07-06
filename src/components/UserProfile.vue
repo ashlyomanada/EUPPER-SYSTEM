@@ -6,22 +6,24 @@
       </div>
       <div class="img-container">
         <div class="img-left">
-          <img
-            :src="`http://localhost:8080/${profilePic}`"
-            alt=""
-            id="profile-pic"
-          />
-          <i
-            style="
-              position: absolute;
-              bottom: 10%;
-              left: 30%;
-              font-size: 2rem;
-              color: green;
-            "
-            class="fa-solid fa-pencil fa-lg"
-            @click="editProfile"
-          ></i>
+          <div class="editImageContainer">
+            <img
+              :src="`http://localhost:8080/${profilePic}`"
+              alt=""
+              id="profile-pic"
+            />
+            <i
+              style="
+                position: absolute;
+                bottom: 10%;
+                right: 10%;
+                font-size: 2rem;
+                color: green;
+              "
+              class="fa-solid fa-pencil fa-lg"
+              @click="editProfile"
+            ></i>
+          </div>
           <h2 class="name">{{ userName }}</h2>
         </div>
         <div class="img-right">
@@ -41,6 +43,12 @@
         <p><i class="fa-solid fa-envelope fa-sm"></i>Email: {{ email }}</p>
       </div>
     </div>
+
+    <div class="alert-container">
+      <v-alert v-if="successMessage" type="success" class="error-message">{{
+        successMessage
+      }}</v-alert>
+    </div>
   </div>
 
   <!-- Bootstrap Modal for Editing User Details -->
@@ -59,10 +67,12 @@
         <div class="modal-header">
           <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
         </div>
-        <div class="modal-body">
+        <div class="modal-body text-start">
           <form>
             <div class="mb-3">
-              <label for="username" class="form-label">Username</label>
+              <label for="username" class="form-label text-start"
+                >Username</label
+              >
               <input
                 style="background: var(--light); color: var(--dark)"
                 v-model="selectedUser.username"
@@ -70,10 +80,11 @@
                 class="form-control"
                 id="username"
                 placeholder="Username"
+                required
               />
             </div>
             <div class="mb-3">
-              <label for="office" class="form-label">Office</label>
+              <label for="office" class="form-label text-start">Office</label>
               <input
                 style="background: var(--light); color: var(--dark)"
                 v-model="selectedUser.office"
@@ -81,10 +92,11 @@
                 class="form-control"
                 id="office"
                 placeholder="Office"
+                required
               />
             </div>
             <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
+              <label for="email" class="form-label text-start">Email</label>
               <input
                 style="background: var(--light); color: var(--dark)"
                 v-model="selectedUser.email"
@@ -92,10 +104,13 @@
                 class="form-control"
                 id="email"
                 placeholder="Email"
+                required
               />
             </div>
             <div class="mb-3">
-              <label for="phone" class="form-label">Phone Number</label>
+              <label for="phone" class="form-label text-start"
+                >Phone Number</label
+              >
               <input
                 style="background: var(--light); color: var(--dark)"
                 v-model="selectedUser.phone_no"
@@ -103,6 +118,7 @@
                 class="form-control"
                 id="phone"
                 placeholder="Phone No."
+                required
               />
             </div>
           </form>
@@ -131,6 +147,11 @@
     aria-labelledby="editProfilePicModalLabel"
     aria-hidden="true"
   >
+    <div class="alert-container">
+      <v-alert v-if="errorMessage" type="error" class="error-message">{{
+        errorMessage
+      }}</v-alert>
+    </div>
     <div class="modal-dialog modal-dialog-centered">
       <div
         class="modal-content"
@@ -157,8 +178,10 @@
             <input
               id="editProfileInput"
               type="file"
+              accept="image/*"
               style="background: var(--light); color: var(--dark)"
               @change="onFileChange"
+              required
             />
           </div>
         </div>
@@ -203,10 +226,15 @@ export default {
         email: "",
       },
       file: null,
+      errorMessage: "",
+      successMessage: "",
     };
   },
   mounted() {
     this.fetchUserData();
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000);
   },
   methods: {
     async fetchUserData() {
@@ -296,8 +324,16 @@ export default {
             //console.log(responseData.message);
             this.closeForm();
             this.fetchUserData();
+            this.successMessage = "Successfully Updated User Details";
+            setTimeout(() => {
+              this.successMessage = null;
+            }, 5000);
           } else {
             console.error("Save failed:", responseData.message);
+            this.errorMessage = "Profile picture uploaded successfully!";
+            setTimeout(() => {
+              this.errorMessage = null;
+            }, 5000);
           }
         } else {
           console.error(`Unexpected response status: ${response.status}`);
@@ -310,14 +346,16 @@ export default {
     async saveProfilePic() {
       try {
         if (!this.file) {
-          alert("Please select a file.");
+          // alert("Please select a file.");
+          this.errorMessage = "Please select a file.";
           return;
         }
 
         // Get user ID from session storage
         const storedUserId = sessionStorage.getItem("id");
         if (!storedUserId) {
-          alert("User ID not found.");
+          // alert("User ID not found.");
+          this.errorMessage = "User ID not found.";
           return;
         }
 
@@ -337,7 +375,11 @@ export default {
         if (response.status === 200) {
           this.profilePic = response.data.profilePicPath;
           this.profilePicUrl = `http://localhost:8080/${response.data.profilePicPath}`;
-          alert("Profile picture uploaded successfully!");
+          // alert("Profile picture uploaded successfully!");
+          this.errorMessage = "Profile picture uploaded successfully!";
+          setTimeout(() => {
+            this.errorMessage = null;
+          }, 5000);
           this.closeForm2();
         }
       } catch (error) {
@@ -350,6 +392,12 @@ export default {
 </script>
 
 <style>
+.alert-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
 .labels {
   color: var(--dark);
 }
@@ -428,7 +476,7 @@ export default {
   width: 100%;
   align-items: center;
   padding: 1rem;
-  margin-top: 11.5rem;
+  margin-top: 14rem;
   z-index: 1;
 }
 .img-left {
@@ -453,15 +501,20 @@ export default {
   color: white;
 }
 #profile-pic {
-  height: 90%;
   background-color: white;
   border-radius: 50%;
+  height: 160px;
 }
 .profile-description-container {
   height: 38%;
   width: 100%;
   padding: 1rem;
   line-height: 2rem;
+}
+
+.editImageContainer {
+  display: flex;
+  position: relative;
 }
 
 @media screen and (max-width: 768px) {
@@ -472,7 +525,7 @@ export default {
     margin-top: 5rem;
   }
   #profile-pic {
-    height: 55%;
+    height: 200px;
   }
   .cover-photo {
     height: 50%;
@@ -511,9 +564,16 @@ export default {
     flex-direction: column;
     text-align: center;
   }
+
+  #profile-pic {
+    height: 150px;
+  }
   #modal-form2 {
     width: 70%;
     left: 23%;
+  }
+  .cover-photo {
+    height: 40%;
   }
 }
 </style>

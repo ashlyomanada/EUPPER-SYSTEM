@@ -1,54 +1,43 @@
 <template>
   <div class="table-data">
     <div class="order">
-      <div id="evaluation-ratings">
-        <div class="table-options">
-          <div class="options-control d-flex align-items-center mb-10">
-            <div class="w-25 d-flex">
-              <h4>User Ratings</h4>
-            </div>
-            <div class="w-75 d-flex justify-content-end gap-2">
-              <label class="d-flex align-items-center" for="month"
-                >Select User:</label
-              >
-              <select class="month" name="month" v-model="selectedUser">
-                <option
-                  v-for="user in allUsersName"
-                  :key="user.user_id"
-                  :value="user.user_id"
-                >
-                  {{ user.username }}
-                </option>
-              </select>
-              <label class="d-flex align-items-center" for="month"
-                >Select Table:</label
-              >
-              <select
-                v-model="selectedTable"
-                class="month"
-                name="month"
-                required
-              >
-                <option value="ppo_cpo">PPO CPO LEVEL</option>
-                <option value="rmfb_tbl">RMFB PMFC LEVEL</option>
-                <option value="occidental_cps">Occidental Mindoro MPS</option>
-                <option value="oriental_cps">Oriental Mindoro MPS</option>
-                <option value="marinduque_cps">Marinduque MPS</option>
-                <option value="romblon_cps">Romblon MPS</option>
-                <option value="palawan_cps">Palawan MPS</option>
-                <option value="puertop_cps">Puerto Princesa MPS</option>
-              </select>
-              <button
-                @click="fetchDataByTbl"
-                class="find d-flex align-items-center"
-              >
-                <i class="bx bx-search"></i>Find
-              </button>
-            </div>
-          </div>
+      <div class="table-options">
+        <h4>User Ratings</h4>
+        <div class="t-options">
+          <label class="d-flex align-items-center" for="month"
+            >Select User:</label
+          >
+          <select class="month" name="month" v-model="selectedUser">
+            <option
+              v-for="user in allUsersName"
+              :key="user.user_id"
+              :value="user.user_id"
+            >
+              {{ user.username }}
+            </option>
+          </select>
+          <label class="d-flex align-items-center" for="month"
+            >Select Table:</label
+          >
+          <select v-model="selectedTable" class="month" name="month" required>
+            <option value="ppo_cpo">PPO CPO LEVEL</option>
+            <option value="rmfb_tbl">RMFB PMFC LEVEL</option>
+            <option value="occidental_cps">Occidental Mindoro MPS</option>
+            <option value="oriental_cps">Oriental Mindoro MPS</option>
+            <option value="marinduque_cps">Marinduque MPS</option>
+            <option value="romblon_cps">Romblon MPS</option>
+            <option value="palawan_cps">Palawan MPS</option>
+            <option value="puertop_cps">Puerto Princesa MPS</option>
+          </select>
+          <button
+            @click="fetchDataByTbl"
+            class="find d-flex align-items-center"
+          >
+            <i class="bx bx-search"></i>Find
+          </button>
         </div>
       </div>
-      <table>
+      <table v-if="dataFetched && userRatings.length > 0">
         <thead>
           <tr>
             <th class="t-rate">Action</th>
@@ -59,8 +48,8 @@
             </th>
           </tr>
         </thead>
-        <tbody v-if="dataFetched && userRatings.length > 0">
-          <tr v-for="(rating, index) in userRatings" :key="index">
+        <tbody>
+          <tr v-for="(rating, index) in paginatedRatings" :key="index">
             <td class="t-rateData">
               <button
                 class="pen-btn btn btn-primary"
@@ -82,6 +71,60 @@
         </tbody>
       </table>
       <h5 v-if="!dataFetched" style="text-align: center">No Ratings Found</h5>
+
+      <!-- Bootstrap Pagination -->
+      <nav
+        v-if="dataFetched && userRatings.length > 0"
+        class="d-flex justify-content-center align-items-center"
+      >
+        <ul class="pagination justify-content-center">
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a class="page-link" href="#" @click.prevent="changePage(1)"
+              >First</a
+            >
+          </li>
+          <li class="page-item" :class="{ disabled: currentPage === 1 }">
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="changePage(currentPage - 1)"
+              >Previous</a
+            >
+          </li>
+          <li
+            v-for="page in totalPages"
+            :key="page"
+            class="page-item"
+            :class="{ active: currentPage === page }"
+          >
+            <a class="page-link" href="#" @click.prevent="changePage(page)">{{
+              page
+            }}</a>
+          </li>
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPages }"
+          >
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="changePage(currentPage + 1)"
+              >Next</a
+            >
+          </li>
+          <li
+            class="page-item"
+            :class="{ disabled: currentPage === totalPages }"
+          >
+            <a
+              class="page-link"
+              href="#"
+              @click.prevent="changePage(totalPages)"
+              >Last</a
+            >
+          </li>
+        </ul>
+      </nav>
     </div>
   </div>
 
@@ -178,12 +221,25 @@ export default {
       dataFetched: false,
       selectedRating: {},
       editRatingModal: null,
+      currentPage: 1,
+      itemsPerPage: 10,
     };
   },
 
   created() {
     this.fetchColumns();
     this.getUsername();
+  },
+
+  computed: {
+    totalPages() {
+      return Math.ceil(this.userRatings.length / this.itemsPerPage);
+    },
+    paginatedRatings() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.userRatings.slice(start, end);
+    },
   },
 
   methods: {
@@ -279,6 +335,12 @@ export default {
         console.error("Error updating rating:", error);
       }
     },
+
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
   },
 };
 </script>
@@ -304,5 +366,20 @@ export default {
 }
 .t-rateData {
   text-align: center;
+}
+
+.table-options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.t-options {
+  display: flex;
+  gap: 1rem;
+}
+
+.pagination {
+  margin-top: 20px;
 }
 </style>
