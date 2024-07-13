@@ -10,6 +10,7 @@ use Mpdf\Mpdf;
 class PdfController extends ResourceController
 {
 
+    
     public function generatePdfPPO() {
         $json = $this->request->getJSON();
         $month = $json->month;
@@ -19,7 +20,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -33,17 +34,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT ppo_cpo.*, tbl_users.office
@@ -52,7 +55,7 @@ class PdfController extends ResourceController
             WHERE ppo_cpo.month = ? AND ppo_cpo.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT ppo_cpo.*, tbl_users.office
             FROM ppo_cpo
@@ -60,7 +63,7 @@ class PdfController extends ResourceController
             WHERE ppo_cpo.month = ? AND ppo_cpo.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -72,7 +75,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -80,7 +83,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -89,59 +92,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -149,26 +165,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -177,39 +193,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfRmfb() {
@@ -221,7 +234,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -235,17 +248,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT rmfb_tbl.*, tbl_users.office
@@ -254,7 +269,7 @@ class PdfController extends ResourceController
             WHERE rmfb_tbl.month = ? AND rmfb_tbl.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT rmfb_tbl.*, tbl_users.office
             FROM rmfb_tbl
@@ -262,7 +277,7 @@ class PdfController extends ResourceController
             WHERE rmfb_tbl.month = ? AND rmfb_tbl.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -274,7 +289,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -282,7 +297,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -291,59 +306,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">REGIONAL MOBILE FORCE BATTALION</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">REGIONAL MOBILE FORCE BATTALION</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -351,26 +379,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -379,39 +407,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfOccidental() {
@@ -423,7 +448,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -437,17 +462,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT occidental_cps.*, tbl_users.office
@@ -456,7 +483,7 @@ class PdfController extends ResourceController
             WHERE occidental_cps.month = ? AND occidental_cps.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT occidental_cps.*, tbl_users.office
             FROM occidental_cps
@@ -464,7 +491,7 @@ class PdfController extends ResourceController
             WHERE occidental_cps.month = ? AND occidental_cps.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -476,7 +503,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -484,7 +511,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -493,59 +520,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -553,26 +593,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -581,39 +621,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfOriental() {
@@ -625,7 +662,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -639,17 +676,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT oriental_cps.*, tbl_users.office
@@ -658,7 +697,7 @@ class PdfController extends ResourceController
             WHERE oriental_cps.month = ? AND oriental_cps.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT oriental_cps.*, tbl_users.office
             FROM oriental_cps
@@ -666,7 +705,7 @@ class PdfController extends ResourceController
             WHERE oriental_cps.month = ? AND oriental_cps.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -678,7 +717,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -686,7 +725,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -695,59 +734,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -755,26 +807,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -783,39 +835,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfMarinduque() {
@@ -827,7 +876,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -841,17 +890,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT marinduque_cps.*, tbl_users.office
@@ -860,7 +911,7 @@ class PdfController extends ResourceController
             WHERE marinduque_cps.month = ? AND marinduque_cps.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT marinduque_cps.*, tbl_users.office
             FROM marinduque_cps
@@ -868,7 +919,7 @@ class PdfController extends ResourceController
             WHERE marinduque_cps.month = ? AND marinduque_cps.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -880,7 +931,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -888,7 +939,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -897,59 +948,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -957,26 +1021,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -985,39 +1049,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfRomblon() {
@@ -1029,7 +1090,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -1043,17 +1104,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT romblon_cps.*, tbl_users.office
@@ -1062,7 +1125,7 @@ class PdfController extends ResourceController
             WHERE romblon_cps.month = ? AND romblon_cps.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT romblon_cps.*, tbl_users.office
             FROM romblon_cps
@@ -1070,7 +1133,7 @@ class PdfController extends ResourceController
             WHERE romblon_cps.month = ? AND romblon_cps.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -1082,7 +1145,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -1090,7 +1153,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -1099,59 +1162,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -1159,26 +1235,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -1187,39 +1263,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfPalawan() {
@@ -1231,7 +1304,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -1245,17 +1318,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT palawan_cps.*, tbl_users.office
@@ -1264,7 +1339,7 @@ class PdfController extends ResourceController
             WHERE palawan_cps.month = ? AND palawan_cps.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT palawan_cps.*, tbl_users.office
             FROM palawan_cps
@@ -1272,7 +1347,7 @@ class PdfController extends ResourceController
             WHERE palawan_cps.month = ? AND palawan_cps.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -1284,7 +1359,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -1292,7 +1367,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -1301,59 +1376,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -1361,26 +1449,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -1389,39 +1477,36 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 
     public function generatePdfPuerto() {
@@ -1433,7 +1518,7 @@ class PdfController extends ResourceController
 
         $ratingModel = new \App\Models\RatingModel();
         $percentageData = $ratingModel->findAll();
-    
+
         // Describe the table to get columns
         $query = $db->query("DESCRIBE $table");
         $mimaropaColumns = $query->getResultArray();
@@ -1447,17 +1532,19 @@ class PdfController extends ResourceController
             }
             $sums[$columnName] = 0;
             $sums2[$columnName] = 0;
-            
         }
-    
+
         // Get operational and administrative offices
-        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 4")->getResultArray();
-        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users LIMIT 7 OFFSET 4")->getResultArray();
-    
+        $operationalOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Operational Office'")->getResultArray();
+        $administrativeOffice = $db->query("SELECT DISTINCT office FROM tbl_users WHERE officeType = 'Administrative Office'")->getResultArray();
+
+        $operationalOfficeCount = count($operationalOffice); 
+        $administrativeOfficeCount = count($administrativeOffice);
+
         // Build office names strings for queries
         $officeNamesString = "'" . implode("', '", array_column($operationalOffice, 'office')) . "'";
         $officeNamesString2 = "'" . implode("', '", array_column($administrativeOffice, 'office')) . "'";
-    
+
         // Build SQL queries for operational and administrative offices
         $queryOperation = "
             SELECT puertop_cps.*, tbl_users.office
@@ -1466,7 +1553,7 @@ class PdfController extends ResourceController
             WHERE puertop_cps.month = ? AND puertop_cps.year = ?
             AND tbl_users.office IN ($officeNamesString)
         ";
-    
+
         $queryAdministrative = "
             SELECT puertop_cps.*, tbl_users.office
             FROM puertop_cps
@@ -1474,7 +1561,7 @@ class PdfController extends ResourceController
             WHERE puertop_cps.month = ? AND puertop_cps.year = ?
             AND tbl_users.office IN ($officeNamesString2)
         ";
-    
+
         // Execute queries with prepared statements
         $userRate1 = $db->query($queryOperation, [$month, $year])->getResultArray();
         $userRate2 = $db->query($queryAdministrative, [$month, $year])->getResultArray();
@@ -1486,7 +1573,7 @@ class PdfController extends ResourceController
         foreach ($results1 as $result1) {
             foreach ($sums as $columnName => $sum) {
                 if (array_key_exists($columnName, $result1)) {
-                    $sums[$columnName] +=  $result1[$columnName];
+                    $sums[$columnName] += $result1[$columnName];
                 }
             }
         }
@@ -1494,7 +1581,7 @@ class PdfController extends ResourceController
         foreach ($results2 as $result2) {
             foreach ($sums2 as $columnName => $sum) {
                 if (array_key_exists($columnName, $result2)) {
-                    $sums2[$columnName] +=  $result2[$columnName];
+                    $sums2[$columnName] += $result2[$columnName];
                 }
             }
         }
@@ -1503,59 +1590,72 @@ class PdfController extends ResourceController
         $averageSums = [];
         foreach ($sums as $avgCol => $sum) {
             $average = $sum / 600; // Calculate average
-            $result1 = $average * 60;    // Multiply by 60%
+            $result1 = $average * 60; // Multiply by 60%
             $averageSums[$avgCol] = $result1;
         }
 
         $averageSums2 = [];
         foreach ($sums2 as $avgCol2 => $sum) {
             $average2 = $sum / 400; // Calculate average
-            $result2 = $average2 * 40;    // Multiply by 60%
+            $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
-    
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
-    
+
+        // Use local file path for the image
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/logo.png';
+        if (file_exists($imagePath)) {
+            $imageData = base64_encode(file_get_contents($imagePath));
+            $imageSrc = 'data:image/png;base64,' . $imageData; // Adjust MIME type if necessary
+        } else {
+            die('Image not found.');
+        }
+
         // Set header and footer HTML content
         $header = '';
-        $footer = '<div style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</div>';
-    
+        $footer = '<h5 style="text-align: center; font-style: italic;">PRO MIMAROPA EUPPER SYSTEM</h5>';
+
         // Set header and footer
         $mpdf->SetHTMLHeader($header);
         $mpdf->SetHTMLFooter($footer);
-    
-        $html .= '<div style="display:flex;flex-direction:column;align-items:center;">
-                        <h3 style="text-align: center;">PRO MIMAROPA</h3>
-                        <h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>
-                        <h4 style="text-align: center;">('.$month.' '.$year.')</h4>
-                        <h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>
-                     </div>';
+
+        $html = '';
+        $html .= '<img src="' . $imageSrc . '" alt="Logo" style="height:120px;position:absolute;left:0;top:0;">';
+
+        $html .= '<div style="display:flex;flex-direction:column;align-items:center;position:absolute;left:31%;top:6%;transform:translateX(-31%);">';
+        $html .= '<h3 style="text-align: center;">PRO MIMAROPA</h3>';
+        $html .= '<h3 style="text-align: center;">Unit Performance Evaluation Ratings</h3>';
+        $html .= '<h4 style="text-align: center;">(' . $month . ' ' . $year . ')</h4>';
+        $html .= '<h5 style="text-align: center;">PROVINCIAL/CITY POLICE OFFICES</h5>';
+        $html .= '</div>';
+        
         // Add a table
-        $html .= '<table border="1" cellspacing="0" cellpadding="5">';
-    
-        // Add table headers
+        $html .= '<table border="1" cellspacing="0" cellpadding="5" style="margin-top:80px;">';
+
         $html .= '<tr>';
-        $html .= '<th rowspan="2">Offices</th>';
+        $html .= '<th rowspan="3">Offices</th>';
+        $html .= '<th colspan="' . $operationalOfficeCount . '">Operational (60%)</th>';
+        $html .= '<th rowspan="3">60%</th>';
+        $html .= '<th colspan="' . $administrativeOfficeCount . '">Administrative (40%)</th>';
+        $html .= '<th rowspan="3">40%</th>';
+        $html .= '<th rowspan="3">Total Percentages Rating</th>';
+        $html .= '<th rowspan="3">Ranking</th>';
+        $html .= '</tr>';
+
+        $html .= '<tr>';
         foreach ($operationalOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">60%</th>';
         foreach ($administrativeOffice as $office) {
             $html .= '<th>' . $office['office'] . '</th>';
         }
-        $html .= '<th rowspan="2">40%</th>';
-        $html .= '<th rowspan="2">Total Percentages Rating</th>';
-        $html .= '<th rowspan="2">Ranking</th>';
         $html .= '</tr>';
 
         $html .= '<tr>';
-        
-        $html .= '</tr>';
-
-        $html .= '<tr>';
-        $operationalRange = [167,166,167,100];
-        $administrativeRange = [80,80,80,80,35,25,20];
+        $operationalRange = [167, 166, 167, 100];
+        $administrativeRange = [80, 80, 80, 80, 35, 25, 20];
         foreach ($operationalRange as $office) {
             $html .= '<th>' . $office . '</th>';
         }
@@ -1563,26 +1663,26 @@ class PdfController extends ResourceController
             $html .= '<th>' . $office . '</th>';
         }
         $html .= '</tr>';
-    
-        // Calculate total percentages and ranks outside of the loop
-            $totalPercentages = [];
-            foreach ($mimaropaColumns as $column) {
-                $columnName = $column['Field'];
-                if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                    continue;
-                }
-                $totalPercentage = $averageSums[$columnName]  + $averageSums2[$columnName] ;
-                $totalPercentages[$columnName] = $totalPercentage;
-            }
 
-            // Sort total percentages array and assign ranks
-            arsort($totalPercentages); // Sort in descending order to get the highest first
-            $ranks = [];
-            $rank = 1;
-            foreach ($totalPercentages as $columnName => $percentage) {
-                $ranks[$columnName] = $rank++;
+        // Calculate total percentages and ranks outside of the loop
+        $totalPercentages = [];
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
             }
-        
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+            $totalPercentages[$columnName] = $totalPercentage;
+        }
+
+        // Sort total percentages array and assign ranks
+        arsort($totalPercentages); // Sort in descending order to get the highest first
+        $ranks = [];
+        $rank = 1;
+        foreach ($totalPercentages as $columnName => $percentage) {
+            $ranks[$columnName] = $rank++;
+        }
+
         // Add table rows for operational data
         foreach ($mimaropaColumns as $column) {
             $columnName = $column['Field'];
@@ -1591,38 +1691,35 @@ class PdfController extends ResourceController
             }
             $formattedColumnName = str_replace('_', ' ', $columnName);
             $html .= '<tr>';
-           
-                $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
-                foreach ($userRate1 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums[$columnName], 2). '</td>';
-                foreach ($userRate2 as $rate) {
-                    $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
-                }
-                $html .= '<td style="text-align: center;">' .number_format($averageSums2[$columnName],2). '</td>';
-                $sum =  ( $averageSums[$columnName] + $averageSums2[$columnName] ); 
-                $html .= '<td style="text-align: center;">' .number_format( $sum ,2). '</td>';
-                $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
-            
+            $html .= '<td style="text-align: center;">' . $formattedColumnName . '</td>';
+            foreach ($userRate1 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums[$columnName], 2) . '</td>';
+            foreach ($userRate2 as $rate) {
+                $html .= '<td style="text-align: center;">' . $rate[$columnName] . '</td>';
+            }
+            $html .= '<td style="text-align: center;">' . number_format($averageSums2[$columnName], 2) . '</td>';
+            $sum = $averageSums[$columnName] + $averageSums2[$columnName];
+            $html .= '<td style="text-align: center;">' . number_format($sum, 2) . '</td>';
+            $html .= '<td style="text-align: center;">' . $ranks[$columnName] . '</td>'; // Display the rank
             $html .= '</tr>';
         }
-    
+
         $html .= '</table>';
-    
+
         // Add content to PDF
         $mpdf->WriteHTML($html);
-    
+
         // Get the PDF content as a string
         $pdfContent = $mpdf->Output('', 'S'); // 'S' returns the PDF as a string
-    
+
         // Send appropriate headers
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="output.pdf"');
         header('Content-Length: ' . strlen($pdfContent));
-    
+
         // Output the PDF content
         echo $pdfContent;
-        
     }
 }

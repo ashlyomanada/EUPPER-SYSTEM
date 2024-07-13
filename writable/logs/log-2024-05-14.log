@@ -1,0 +1,184 @@
+CRITICAL - 2024-05-14 01:34:37 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 01:35:08 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 01:35:19 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 319.
+ 1 APPPATH\Controllers\PdfController.php(319): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 319)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfRmfb()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 01:35:33 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 319.
+ 1 APPPATH\Controllers\PdfController.php(319): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 319)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfRmfb()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:25:08 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:25:24 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:25:58 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 319.
+ 1 APPPATH\Controllers\PdfController.php(319): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 319)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfRmfb()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:26:08 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 521.
+ 1 APPPATH\Controllers\PdfController.php(521): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 521)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfOccidental()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:29:22 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 521.
+ 1 APPPATH\Controllers\PdfController.php(521): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 521)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfOccidental()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:30:01 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:30:09 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:32:58 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 521.
+ 1 APPPATH\Controllers\PdfController.php(521): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 521)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfOccidental()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:39:21 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:41:52 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:45:23 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:51:50 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 05:53:12 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 06:05:10 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 06:09:04 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 06:09:54 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 06:10:23 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 06:10:53 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-05-14 06:12:08 --> Undefined variable $html
+in APPPATH\Controllers\PdfController.php on line 117.
+ 1 APPPATH\Controllers\PdfController.php(117): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined variable $html', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 117)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

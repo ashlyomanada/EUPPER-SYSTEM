@@ -1,0 +1,39 @@
+CRITICAL - 2024-07-08 10:14:56 --> Class "App\Controllers\RatingModel" not found
+in APPPATH\Controllers\AdminController.php on line 1080.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRatePerMonth()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-07-08 10:16:09 --> Array to string conversion
+in APPPATH\Controllers\AdminController.php on line 1088.
+ 1 APPPATH\Controllers\AdminController.php(1088): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Array to string conversion', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 1088)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRatePerMonth()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-07-08 10:55:09 --> Undefined array key "office"
+in APPPATH\Controllers\AdminController.php on line 1093.
+ 1 APPPATH\Controllers\AdminController.php(1093): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "office"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 1093)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRatePerMonth('January', '2024', 'PPO')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-07-08 10:56:28 --> Undefined array key "office"
+in APPPATH\Controllers\AdminController.php on line 1093.
+ 1 APPPATH\Controllers\AdminController.php(1093): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "office"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 1093)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRatePerMonth('January', '2024', 'PPO')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-07-08 10:58:07 --> Undefined array key "office"
+in APPPATH\Controllers\AdminController.php on line 1093.
+ 1 APPPATH\Controllers\AdminController.php(1093): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "office"', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\AdminController.php', 1093)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\AdminController->getRatePerMonth('January', '2024', 'PPO')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\AdminController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

@@ -450,16 +450,16 @@ class UserController extends ResourceController
         $emailConfig = config('Email');
         $emailService = Services::email();
         $emailService->initialize($emailConfig);
-
+    
         $emailService->setFrom('your_email@example.com', 'Your Name');
         $emailService->setTo($email);
         $emailService->setSubject('Reset Your Password');
-
-        // Replace 'http://your_frontend_url/reset-password' with your actual frontend reset password URL
-        $resetLink = 'http://localhost:8081/resetPassword/' . $token;
-
+    
+        // Get the base URL from the configuration and construct the reset link
+        $resetLink = base_url('resetPassword/' . $token);
+    
         $emailService->setMessage("Click this link to reset your password: $resetLink");
-
+    
         try {
             $emailService->send();
         } catch (\Exception $e) {
@@ -469,6 +469,7 @@ class UserController extends ResourceController
             throw new \Exception('Failed to send password reset email');
         }
     }
+    
 
     public function resetPassword()
     {

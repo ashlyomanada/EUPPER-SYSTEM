@@ -1,0 +1,191 @@
+ERROR - 2024-06-20 09:52:42 --> Email: sendWithSmtp throwed ErrorException: stream_socket_enable_crypto(): SSL: Handshake timed out in C:\laragon\www\projectbackend\system\Email\Email.php:1909
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'stream_socket_e...', 'C:\\laragon\\www\\...', 1909)
+#1 C:\laragon\www\projectbackend\system\Email\Email.php(1909): stream_socket_enable_crypto(Resource id #164, true, 121)
+#2 C:\laragon\www\projectbackend\system\Email\Email.php(1796): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\laragon\www\projectbackend\system\Email\Email.php(1681): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\laragon\www\projectbackend\system\Email\Email.php(1575): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\laragon\www\projectbackend\app\Controllers\UserController.php(464): CodeIgniter\Email\Email->send()
+#6 C:\laragon\www\projectbackend\app\Controllers\UserController.php(440): App\Controllers\UserController->sendResetEmail('ashlyomanada@gm...', '76c5a87c24478ae...')
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#12 {main}
+ERROR - 2024-06-20 09:52:42 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-06-20 09:52:42 --> 220 smtp.gmail.com ESMTP d9443c01a7336-1f855f1a1ebsm133068035ad.238 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.60.70]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+ERROR - 2024-06-20 12:29:16 --> Email: sendWithSmtp throwed ErrorException: fsockopen(): php_network_getaddresses: getaddrinfo for smtp.gmail.com failed: No such host is known.  in C:\laragon\www\projectbackend\system\Email\Email.php:1888
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): ph...', 'C:\\laragon\\www\\...', 1888)
+#1 C:\laragon\www\projectbackend\system\Email\Email.php(1888): fsockopen('smtp.gmail.com', 587, NULL, NULL, 5)
+#2 C:\laragon\www\projectbackend\system\Email\Email.php(1796): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\laragon\www\projectbackend\system\Email\Email.php(1681): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\laragon\www\projectbackend\system\Email\Email.php(1575): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\laragon\www\projectbackend\app\Controllers\MainController.php(221): CodeIgniter\Email\Email->send()
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\MainController->sendEmail()
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#11 {main}
+ERROR - 2024-06-20 12:29:16 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-06-20 12:29:16 --> 
+ERROR - 2024-06-20 12:29:16 --> Email failed to send. Error: Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Thu, 20 Jun 2024 12:29:16 +0000
+To: ashlyomanada@gmail.com
+From: &lt;ROD@gmail.com&gt;
+Return-Path: &lt;ROD@gmail.com&gt;
+Subject: =?UTF-8?Q?Request=20Form=20from=20R3?=
+Reply-To: &lt;ROD@gmail.com&gt;
+User-Agent: CodeIgniter
+X-Sender: ROD@gmail.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;6674209cbe11f8.93617795@gmail.com&gt;
+Mime-Version: 1.0
+
+</pre>
+ERROR - 2024-06-20 12:31:00 --> Email: sendWithSmtp throwed ErrorException: fsockopen(): php_network_getaddresses: getaddrinfo for smtp.gmail.com failed: No such host is known.  in C:\laragon\www\projectbackend\system\Email\Email.php:1888
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): ph...', 'C:\\laragon\\www\\...', 1888)
+#1 C:\laragon\www\projectbackend\system\Email\Email.php(1888): fsockopen('smtp.gmail.com', 587, NULL, NULL, 5)
+#2 C:\laragon\www\projectbackend\system\Email\Email.php(1796): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\laragon\www\projectbackend\system\Email\Email.php(1681): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\laragon\www\projectbackend\system\Email\Email.php(1575): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\laragon\www\projectbackend\app\Controllers\MainController.php(221): CodeIgniter\Email\Email->send()
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\MainController->sendEmail()
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#11 {main}
+ERROR - 2024-06-20 12:31:00 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-06-20 12:31:00 --> 
+ERROR - 2024-06-20 12:31:00 --> Email failed to send. Error: Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Thu, 20 Jun 2024 12:30:51 +0000
+To: ashlyomanada@gmail.com
+From: &lt;ROD@gmail.com&gt;
+Return-Path: &lt;ROD@gmail.com&gt;
+Subject: =?UTF-8?Q?Request=20Form=20from=20R3?=
+Reply-To: &lt;ROD@gmail.com&gt;
+User-Agent: CodeIgniter
+X-Sender: ROD@gmail.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;667420fbe9a6b4.07037577@gmail.com&gt;
+Mime-Version: 1.0
+
+</pre>
+ERROR - 2024-06-20 12:33:11 --> Email: sendWithSmtp throwed ErrorException: fsockopen(): php_network_getaddresses: getaddrinfo for smtp.gmail.com failed: No such host is known.  in C:\laragon\www\projectbackend\system\Email\Email.php:1888
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): ph...', 'C:\\laragon\\www\\...', 1888)
+#1 C:\laragon\www\projectbackend\system\Email\Email.php(1888): fsockopen('smtp.gmail.com', 587, NULL, NULL, 5)
+#2 C:\laragon\www\projectbackend\system\Email\Email.php(1796): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\laragon\www\projectbackend\system\Email\Email.php(1681): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\laragon\www\projectbackend\system\Email\Email.php(1575): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\laragon\www\projectbackend\app\Controllers\MainController.php(221): CodeIgniter\Email\Email->send()
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\MainController->sendEmail()
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#10 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#11 {main}
+ERROR - 2024-06-20 12:33:11 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-06-20 12:33:11 --> 
+ERROR - 2024-06-20 12:33:11 --> Email failed to send. Error: Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Thu, 20 Jun 2024 12:33:11 +0000
+To: ashlyomanada@gmail.com
+From: &lt;ROD@gmail.com&gt;
+Return-Path: &lt;ROD@gmail.com&gt;
+Subject: =?UTF-8?Q?Request=20Form=20from=20R3?=
+Reply-To: &lt;ROD@gmail.com&gt;
+User-Agent: CodeIgniter
+X-Sender: ROD@gmail.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;667421878ce270.37220650@gmail.com&gt;
+Mime-Version: 1.0
+
+</pre>
+ERROR - 2024-06-20 12:46:58 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-06-20 12:46:58 --> 220 smtp.gmail.com ESMTP d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.60.70]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+
+hello: 250-smtp.gmail.com at your service, [175.176.60.70]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+from: 250 2.1.0 OK d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+
+to: 250 2.1.5 OK d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+
+data: 354  Go ahead d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+
+
+quit: 250 2.0.0 OK  1718887606 d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+
+The following SMTP error was encountered: 250 2.0.0 OK  1718887606 d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+
+The following SMTP error was encountered: 
+ERROR - 2024-06-20 12:46:58 --> Email failed to send. Error: 220 smtp.gmail.com ESMTP d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+<br><pre>hello: 250-smtp.gmail.com at your service, [175.176.60.70]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>starttls: 220 2.0.0 Ready to start TLS
+</pre><pre>hello: 250-smtp.gmail.com at your service, [175.176.60.70]
+250-SIZE 35882577
+250-8BITMIME
+250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+</pre><pre>from: 250 2.1.0 OK d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+</pre><pre>to: 250 2.1.5 OK d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+</pre><pre>data: 354  Go ahead d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+</pre><br><pre>quit: 250 2.0.0 OK  1718887606 d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+</pre>The following SMTP error was encountered: 250 2.0.0 OK  1718887606 d9443c01a7336-1f855f0b705sm136483645ad.213 - gsmtp
+<br>The following SMTP error was encountered: <br>Unable to send email using SMTP. Your server might not be configured to send mail using this method.<br><pre>Date: Thu, 20 Jun 2024 12:46:38 +0000
+To: ashlyomanada@gmail.com
+From: &lt;ROD@gmail.com&gt;
+Return-Path: &lt;ROD@gmail.com&gt;
+Subject: =?UTF-8?Q?Request=20Form=20from=20R3?=
+Reply-To: &lt;ROD@gmail.com&gt;
+User-Agent: CodeIgniter
+X-Sender: ROD@gmail.com
+X-Mailer: CodeIgniter
+X-Priority: 3 (Normal)
+Message-ID: &lt;667424aec15cb6.58592406@gmail.com&gt;
+Mime-Version: 1.0
+
+</pre>

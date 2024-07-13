@@ -1,0 +1,46 @@
+ERROR - 2024-05-24 04:46:50 --> Email: sendWithSmtp throwed ErrorException: fsockopen(): php_network_getaddresses: getaddrinfo for smtp.gmail.com failed: No such host is known.  in C:\laragon\www\projectbackend\system\Email\Email.php:1888
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'fsockopen(): ph...', 'C:\\laragon\\www\\...', 1888)
+#1 C:\laragon\www\projectbackend\system\Email\Email.php(1888): fsockopen('smtp.gmail.com', 587, NULL, NULL, 5)
+#2 C:\laragon\www\projectbackend\system\Email\Email.php(1796): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\laragon\www\projectbackend\system\Email\Email.php(1681): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\laragon\www\projectbackend\system\Email\Email.php(1575): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\laragon\www\projectbackend\app\Controllers\UserController.php(464): CodeIgniter\Email\Email->send()
+#6 C:\laragon\www\projectbackend\app\Controllers\UserController.php(440): App\Controllers\UserController->sendResetEmail('ashlyomanada@gm...', 'b920a0567d09d13...')
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#12 {main}
+ERROR - 2024-05-24 04:46:50 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-05-24 04:46:50 --> 
+ERROR - 2024-05-24 13:37:52 --> Email: sendWithSmtp throwed ErrorException: stream_socket_enable_crypto(): SSL: Handshake timed out in C:\laragon\www\projectbackend\system\Email\Email.php:1909
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'stream_socket_e...', 'C:\\laragon\\www\\...', 1909)
+#1 C:\laragon\www\projectbackend\system\Email\Email.php(1909): stream_socket_enable_crypto(Resource id #164, true, 121)
+#2 C:\laragon\www\projectbackend\system\Email\Email.php(1796): CodeIgniter\Email\Email->SMTPConnect()
+#3 C:\laragon\www\projectbackend\system\Email\Email.php(1681): CodeIgniter\Email\Email->sendWithSmtp()
+#4 C:\laragon\www\projectbackend\system\Email\Email.php(1575): CodeIgniter\Email\Email->spoolEmail()
+#5 C:\laragon\www\projectbackend\app\Controllers\UserController.php(464): CodeIgniter\Email\Email->send()
+#6 C:\laragon\www\projectbackend\app\Controllers\UserController.php(440): App\Controllers\UserController->sendResetEmail('ashlyomanada@gm...', '04bbb9d30426106...')
+#7 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+#8 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#9 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#11 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#12 {main}
+ERROR - 2024-05-24 13:37:52 --> Email: Unable to send email using SMTP. Your server might not be configured to send mail using this method.
+ERROR - 2024-05-24 13:37:52 --> 220 smtp.gmail.com ESMTP d9443c01a7336-1f44c968493sm13886925ad.159 - gsmtp
+
+hello: 250-smtp.gmail.com at your service, [175.176.61.88]
+250-SIZE 35882577
+250-8BITMIME
+250-STARTTLS
+250-ENHANCEDSTATUSCODES
+250-PIPELINING
+250-CHUNKING
+250 SMTPUTF8
+
+starttls: 220 2.0.0 Ready to start TLS
+

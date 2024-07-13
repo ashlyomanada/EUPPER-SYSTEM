@@ -11,7 +11,8 @@
           "scrollbar-width",
           "scrollbar-color",
           "backdrop-filter",
-          "text-align: -webkit-match-parent"
+          "text-align: -webkit-match-parent",
+          "-webkit-text-size-adjust"
         ]
       }
     ]
