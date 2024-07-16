@@ -208,7 +208,7 @@ export default {
     async generateRMFBReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateRMFBOffice",
+          "http://euper.infinityfreeapp.com/projectbackend/generateRMFBOffice",
           {
             month: this.month,
             year: this.year,

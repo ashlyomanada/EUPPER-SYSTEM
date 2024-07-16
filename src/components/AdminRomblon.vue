@@ -208,7 +208,7 @@ export default {
     async generateRomReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateRomReport",
+          "http://euper.infinityfreeapp.com/projectbackend/generateRomReport",
           {
             month: this.month,
             year: this.year,

@@ -208,7 +208,7 @@ export default {
     async generateOrienReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateOrminReport",
+          "http://euper.infinityfreeapp.com/projectbackend/generateOrminReport",
           {
             month: this.month,
             year: this.year,

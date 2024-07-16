@@ -208,7 +208,7 @@ export default {
     async generatePPOReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generatePPOOffice",
+          "http://euper.infinityfreeapp.com/projectbackend/generatePPOOffice",
           {
             month: this.month,
             year: this.year,

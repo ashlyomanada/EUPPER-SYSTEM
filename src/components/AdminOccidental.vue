@@ -208,7 +208,7 @@ export default {
     async generateOcciReport() {
       try {
         const response = await axios.post(
-          "http://localhost:8080/generateOcciReport",
+          "http://euper.infinityfreeapp.com/projectbackend/generateOcciReport",
           {
             month: this.month,
             year: this.year,

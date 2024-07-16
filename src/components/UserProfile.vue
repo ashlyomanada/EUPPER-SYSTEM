@@ -8,7 +8,7 @@
         <div class="img-left">
           <div class="editImageContainer">
             <img
-              :src="`http://localhost:8080/${profilePic}`"
+              :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
               alt=""
               id="profile-pic"
             />
@@ -173,7 +173,7 @@
             <img
               v-else
               style="height: 10rem; border-radius: 50%"
-              :src="`http://localhost:8080/${profilePic}`"
+              :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
             />
             <input
               id="editProfileInput"
@@ -374,7 +374,7 @@ export default {
         // Assuming your backend returns the new profile picture path or URL
         if (response.status === 200) {
           this.profilePic = response.data.profilePicPath;
-          this.profilePicUrl = `http://localhost:8080/${response.data.profilePicPath}`;
+          this.profilePicUrl = `http://euper.infinityfreeapp.com/projectbackend/${response.data.profilePicPath}`;
           // alert("Profile picture uploaded successfully!");
           this.errorMessage = "Profile picture uploaded successfully!";
           setTimeout(() => {
