@@ -7,7 +7,7 @@ import axios from "axios";
 import PPO from "./components/PPO.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-axios.defaults.baseURL = "http://euper.infinityfreeapp.com/projectbackend/";
+axios.defaults.baseURL = "https://euper.infinityfreeapp.com/projectbackend/";
 loadFonts();
 
 const app = createApp(App);
