@@ -100,7 +100,8 @@ export default {
       month: "",
       year: "",
       userId: "",
-      allOffices: [], // Array to store all office names
+      allOffices: [],
+      baseURL: axios.defaults.baseURL,
     };
   },
   created() {
@@ -208,7 +209,7 @@ export default {
     async generateOrienReport() {
       try {
         const response = await axios.post(
-          "http://euper.infinityfreeapp.com/projectbackend/generateOrminReport",
+          `${this.baseURL}generateOrminReport`,
           {
             month: this.month,
             year: this.year,

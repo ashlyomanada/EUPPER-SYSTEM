@@ -165,6 +165,12 @@ export default {
   font-size: 25px;
 }
 
+@media screen and (max-width: 768px) {
+  .nav-items {
+    width: 50%;
+  }
+}
+
 @media screen and (max-width: 600px) {
   .time2 {
     display: none;

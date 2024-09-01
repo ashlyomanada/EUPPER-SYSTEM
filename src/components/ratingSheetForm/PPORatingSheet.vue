@@ -5,7 +5,7 @@
   >
     <div class="order">
       <div class="rating-header">
-        <div>
+        <div class="rating-subheader">
           <h3>Unit Performance Evaluation Rating</h3>
           <h4 class="head-subtitle">PPO / CPO Level</h4>
         </div>
@@ -257,6 +257,7 @@ export default {
   padding: 0.3rem 0.5rem;
   border: 1px solid var(--dark);
   border-radius: 0.5rem;
+  color: var(--dark);
 }
 .rateInput {
   width: 60%;
@@ -271,5 +272,15 @@ export default {
   padding: 0.5rem 1rem;
   color: white;
   border-radius: 0.5rem;
+}
+
+@media screen and (max-width: 600px) {
+  .rateInput {
+    width: 100%;
+  }
+
+  .rating-subheader {
+    text-align: center;
+  }
 }
 </style>

@@ -7,11 +7,7 @@
       <div class="img-container">
         <div class="img-left">
           <div class="editImageContainer">
-            <img
-              :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
-              alt=""
-              id="profile-pic"
-            />
+            <img :src="`${baseURL}${profilePic}`" alt="" id="profile-pic" />
             <i
               style="
                 position: absolute;
@@ -42,12 +38,14 @@
         </p>
         <p><i class="fa-solid fa-envelope fa-sm"></i>Email: {{ email }}</p>
       </div>
-    </div>
-
-    <div class="alert-container">
-      <v-alert v-if="successMessage" type="success" class="error-message">{{
-        successMessage
-      }}</v-alert>
+      <div class="alert-container">
+        <v-alert v-if="successMessage" type="success" class="error-message">
+          {{ successMessage }}
+        </v-alert>
+        <v-alert v-if="errorMessage" type="error" class="error-message">
+          {{ errorMessage }}
+        </v-alert>
+      </div>
     </div>
   </div>
 
@@ -98,7 +96,7 @@
             <div class="mb-3">
               <label for="email" class="form-label text-start">Email</label>
               <input
-                style="background: var(--light); color: var(--dark)"
+                style="background: var (--light); color: var(--dark)"
                 v-model="selectedUser.email"
                 type="email"
                 class="form-control"
@@ -112,7 +110,7 @@
                 >Phone Number</label
               >
               <input
-                style="background: var(--light); color: var(--dark)"
+                style="background: var (--light); color: var(--dark)"
                 v-model="selectedUser.phone_no"
                 type="text"
                 class="form-control"
@@ -147,11 +145,6 @@
     aria-labelledby="editProfilePicModalLabel"
     aria-hidden="true"
   >
-    <div class="alert-container">
-      <v-alert v-if="errorMessage" type="error" class="error-message">{{
-        errorMessage
-      }}</v-alert>
-    </div>
     <div class="modal-dialog modal-dialog-centered">
       <div
         class="modal-content"
@@ -173,7 +166,7 @@
             <img
               v-else
               style="height: 10rem; border-radius: 50%"
-              :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
+              :src="`${baseURL}${profilePic}`"
             />
             <input
               id="editProfileInput"
@@ -228,6 +221,7 @@ export default {
       file: null,
       errorMessage: "",
       successMessage: "",
+      baseURL: axios.defaults.baseURL,
     };
   },
   mounted() {
@@ -321,7 +315,6 @@ export default {
           const responseData = response.data;
 
           if (responseData && responseData.success) {
-            //console.log(responseData.message);
             this.closeForm();
             this.fetchUserData();
             this.successMessage = "Successfully Updated User Details";
@@ -330,7 +323,7 @@ export default {
             }, 5000);
           } else {
             console.error("Save failed:", responseData.message);
-            this.errorMessage = "Profile picture uploaded successfully!";
+            this.errorMessage = responseData.message;
             setTimeout(() => {
               this.errorMessage = null;
             }, 5000);
@@ -339,52 +332,48 @@ export default {
           console.error(`Unexpected response status: ${response.status}`);
         }
       } catch (error) {
-        console.error("Error saving admin:", error);
+        console.error("Error saving user:", error);
       }
     },
 
     async saveProfilePic() {
       try {
         if (!this.file) {
-          // alert("Please select a file.");
           this.errorMessage = "Please select a file.";
           return;
         }
 
-        // Get user ID from session storage
         const storedUserId = sessionStorage.getItem("id");
         if (!storedUserId) {
-          // alert("User ID not found.");
           this.errorMessage = "User ID not found.";
           return;
         }
 
-        // Prepare form data to send with the file
         const formData = new FormData();
         formData.append("file", this.file);
-        formData.append("userId", storedUserId); // Append user ID to the form data
+        formData.append("userId", storedUserId);
 
-        // Make POST request using Axios
         const response = await axios.post("/uploadProfile", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
 
-        // Assuming your backend returns the new profile picture path or URL
         if (response.status === 200) {
           this.profilePic = response.data.profilePicPath;
-          this.profilePicUrl = `http://euper.infinityfreeapp.com/projectbackend/${response.data.profilePicPath}`;
-          // alert("Profile picture uploaded successfully!");
-          this.errorMessage = "Profile picture uploaded successfully!";
+          this.profilePicUrl = `${this.baseURL}${response.data.profilePicPath}`;
+          this.successMessage = "Profile picture uploaded successfully!";
           setTimeout(() => {
-            this.errorMessage = null;
+            this.successMessage = null;
           }, 5000);
           this.closeForm2();
         }
       } catch (error) {
         console.error("Error uploading profile picture:", error);
-        alert("Failed to upload profile picture.");
+        this.errorMessage = "Failed to upload profile picture.";
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 5000);
       }
     },
   },

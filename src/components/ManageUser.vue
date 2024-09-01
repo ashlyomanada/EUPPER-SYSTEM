@@ -507,7 +507,15 @@ export default {
 }
 @media screen and (max-width: 768px) {
   .manageItems {
-    align-items: center;
+    align-items: flex-start;
+    flex-direction: column;
   }
+
+  .list-items {
+    gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
 }
 </style>

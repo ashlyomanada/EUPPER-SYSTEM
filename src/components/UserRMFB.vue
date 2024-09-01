@@ -2,7 +2,7 @@
   <div class="table-data">
     <div class="order">
       <div class="rating-header">
-        <div>
+        <div class="rating-subheader">
           <h2>Unit Performance Evaluation Rating</h2>
           <h4 class="head-subtitle">RMFB / PMFC Level</h4>
         </div>
@@ -32,65 +32,52 @@
         </tbody>
       </table>
       <h4 v-else style="text-align: center">No Ratings Yet</h4>
-
-      <!-- Bootstrap Pagination -->
-      <nav
-        v-if="dataFetched"
-        class="d-flex justify-content-center align-items-center"
-      >
-        <ul class="pagination justify-content-center">
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a class="page-link" href="#" @click.prevent="changePage(1)">
-              First
-            </a>
-          </li>
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="changePage(currentPage - 1)"
-            >
-              Previous
-            </a>
-          </li>
-          <li
-            class="page-item"
-            v-for="page in totalPages"
-            :key="page"
-            :class="{ active: currentPage === page }"
-          >
-            <a class="page-link" href="#" @click.prevent="changePage(page)">
-              {{ page }}
-            </a>
-          </li>
-          <li
-            class="page-item"
-            :class="{ disabled: currentPage === totalPages }"
-          >
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="changePage(currentPage + 1)"
-            >
-              Next
-            </a>
-          </li>
-          <li
-            class="page-item"
-            :class="{ disabled: currentPage === totalPages }"
-          >
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="changePage(totalPages)"
-            >
-              Last
-            </a>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
+  <!-- Bootstrap Pagination -->
+  <nav
+    v-if="dataFetched"
+    class="d-flex justify-content-center align-items-center"
+  >
+    <ul class="pagination justify-content-center">
+      <li class="page-item" :class="{ disabled: currentPage === 1 }">
+        <a class="page-link" href="#" @click.prevent="changePage(1)"> First </a>
+      </li>
+      <li class="page-item" :class="{ disabled: currentPage === 1 }">
+        <a
+          class="page-link"
+          href="#"
+          @click.prevent="changePage(currentPage - 1)"
+        >
+          Previous
+        </a>
+      </li>
+      <li
+        class="page-item"
+        v-for="page in totalPages"
+        :key="page"
+        :class="{ active: currentPage === page }"
+      >
+        <a class="page-link" href="#" @click.prevent="changePage(page)">
+          {{ page }}
+        </a>
+      </li>
+      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+        <a
+          class="page-link"
+          href="#"
+          @click.prevent="changePage(currentPage + 1)"
+        >
+          Next
+        </a>
+      </li>
+      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+        <a class="page-link" href="#" @click.prevent="changePage(totalPages)">
+          Last
+        </a>
+      </li>
+    </ul>
+  </nav>
 </template>
 
 <script>

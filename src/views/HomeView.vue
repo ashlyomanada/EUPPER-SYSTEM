@@ -159,9 +159,7 @@
           id="profile"
           @click="showComponent('UserProfile')"
         >
-          <img
-            :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
-          />
+          <img :src="`http://localhost:8080/${profilePic}`" />
         </a>
       </div>
     </nav>
@@ -402,6 +400,7 @@ export default {
         adminName.style.visibility = "hidden";
       }
     },
+
     toggleSwitch() {
       const switchMode = document.getElementById("switch-mode");
       const main = document.getElementById("usermain");
@@ -460,6 +459,11 @@ a {
 }
 .li-div {
   padding-left: 0.8rem;
+}
+@media screen and (max-width: 768px) {
+  .nav-items {
+    width: 50%;
+  }
 }
 @media screen and (max-width: 600px) {
   .nav-items {

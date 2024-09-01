@@ -123,7 +123,6 @@ export default {
   border: 1px solid var(--dark);
 }
 .RMFB {
-  background: var(--light);
   padding: 2rem;
   border-radius: 3rem;
 }

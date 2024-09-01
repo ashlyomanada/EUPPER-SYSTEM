@@ -125,7 +125,6 @@ export default {
   border: 1px solid var(--dark);
 }
 .PPOCard {
-  background: var(--light);
   padding: 1rem;
   border-radius: 3rem;
 }

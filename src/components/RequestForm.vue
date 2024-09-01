@@ -23,10 +23,11 @@
           readonly
         />
 
-        <div class="d-flex gap-1">
+        <div class="suggestedContainer d-flex gap-1">
           <input
             v-if="showButton1"
             type="button"
+            class="input"
             value="I need to request enabling a form in the system."
             @click="
               addToTextarea(
@@ -39,6 +40,7 @@
           <input
             v-if="showButton2"
             type="button"
+            class="input"
             value="Could you please enable the form for me?"
             @click="
               addToTextarea('Could you please enable the form for me?', 2)
@@ -59,17 +61,17 @@
         </button>
       </form>
     </div>
-    <div class="alert-container">
+    <div class="alert-container" v-if="errors.username">
       <v-alert v-if="errors.username" type="error" class="error">{{
         errors.username
       }}</v-alert>
     </div>
-    <div class="alert-container">
+    <div class="alert-container" v-if="errors.sender">
       <v-alert v-if="errors.sender" type="error" class="error">{{
         errors.sender
       }}</v-alert>
     </div>
-    <div class="alert-container">
+    <div class="alert-container" v-if="errors.message">
       <v-alert v-if="errors.message" type="error" class="error">{{
         errors.message
       }}</v-alert>
@@ -294,5 +296,11 @@ export default {
 .error {
   color: red;
   font-size: 0.875em;
+}
+
+@media screen and (max-width: 600px) {
+  .suggestedContainer {
+    flex-direction: column;
+  }
 }
 </style>

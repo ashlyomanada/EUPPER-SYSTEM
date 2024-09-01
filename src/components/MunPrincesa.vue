@@ -2,7 +2,7 @@
   <div class="table-data" :style="{ display: visible ? 'block' : 'none' }">
     <div class="order">
       <div class="rating-header">
-        <div>
+        <div class="rating-subheader">
           <h3>Unit Performance Evaluation Rating</h3>
           <h4 class="head-subtitle">Municipalities of Puerto Princesa</h4>
         </div>

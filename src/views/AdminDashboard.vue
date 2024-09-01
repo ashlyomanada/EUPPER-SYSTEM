@@ -8,7 +8,7 @@
           {{ userData.username }}
         </h3>
       </div>
-      <li class="active">
+      <li :class="{ active: selectedComponent === 'Dashboard' }">
         <a href="#" @click="showComponent('Dashboard')">
           <i class="bx bxs-dashboard"></i>
           <span class="text">Dashboard</span>
@@ -29,7 +29,7 @@
         </a>
       </li>
       <div v-show="showButtons" class="li-div">
-        <li>
+        <li :class="{ active: selectedComponent === 'PPORates' }">
           <a href="#" @click="showComponent('PPORates')">
             <i
               class="fa fa-star"
@@ -39,7 +39,7 @@
             <span class="text">PPO CPO Ratings</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'RMFBRates' }">
           <a href="#" @click="showComponent('RMFBRates')">
             <i
               class="fa fa-star"
@@ -49,7 +49,7 @@
             <span class="text">RMFB PMFC Ratings</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'MPSRates' }">
           <a href="#" @click="showComponent('MPSRates')">
             <i
               class="fa fa-star"
@@ -75,13 +75,13 @@
         </a>
       </li>
       <div v-show="showButtons2" class="li-div">
-        <li>
+        <li :class="{ active: selectedComponent === 'ManageUser' }">
           <a href="#" @click="showComponent('ManageUser')">
             <i class="bx bxs-group"></i>
             <span class="text">Users</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'Ratings' }">
           <a href="#" @click="showComponent('Ratings')">
             <i
               class="fa fa-star"
@@ -91,7 +91,7 @@
             <span class="text">User Ratings</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'Announcement' }">
           <a href="#" @click="showComponent('Announcement')">
             <i
               class="fa fa-bullhorn"
@@ -101,7 +101,7 @@
             <span class="text">Announcement</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'AddAdmin' }">
           <a href="#" @click="showComponent('AddAdmin')">
             <i
               class="fa fa-plus"
@@ -111,7 +111,7 @@
             <span class="text">Add Admin</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'AddUser' }">
           <a href="#" @click="showComponent('AddUser')">
             <i
               class="fa fa-plus"
@@ -137,7 +137,7 @@
         </a>
       </li>
       <div v-show="showButtons3" class="li-div">
-        <li>
+        <li :class="{ active: selectedComponent === 'AddPPO' }">
           <a href="#" @click="showComponent('AddPPO')">
             <i
               class="fa fa-briefcase"
@@ -147,7 +147,7 @@
             <span class="text">Manage PPO</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'AddRMFB' }">
           <a href="#" @click="showComponent('AddRMFB')">
             <i
               class="fa fa-briefcase"
@@ -157,7 +157,7 @@
             <span class="text">Manage RMFB</span>
           </a>
         </li>
-        <li>
+        <li :class="{ active: selectedComponent === 'AdminOccidental' }">
           <a href="#" @click="showComponent('AdminOccidental')">
             <i
               class="fa fa-briefcase"
@@ -168,7 +168,7 @@
           </a>
         </li>
       </div>
-      <li>
+      <li :class="{ active: selectedComponent === 'ManageAdmin' }">
         <a href="#" @click="showComponent('ManageAdmin')">
           <i
             class="fa fa-user-circle"
@@ -279,9 +279,7 @@ export default {
       document.title = "EUPER - " + newComponent;
     },
   },
-  async created() {
-    this.toggle();
-  },
+
   mounted() {
     this.fetchUserData();
   },
@@ -307,20 +305,6 @@ export default {
       this.showButtons3 = !this.showButtons3;
       this.showButtons2 = false;
       this.showButtons = false;
-    },
-
-    toggle() {
-      const allSideMenu = document.querySelectorAll(
-        ".sideBar .side-menu.top li a"
-      );
-      allSideMenu.forEach((item) => {
-        item.addEventListener("click", function () {
-          allSideMenu.forEach((i) => {
-            i.parentElement.classList.remove("active");
-          });
-          item.parentElement.classList.add("active");
-        });
-      });
     },
 
     async fetchUserData() {

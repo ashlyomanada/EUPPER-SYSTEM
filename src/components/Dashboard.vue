@@ -1,33 +1,32 @@
 <template>
-  <div class="head-title">
-    <ul class="box-info">
-      <!-- <li>
-        <i class="bx bxs-calendar-check"></i>
-        <span class="text">
-          <h3>{{ ratingCount }}</h3>
-          <p>Ratings</p>
-        </span>
-      </li> -->
-      <!-- <li>
-        <i class="bx bxs-group"></i>
-        <span class="text">
-          <h3>{{ userCount }}</h3>
-          <p>Users</p>
-        </span>
-      </li> -->
-      <!-- <li>
-        <i class="bx bxs-calendar-check"></i>
-        <span class="text">
-          <h3>0</h3>
-          <p>Announcements</p>
-        </span>
-      </li> -->
-    </ul>
-  </div>
+  <div class="head-title"></div>
 
   <div class="dash-box">
-    <BarChart />
     <div class="mainDashboard">
+      <MonthChart />
+      <!-- <ul class="box-info">
+        <li>
+          <i class="bx bxs-calendar-check"></i>
+          <span class="text">
+            <h3></h3>
+            <p>Ratings</p>
+          </span>
+        </li>
+        <li>
+          <i class="bx bxs-group"></i>
+          <span class="text">
+            <h3></h3>
+            <p>Users</p>
+          </span>
+        </li>
+        <li>
+          <i class="bx bxs-calendar-check"></i>
+          <span class="text">
+            <h3>0</h3>
+            <p>Announcements</p>
+          </span>
+        </li>
+      </ul> -->
       <PPOBarChart />
       <RMFBBarChart />
       <OccidentalBarChart />
@@ -42,7 +41,7 @@
 
 <script>
 import { defineComponent, PropType } from "vue";
-import BarChart from "./Charts/BarChart.vue";
+import MonthChart from "./Charts/MonthChart.vue";
 import PPOBarChart from "./Charts/PPOBarChart.vue";
 import RMFBBarChart from "./Charts/RMFBBarChart.vue";
 import OccidentalBarChart from "./Charts/OccidentalBarChart.vue";
@@ -61,7 +60,7 @@ export default defineComponent({
   },
 
   components: {
-    BarChart,
+    MonthChart,
     PPOBarChart,
     RMFBBarChart,
     OccidentalBarChart,
@@ -141,5 +140,14 @@ export default defineComponent({
   align-items: center;
   gap: 2rem;
   margin-top: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .mainDashboard {
+    grid-template-columns: repeat(1, 300px);
+    grid-template-rows: repeat(8, 300px);
+    gap: 2rem;
+    justify-content: center;
+  }
 }
 </style>
