@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\RestFul\ResourceController;
+use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\MainModel;
 use CodeIgniter\I18n\Time;
@@ -414,38 +414,71 @@ class UserController extends ResourceController
         }
     }
 
+    // public function sendPasswordResetEmail()
+    // {
+    //     $json = $this->request->getJSON();
+    //     $email = $json->email;
+
+    //     // Check if the email exists in your database
+    //     $userModel = new MainModel();
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if (!$user) {
+    //         return $this->respond('Email not found',400);
+    //     }else{
+    //          // Generate a unique token and save it with expiration time
+    //     $token = bin2hex(random_bytes(32));
+    //     $expiration = Time::now()->addMinutes(30); // Token expiration time (30 minutes from now)
+
+    //     // Save the token and expiration time in the database
+    //     $userModel->update($user['user_id'], [
+    //         'reset_token' => $token,
+    //         'token_expires_at' => $expiration->toDateTimeString()
+    //     ]);
+
+    //     // Send the password reset email with token
+    //     $this->sendResetEmail($email, $token);
+
+    //     return $this->respond(['message' => 'Password reset email sent'], 200);
+    //     }
+
+       
+    // }
+
     public function sendPasswordResetEmail()
     {
         $json = $this->request->getJSON();
         $email = $json->email;
 
-        // Check if the email exists in your database
+        // Check if email exists
         $userModel = new MainModel();
         $user = $userModel->where('email', $email)->first();
 
         if (!$user) {
-            return $this->respond('Email not found',400);
-        }else{
-             // Generate a unique token and save it with expiration time
-        $token = bin2hex(random_bytes(32));
+            return $this->respond(['status' => false, 'message' => 'Email not found'], 404);
+        }
+
+        // Generate OTP (6 digits)
+        $otp = random_int(100000, 999999);
+
         $expiration = Time::now()->addMinutes(30); // Token expiration time (30 minutes from now)
 
         // Save the token and expiration time in the database
         $userModel->update($user['user_id'], [
-            'reset_token' => $token,
+            'reset_token' => $otp,
             'token_expires_at' => $expiration->toDateTimeString()
         ]);
 
         // Send the password reset email with token
-        $this->sendResetEmail($email, $token);
+        $this->sendResetEmail($email, $otp);
 
         return $this->respond(['message' => 'Password reset email sent'], 200);
-        }
-
-       
     }
 
-    protected function sendResetEmail($email, $token)
+    
+
+
+    protected function sendResetEmail($email, $otp)
     {
         $emailConfig = config('Email');
         $emailService = Services::email();
@@ -455,10 +488,7 @@ class UserController extends ResourceController
         $emailService->setTo($email);
         $emailService->setSubject('Reset Your Password');
     
-        // Get the base URL from the configuration and construct the reset link
-        $resetLink = base_url('resetPassword/' . $token);
-    
-        $emailService->setMessage("Click this link to reset your password: $resetLink");
+        $emailService->setMessage("This is the OTP: $otp you requested");
     
         try {
             $emailService->send();
@@ -470,6 +500,28 @@ class UserController extends ResourceController
         }
     }
     
+
+    public function verifyOtp()
+    {
+        $json = $this->request->getJSON();
+        $otp = $json->otp;
+
+        // Validate the OTP
+        $userModel = new MainModel();
+        $user = $userModel->where('reset_token', $otp)->first();
+
+        if (!$user) {
+            return $this->respond(['message' => 'Invalid OTP'], 400);
+        }
+
+        // Check if OTP is expired
+        if (strtotime($user['token_expires_at']) < time()) {
+            return $this->respond(['message' => 'OTP expired'], 400);
+        }
+
+        // OTP is valid, allow user to proceed to reset password
+        return $this->respond(['message' => 'OTP verified, proceed to reset your password'], 200);
+    }
 
     public function resetPassword()
     {

@@ -1,0 +1,28 @@
+CRITICAL - 2024-09-08 14:24:19 --> Class "App\Controllers\UserModel" not found
+in APPPATH\Controllers\UserController.php on line 454.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-09-08 14:26:12 --> Class "App\Controllers\UserModel" not found
+in APPPATH\Controllers\UserController.php on line 454.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-09-08 14:26:26 --> Class "App\Controllers\UserModel" not found
+in APPPATH\Controllers\UserController.php on line 454.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-09-08 14:27:53 --> Class "App\Controllers\UserModel" not found
+in APPPATH\Controllers\UserController.php on line 454.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->sendPasswordResetEmail()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

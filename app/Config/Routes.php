@@ -66,6 +66,7 @@ $routes->post('insertDataPal', 'UserController::insertDataPal');
 $routes->post('insertDataPuer', 'UserController::insertDataPuer');
 $routes->post('sendPasswordResetEmail', 'UserController::sendPasswordResetEmail');
 $routes->post('resetPassword', 'UserController::resetPassword');
+$routes->post('verifyOtp', 'UserController::verifyOtp');
 
 $routes->get('/getAllAverageRatesPPO/(:num)', 'MainController::getAllAverageRatesPPO/$1');
 $routes->get('/getAllAverageRatesRMFB/(:num)', 'MainController::getAllAverageRatesRMFB/$1');
