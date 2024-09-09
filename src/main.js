@@ -8,6 +8,7 @@ import PPO from "./components/PPO.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 axios.defaults.baseURL = "https://e-upper.online/backend/";
+axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 loadFonts();
 
 const app = createApp(App);
