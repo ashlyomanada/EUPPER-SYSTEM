@@ -13,24 +13,23 @@ const routes = [
     component: Register,
   },
   {
-    path: "/resetPassword/:token", // Route with token parameter
+    path: "/resetPassword",
     name: "ResetPassword",
     component: ResetPass,
-    props: true,
   },
   {
     path: "/adminHome",
     component: () => import("../views/AdminDashboard.vue"),
-    meta: { requiresAuth: true }, // Add this meta field to indicate this route requires authentication
+    meta: { requiresAuth: true },
   },
   {
     path: "/home",
     component: () => import("../views/HomeView.vue"),
-    meta: { requiresAuth: true }, // Add this meta field to indicate this route requires authentication
+    meta: { requiresAuth: true },
   },
   {
-    path: "/sendNotif",
-    component: () => import("../views/SendNotif.vue"),
+    path: "/otp",
+    component: () => import("../views/Otp.vue"),
   },
 ];
 
@@ -41,18 +40,13 @@ const router = createRouter({
 
 // Add route guard
 router.beforeEach((to, from, next) => {
-  // Check if the route requires authentication
   if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // Check if there is a token in session storage (indicating the user is logged in)
     if (!sessionStorage.getItem("id")) {
-      // If not logged in, redirect to login page
       next("/");
     } else {
-      // If logged in, proceed to the requested route
       next();
     }
   } else {
-    // If the route does not require authentication, proceed normally
     next();
   }
 });

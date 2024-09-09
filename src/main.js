@@ -8,6 +8,7 @@ import PPO from "./components/PPO.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 axios.defaults.baseURL = "http://localhost:8080/";
+// axios.defaults.baseURL = "https://e-upper.online/backend/";
 loadFonts();
 
 const app = createApp(App);

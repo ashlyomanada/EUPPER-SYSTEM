@@ -8,25 +8,19 @@
           <h2>PRO MIMAROPA</h2>
         </div>
       </div>
-      <form
-        class="form1"
-        @submit.prevent="sendPasswordResetEmail"
-        :class="{ processing: processing }"
-      >
-        <p class="title">Request Reset Password</p>
+      <form class="form1" @submit.prevent="sendOtp">
+        <p class="title">Enter the OTP</p>
 
         <label>
-          <input required type="email" class="inputs" v-model="email" />
-          <span>Email</span>
+          <input required type="number" class="inputs" v-model="otp" />
+          <span>OTP</span>
         </label>
 
         <button type="submit" class="submit text-white" :disabled="processing">
-          <span v-if="!processing">Send Password Reset</span>
+          <span v-if="!processing">Submit</span>
           <span v-else>Sending...</span>
         </button>
-        <p class="signin">
-          Already have an account? <router-link to="/">Sign in</router-link>
-        </p>
+
         <p class="error-message">
           {{ errorMessage }}
         </p>
@@ -42,10 +36,9 @@ import { useRouter } from "vue-router"; // Import Vue Router instance
 export default {
   data() {
     return {
-      email: "",
+      otp: "",
       errorMessage: "",
-      registrationStatus: null,
-      processing: false, // Flag to track form processing state
+      processing: false,
     };
   },
   setup() {
@@ -53,36 +46,35 @@ export default {
     return { router };
   },
   methods: {
-    async sendPasswordResetEmail() {
-      if (this.processing) return; // Prevent duplicate requests
-
-      this.processing = true; // Set processing flag to true at the start
+    async sendOtp() {
+      this.processing = true;
       try {
-        const response = await axios.post("/sendPasswordResetEmail", {
-          email: this.email,
+        const response = await axios.post("/verifyOtp", {
+          otp: this.otp,
         });
 
         if (response.status === 200) {
-          this.registrationStatus = "success";
-          alert("Check your email for verification.");
-          this.router.push("/otp"); // Navigate to OTP page
-          this.email = ""; // Clear email only after success
+          this.router.push("/resetPassword");
+          sessionStorage.setItem("otp", this.otp);
+        } else if (response.status === 400) {
+          this.errorMessage = "The OTP you entered was not valid.";
+          this.otp = " ";
         } else {
-          this.registrationStatus = "error";
           this.errorMessage = "An unexpected error occurred. Please try again.";
+          this.otp = " ";
         }
       } catch (error) {
-        if (error.response && error.response.status === 404) {
-          this.errorMessage = "The email you entered doesn't exist.";
-        } else if (error.response && error.response.status === 500) {
-          this.errorMessage = "Server error. Please try again later.";
+        if (error.response && error.response.status === 400) {
+          this.errorMessage = "The OTP you entered was not valid.";
+          this.otp = " ";
         } else {
           this.errorMessage =
-            "Failed to send the password reset email. Check your connection.";
+            "Failed to verify OTP. Please check your connection and try again.";
+          this.otp = " ";
         }
-        console.error(error); // Log the error for debugging
       } finally {
-        this.processing = false; // Always reset processing flag in `finally`
+        this.processing = false; // Make sure to reset `processing` even if there's an error
+        this.otp = " ";
       }
     },
   },

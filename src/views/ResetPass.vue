@@ -56,13 +56,17 @@ export default {
         return;
       }
 
+      const validOtp = sessionStorage.getItem("otp");
+
       try {
         const response = await axios.post("/resetPassword", {
-          token: this.token,
+          token: parseInt(validOtp),
           password: this.password,
         });
 
-        alert(response.data.message); // Show success message
+        alert(response.data.message);
+        sessionStorage.clear();
+        // Show success message
 
         // Redirect to login page or other route after successful password reset
         this.$router.push("/");
