@@ -201,6 +201,60 @@ class MainController extends ResourceController
     }
     
 
+    // public function sendEmail()
+    // {
+    //     try {
+    //         // Get JSON data from the request
+    //         $formData = $this->request->getJSON();
+
+    //         // Define validation rules
+    //         $validationRules = [
+    //             'sender' => 'required|valid_email',
+    //             'message' => 'required|string|min_length[5]'
+    //         ];
+
+    //         // Validate the request data
+    //         if (!$this->validate($validationRules)) {
+    //             // If validation fails, return errors
+    //             return $this->response->setJSON([
+    //                 'error' => 'Validation failed',
+    //                 'messages' => $this->validator->getErrors()
+    //             ]);
+    //         }
+
+    //         // Load the email library
+    //         $email = \Config\Services::email();
+    //         $model = new MainModel();
+    //         $adminEmails = $model->where('role', 'admin')->findAll();
+
+    //         // Check if there are admin emails
+    //         if (empty($adminEmails)) {
+    //             return $this->response->setJSON(['error' => 'No admin email addresses found.']);
+    //         }
+
+    //         // Add each admin email address to the recipients
+    //         foreach ($adminEmails as $admin) {
+    //             $email->setTo($admin['email']);
+    //             $email->setFrom($formData->sender);
+    //             $email->setSubject('Request Form from ' . $formData->username);
+    //             $message = $formData->message;
+    //             $email->setMessage($message);
+
+    //             // Send email to each admin
+    //             if (!$email->send()) {
+    //                 log_message('error', 'Email failed to send to ' . $admin['email'] . '. Error: ' . $email->printDebugger(['headers']));
+    //                 return $this->response->setJSON(['error' => 'Email failed to send to some recipients.']);
+    //             }
+    //         }
+
+    //         return $this->response->setJSON(['message' => 'Emails sent successfully.']);
+    //     } catch (\Exception $e) {
+    //         // Log other exceptions
+    //         log_message('error', 'Exception: ' . $e->getMessage());
+    //         return $this->response->setJSON(['error' => 'Internal Server Error']);
+    //     }
+    // }
+
     public function sendEmail()
     {
         try {
@@ -210,7 +264,8 @@ class MainController extends ResourceController
             // Define validation rules
             $validationRules = [
                 'sender' => 'required|valid_email',
-                'message' => 'required|string|min_length[5]'
+                'message' => 'required|string|min_length[5]',
+                'username' => 'required|string'
             ];
 
             // Validate the request data
@@ -232,28 +287,41 @@ class MainController extends ResourceController
                 return $this->response->setJSON(['error' => 'No admin email addresses found.']);
             }
 
-            // Add each admin email address to the recipients
-            foreach ($adminEmails as $admin) {
-                $email->setTo($admin['email']);
-                $email->setFrom($formData->sender);
-                $email->setSubject('Request Form from ' . $formData->username);
-                $message = $formData->message;
-                $email->setMessage($message);
+            // Prepare email content
+            $subject = 'New Request Form Submission from ' . $formData->username;
+            $message = "
+                <p>Dear Admin,</p>
+                <p>You have received a new request form submission from <strong>{$formData->username}</strong>.</p>
+                <p><strong>Message Details:</strong></p>
+                <p>{$formData->message}</p>
+                <p>Sender's Email: {$formData->sender}</p>
+                <p>Thank you,</p>
+                <p>Euper System</p>
+            ";
 
-                // Send email to each admin
+            // Add each admin email address to the recipients and send the email
+            foreach ($adminEmails as $admin) {
+                $email->clear(); // Clear previous email data to send to multiple admins
+                $email->setTo($admin['email']);
+                $email->setFrom($formData->sender, $formData->username);
+                $email->setSubject($subject);
+                $email->setMessage($message);
+                $email->setMailType('html'); // Set email type to HTML for better formatting
+
+                // Send email to each admin and log errors if any
                 if (!$email->send()) {
                     log_message('error', 'Email failed to send to ' . $admin['email'] . '. Error: ' . $email->printDebugger(['headers']));
-                    return $this->response->setJSON(['error' => 'Email failed to send to some recipients.']);
                 }
             }
 
             return $this->response->setJSON(['message' => 'Emails sent successfully.']);
         } catch (\Exception $e) {
-            // Log other exceptions
+            // Log any unexpected exceptions
             log_message('error', 'Exception: ' . $e->getMessage());
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
+
 
     public function getAllAverageRatesPPO($year)
     {
@@ -438,7 +506,7 @@ class MainController extends ResourceController
         
             $officeTotal = $ratingModel->selectSum('total')
                                        ->where('year', $year)
-                                       ->where('level', 'Marindque')
+                                       ->where('level', 'Marinduque')
                                        ->where('foreignOfficeId', $iterate)
                                        ->first(); // Use first() to retrieve a single row
         
@@ -875,115 +943,215 @@ class MainController extends ResourceController
         }
     }
     
-    public function sendSMS()
-    {
-        // Retrieve JSON payload sent from Vue.js frontend
-        $json = $this->request->getJSON();
+    // public function sendSMS()
+    // {
+    //     // Retrieve JSON payload sent from Vue.js frontend
+    //     $json = $this->request->getJSON();
 
-        // Extract required data from JSON payload
-        $senderName = "Euper";
-        $phoneNumber = $json->recipient;
-        $message = $json->message;
+    //     // Extract required data from JSON payload
+    //     $senderName = "Euper";
+    //     $phoneNumber = $json->recipient;
+    //     $message = $json->message;
 
-        $apiKey = 'fdc0fc4b3cf35557937435f41a072b43-ab235ced-7004-4b69-b1b1-166957845f9b';
-        $url = 'https://w1eley.api.infobip.com/sms/2/text/advanced';
+    //     $apiKey = 'fdc0fc4b3cf35557937435f41a072b43-ab235ced-7004-4b69-b1b1-166957845f9b';
+    //     $url = 'https://w1eley.api.infobip.com/sms/2/text/advanced';
 
-        $client = new Client([
-            'verify' => false, // Disable SSL certificate verification (use with caution)
-        ]);
+    //     $client = new Client([
+    //         'verify' => false, // Disable SSL certificate verification (use with caution)
+    //     ]);
 
-        try {
-            $response = $client->post($url, [
-                'headers' => [
-                    'Authorization' => 'App ' . $apiKey,
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json'
-                ],
-                'json' => [
-                    'messages' => [
-                        [
-                            'from' => $senderName,
-                            'destinations' => [
-                                ['to' => $phoneNumber]
-                            ],
-                            'text' => $message
-                        ]
-                    ]
-                ]
-            ]);
+    //     try {
+    //         $response = $client->post($url, [
+    //             'headers' => [
+    //                 'Authorization' => 'App ' . $apiKey,
+    //                 'Content-Type' => 'application/json',
+    //                 'Accept' => 'application/json'
+    //             ],
+    //             'json' => [
+    //                 'messages' => [
+    //                     [
+    //                         'from' => $senderName,
+    //                         'destinations' => [
+    //                             ['to' => $phoneNumber]
+    //                         ],
+    //                         'text' => $message
+    //                     ]
+    //                 ]
+    //             ]
+    //         ]);
 
-            $statusCode = $response->getStatusCode();
-            $body = (string) $response->getBody();
+    //         $statusCode = $response->getStatusCode();
+    //         $body = (string) $response->getBody();
 
-            if ($statusCode == 200) {
-                return $this->respond([
-                    'success' => true,
-                    'message' => 'SMS sent successfully',
-                    'response' => $body
-                ], 200);
-            } else {
-                return $this->failServerError('Unexpected HTTP status: ' . $statusCode);
-            }
-        } catch (RequestException $e) {
-            return $this->failServerError('Error: ' . $e->getMessage());
-        }
-    }
+    //         if ($statusCode == 200) {
+    //             return $this->respond([
+    //                 'success' => true,
+    //                 'message' => 'SMS sent successfully',
+    //                 'response' => $body
+    //             ], 200);
+    //         } else {
+    //             return $this->failServerError('Unexpected HTTP status: ' . $statusCode);
+    //         }
+    //     } catch (RequestException $e) {
+    //         return $this->failServerError('Error: ' . $e->getMessage());
+    //     }
+    // }
 
     public function sendSMSToUser()
-    {
-        $json = $this->request->getJSON();
-        $phoneNumber = $json->recipient;
-        $message = $json->message;
+{
+    // Get JSON input
+    $json = $this->request->getJSON();
+    $phoneNumber = $json->recipient;
+    $message = $json->message;
 
-        $apiKey = 'ef0a9cf7d5bf8f4b43bbdac91a2f1276'; // Replace 'YOUR_API_KEY' with your Semaphore API key
+    // Define Semaphore API key
+    $apiKey = 'ef0a9cf7d5bf8f4b43bbdac91a2f1276'; // Replace with your actual Semaphore API key
 
-        $parameters = [
-            'apikey' => $apiKey,
-            'number' =>  $phoneNumber, // Replace with recipient's phone number
-            'message' => $message,
-            'sendername' => 'SEMAPHORE'
+    // Set parameters for the Semaphore API request
+    $parameters = [
+        'apikey' => $apiKey,
+        'number' => $phoneNumber, // Recipient's phone number
+        'message' => $message,     // Message to send
+        'sendername' => 'EuperAdmin' // Custom sender name
+    ];
+
+    // Initialize cURL
+    $ch = curl_init();
+
+    // Set cURL options for Semaphore API
+    curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification (not recommended for production)
+
+    // Execute the cURL request
+    $output = curl_exec($ch);
+
+    // Close the cURL resource
+    curl_close($ch);
+
+    // Parse the response to check for success or failure
+    if ($output !== false) {
+        $response = [
+            'success' => true,
+            'message' => 'SMS sent successfully.',
+            'output' => $output // Add API response output if needed for further verification
         ];
 
-        // Initialize cURL
-        $ch = curl_init();
+        // Return 200 OK status with JSON response
+        return $this->response->setStatusCode(200)->setJSON($response);
+    } else {
+        // If sending failed
+        $response = [
+            'success' => false,
+            'message' => 'Failed to send SMS.',
+            'output' => $output // Add API response output for debugging
+        ];
 
-        // Set cURL options
-        curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        // Disable SSL certificate verification (not recommended for production)
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-        // Execute cURL request
-        $output = curl_exec($ch);
-
-        // Close cURL resource
-        curl_close($ch);
-
-        // Check if the SMS was sent successfully
-        if ($output !== false) {
-            // SMS sent successfully
-            $response = [
-                'success' => true,
-                'message' => 'SMS sent successfully.'
-            ];
-
-            // Set response status code to 200
-            return $this->response->setStatusCode(200)->setJSON($response);
-        } else {
-            // Failed to send SMS
-            $response = [
-                'success' => false,
-                'message' => 'Failed to send SMS.'
-            ];
-
-            // Set response status code to 500 (Internal Server Error)
-            return $this->response->setStatusCode(500)->setJSON($response);
-        }
+        // Return 500 Internal Server Error status with JSON response
+        return $this->response->setStatusCode(500)->setJSON($response);
     }
+}
 
+// public function sendSMSToUser()
+// {
+//     // Get JSON input
+//     $json = $this->request->getJSON();
+//     $phoneNumber = $json->recipient;
+//     $message = $json->message;
+
+//     // Format phone number (assuming it's a Philippine number starting with 0)
+//     $phoneNumber = '+63' . ltrim($phoneNumber, '0'); // Remove leading 0 and add country code
+
+//     // Semaphore API key
+//     $apiKey = 'ef0a9cf7d5bf8f4b43bbdac91a2f1276'; // Replace with your actual Semaphore API key
+
+//     // Parameters for Semaphore API
+//     $parameters = [
+//         'apikey' => $apiKey,
+//         'number' => $phoneNumber,
+//         'message' => $message,
+//         'sendername' => 'EuperAdmin'
+//     ];
+
+//     // Initialize cURL
+//     $ch = curl_init();
+
+//     // Set cURL options for Semaphore API
+//     curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
+//     curl_setopt($ch, CURLOPT_POST, true);
+//     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
+//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For dev environment only, enable this for production
+
+//     // Execute the cURL request
+//     $output = curl_exec($ch);
+
+//     // Check for cURL errors
+//     if (curl_errno($ch)) {
+//         $error_msg = curl_error($ch);
+//         $response = [
+//             'success' => false,
+//             'message' => 'cURL Error: ' . $error_msg,
+//             'output' => ''
+//         ];
+
+//         curl_close($ch);
+//         return $this->response->setStatusCode(500)->setJSON($response);
+//     }
+
+//     // Close cURL resource
+//     curl_close($ch);
+
+//     // Decode Semaphore API response
+//     $apiResponse = json_decode($output, true);
+
+//     // Check if the API response is empty
+//     if (empty($apiResponse)) {
+//         $response = [
+//             'success' => false,
+//             'message' => 'Empty response from Semaphore API. Check your API key or request parameters.',
+//             'output' => $output
+//         ];
+
+//         return $this->response->setStatusCode(500)->setJSON($response);
+//     }
+
+//     // Check if there's a status in the API response
+//     if (isset($apiResponse['status']) && $apiResponse['status'] == 'success') {
+//         // SMS sent successfully, but still pending delivery
+//         $response = [
+//             'success' => true,
+//             'message' => 'SMS sent to Semaphore successfully and is pending delivery.',
+//             'output' => $output // Include the API response for reference
+//         ];
+
+//         return $this->response->setStatusCode(200)->setJSON($response);
+//     } else if (isset($apiResponse[0]['status']) && $apiResponse[0]['status'] == 'Pending') {
+//         // Handle Pending status from the response details
+//         $response = [
+//             'success' => true,
+//             'message' => 'SMS is pending delivery.',
+//             'output' => $output
+//         ];
+
+//         return $this->response->setStatusCode(200)->setJSON($response);
+//     } else {
+//         // If there's no valid status, return 'Unknown' status
+//         $response = [
+//             'success' => false,
+//             'message' => 'Failed to send SMS. Status: Unknown',
+//             'output' => $output // Include the API response for debugging
+//         ];
+
+//         return $this->response->setStatusCode(500)->setJSON($response);
+//     }
+// }
+
+
+
+    
     public function sendSMSToAllUser()
     {
         // Load the UserModel
@@ -1001,7 +1169,7 @@ class MainController extends ResourceController
                 'apikey' => $apiKey,
                 'number' =>  $phoneNumber,
                 'message' => $json->message,
-                'sendername' => 'SEMAPHORE'
+                'sendername' => 'EuperAdmin'
             ];
 
             // Initialize cURL

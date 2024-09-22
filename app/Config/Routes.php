@@ -9,6 +9,7 @@ $routes->get('/', 'MainController::index');
 
 $routes->get('/getUsers', 'AdminController::getUsers');
 $routes->get('/getUsersInfo', 'AdminController::getUsersInfo');
+$routes->post('/findUsersInfo', 'AdminController::findUsersInfo');
 $routes->get('/getAdmins', 'AdminController::getAdmins');
 $routes->get('/getUsersOffice', 'AdminController::getUsersOffice');
 $routes->post('/getUsersRatePPO', 'AdminController::getUsersRatePPO');
@@ -38,6 +39,7 @@ $routes->post('/getUsersRateRomByMonth', 'AdminController::getUsersRateRomByMont
 $routes->post('/getUsersRatePalByMonth', 'AdminController::getUsersRatePalByMonth');
 $routes->post('/getUsersRatePuerByMonth', 'AdminController::getUsersRatePuerByMonth');
 $routes->post('/getUsersRateByOffice', 'AdminController::getUsersRateByOffice');
+$routes->post('/saveMaxRate', 'AdminController::saveMaxRate');
 
 $routes->post('generatePPOOffice', 'ExcelController::generatePPOOffice');
 $routes->post('generateRMFBOffice', 'ExcelController::generateRMFBOffice');
@@ -67,6 +69,8 @@ $routes->post('insertDataPuer', 'UserController::insertDataPuer');
 $routes->post('sendPasswordResetEmail', 'UserController::sendPasswordResetEmail');
 $routes->post('resetPassword', 'UserController::resetPassword');
 $routes->post('verifyOtp', 'UserController::verifyOtp');
+$routes->post('/getMaxRateByUser', 'UserController::getMaxRateByUser');
+
 
 $routes->get('/getAllAverageRatesPPO/(:num)', 'MainController::getAllAverageRatesPPO/$1');
 $routes->get('/getAllAverageRatesRMFB/(:num)', 'MainController::getAllAverageRatesRMFB/$1');

@@ -103,6 +103,70 @@ class PdfController extends ResourceController
             $averageSums2[$avgCol2] = $result2;
         }
 
+        // ---- START: Column update/insertion logic ----
+        $counter = 1;
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+    
+            // Skip irrelevant columns
+            if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                continue;
+            }
+    
+            $formattedColumnName = str_replace('_', ' ', $columnName);
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+    
+            // Check if data already exists for the given month and year
+            $existingData = $ratingModel
+                ->where('month', $month)
+                ->where('year', $year)
+                ->where('offices', $formattedColumnName)
+                ->where('level', 'PPO')
+                ->findAll();
+    
+            if ($existingData) {
+                // Data exists, perform update
+                $updated = $ratingModel
+                    ->where('month', $month)
+                    ->where('year', $year)
+                    ->where('offices', $formattedColumnName)
+                    ->where('level', 'PPO')
+                    ->set([
+                        'total' => $totalPercentage,
+                        'percentage_60' => $averageSums[$columnName],
+                        'percentage_40' => $averageSums2[$columnName],
+                        'foreignOfficeId' => $counter,
+                    ])
+                    ->update();
+    
+                if (!$updated) {
+                    return $this->failServerError('Failed to update data in rates table.');
+                }
+            } else {
+                // Data doesn't exist, perform insert
+                $data = [
+                    'month' => $month,
+                    'year' => $year,
+                    'offices' => $formattedColumnName,
+                    'total' => $totalPercentage,
+                    'percentage_60' => $averageSums[$columnName],
+                    'percentage_40' => $averageSums2[$columnName],
+                    'level' => 'PPO',
+                    'foreignOfficeId' => $counter,
+                ];
+    
+                // Perform insert
+                $inserted = $ratingModel->insert($data);
+    
+                if (!$inserted) {
+                    return $this->failServerError('Failed to insert data into rates table.');
+                }
+            }
+    
+            $counter++;
+        }
+        // ---- END: Column update/insertion logic ----
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
 
@@ -224,6 +288,7 @@ class PdfController extends ResourceController
         // Output the PDF content
         echo $pdfContent;
     }
+    
 
     public function generatePdfRmfb() {
         $json = $this->request->getJSON();
@@ -316,6 +381,70 @@ class PdfController extends ResourceController
             $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
+
+        // ---- START: Column update/insertion logic ----
+        $counter = 1;
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+    
+            // Skip irrelevant columns
+            if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                continue;
+            }
+    
+            $formattedColumnName = str_replace('_', ' ', $columnName);
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+    
+            // Check if data already exists for the given month and year
+            $existingData = $ratingModel
+                ->where('month', $month)
+                ->where('year', $year)
+                ->where('offices', $formattedColumnName)
+                ->where('level', 'RMFB')
+                ->findAll();
+    
+            if ($existingData) {
+                // Data exists, perform update
+                $updated = $ratingModel
+                    ->where('month', $month)
+                    ->where('year', $year)
+                    ->where('offices', $formattedColumnName)
+                    ->where('level', 'RMFB')
+                    ->set([
+                        'total' => $totalPercentage,
+                        'percentage_60' => $averageSums[$columnName],
+                        'percentage_40' => $averageSums2[$columnName],
+                        'foreignOfficeId' => $counter,
+                    ])
+                    ->update();
+    
+                if (!$updated) {
+                    return $this->failServerError('Failed to update data in rates table.');
+                }
+            } else {
+                // Data doesn't exist, perform insert
+                $data = [
+                    'month' => $month,
+                    'year' => $year,
+                    'offices' => $formattedColumnName,
+                    'total' => $totalPercentage,
+                    'percentage_60' => $averageSums[$columnName],
+                    'percentage_40' => $averageSums2[$columnName],
+                    'level' => 'RMFB',
+                    'foreignOfficeId' => $counter,
+                ];
+    
+                // Perform insert
+                $inserted = $ratingModel->insert($data);
+    
+                if (!$inserted) {
+                    return $this->failServerError('Failed to insert data into rates table.');
+                }
+            }
+    
+            $counter++;
+        }
+        // ---- END: Column update/insertion logic ----
 
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
@@ -531,6 +660,70 @@ class PdfController extends ResourceController
             $averageSums2[$avgCol2] = $result2;
         }
 
+        // ---- START: Column update/insertion logic ----
+        $counter = 1;
+        foreach ($mimaropaColumns as $column) {
+            $columnName = $column['Field'];
+    
+            // Skip irrelevant columns
+            if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                continue;
+            }
+    
+            $formattedColumnName = str_replace('_', ' ', $columnName);
+            $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+    
+            // Check if data already exists for the given month and year
+            $existingData = $ratingModel
+                ->where('month', $month)
+                ->where('year', $year)
+                ->where('offices', $formattedColumnName)
+                ->where('level', 'Occidental')
+                ->findAll();
+    
+            if ($existingData) {
+                // Data exists, perform update
+                $updated = $ratingModel
+                    ->where('month', $month)
+                    ->where('year', $year)
+                    ->where('offices', $formattedColumnName)
+                    ->where('level', 'Occidental')
+                    ->set([
+                        'total' => $totalPercentage,
+                        'percentage_60' => $averageSums[$columnName],
+                        'percentage_40' => $averageSums2[$columnName],
+                        'foreignOfficeId' => $counter,
+                    ])
+                    ->update();
+    
+                if (!$updated) {
+                    return $this->failServerError('Failed to update data in rates table.');
+                }
+            } else {
+                // Data doesn't exist, perform insert
+                $data = [
+                    'month' => $month,
+                    'year' => $year,
+                    'offices' => $formattedColumnName,
+                    'total' => $totalPercentage,
+                    'percentage_60' => $averageSums[$columnName],
+                    'percentage_40' => $averageSums2[$columnName],
+                    'level' => 'Occidental',
+                    'foreignOfficeId' => $counter,
+                ];
+    
+                // Perform insert
+                $inserted = $ratingModel->insert($data);
+    
+                if (!$inserted) {
+                    return $this->failServerError('Failed to insert data into rates table.');
+                }
+            }
+    
+            $counter++;
+        }
+        // ---- END: Column update/insertion logic ----
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
 
@@ -744,6 +937,70 @@ class PdfController extends ResourceController
             $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
+
+         // ---- START: Column update/insertion logic ----
+         $counter = 1;
+         foreach ($mimaropaColumns as $column) {
+             $columnName = $column['Field'];
+     
+             // Skip irrelevant columns
+             if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                 continue;
+             }
+     
+             $formattedColumnName = str_replace('_', ' ', $columnName);
+             $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+     
+             // Check if data already exists for the given month and year
+             $existingData = $ratingModel
+                 ->where('month', $month)
+                 ->where('year', $year)
+                 ->where('offices', $formattedColumnName)
+                 ->where('level', 'Oriental')
+                 ->findAll();
+     
+             if ($existingData) {
+                 // Data exists, perform update
+                 $updated = $ratingModel
+                     ->where('month', $month)
+                     ->where('year', $year)
+                     ->where('offices', $formattedColumnName)
+                     ->where('level', 'Oriental')
+                     ->set([
+                         'total' => $totalPercentage,
+                         'percentage_60' => $averageSums[$columnName],
+                         'percentage_40' => $averageSums2[$columnName],
+                         'foreignOfficeId' => $counter,
+                     ])
+                     ->update();
+     
+                 if (!$updated) {
+                     return $this->failServerError('Failed to update data in rates table.');
+                 }
+             } else {
+                 // Data doesn't exist, perform insert
+                 $data = [
+                     'month' => $month,
+                     'year' => $year,
+                     'offices' => $formattedColumnName,
+                     'total' => $totalPercentage,
+                     'percentage_60' => $averageSums[$columnName],
+                     'percentage_40' => $averageSums2[$columnName],
+                     'level' => 'Oriental',
+                     'foreignOfficeId' => $counter,
+                 ];
+     
+                 // Perform insert
+                 $inserted = $ratingModel->insert($data);
+     
+                 if (!$inserted) {
+                     return $this->failServerError('Failed to insert data into rates table.');
+                 }
+             }
+     
+             $counter++;
+         }
+         // ---- END: Column update/insertion logic ----
 
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
@@ -959,6 +1216,69 @@ class PdfController extends ResourceController
             $averageSums2[$avgCol2] = $result2;
         }
 
+         // ---- START: Column update/insertion logic ----
+         $counter = 1;
+         foreach ($mimaropaColumns as $column) {
+             $columnName = $column['Field'];
+     
+             // Skip irrelevant columns
+             if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                 continue;
+             }
+     
+             $formattedColumnName = str_replace('_', ' ', $columnName);
+             $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+     
+             // Check if data already exists for the given month and year
+             $existingData = $ratingModel
+                 ->where('month', $month)
+                 ->where('year', $year)
+                 ->where('offices', $formattedColumnName)
+                 ->where('level', 'Marinduque')
+                 ->findAll();
+     
+             if ($existingData) {
+                 // Data exists, perform update
+                 $updated = $ratingModel
+                     ->where('month', $month)
+                     ->where('year', $year)
+                     ->where('offices', $formattedColumnName)
+                     ->where('level', 'Marinduque')
+                     ->set([
+                         'total' => $totalPercentage,
+                         'percentage_60' => $averageSums[$columnName],
+                         'percentage_40' => $averageSums2[$columnName],
+                         'foreignOfficeId' => $counter,
+                     ])
+                     ->update();
+     
+                 if (!$updated) {
+                     return $this->failServerError('Failed to update data in rates table.');
+                 }
+             } else {
+                 // Data doesn't exist, perform insert
+                 $data = [
+                     'month' => $month,
+                     'year' => $year,
+                     'offices' => $formattedColumnName,
+                     'total' => $totalPercentage,
+                     'percentage_60' => $averageSums[$columnName],
+                     'percentage_40' => $averageSums2[$columnName],
+                     'level' => 'Marinduque',
+                     'foreignOfficeId' => $counter,
+                 ];
+     
+                 // Perform insert
+                 $inserted = $ratingModel->insert($data);
+     
+                 if (!$inserted) {
+                     return $this->failServerError('Failed to insert data into rates table.');
+                 }
+             }
+     
+             $counter++;
+         }
+         // ---- END: Column update/insertion logic ----
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
 
@@ -1172,6 +1492,70 @@ class PdfController extends ResourceController
             $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
+
+         // ---- START: Column update/insertion logic ----
+         $counter = 1;
+         foreach ($mimaropaColumns as $column) {
+             $columnName = $column['Field'];
+     
+             // Skip irrelevant columns
+             if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                 continue;
+             }
+     
+             $formattedColumnName = str_replace('_', ' ', $columnName);
+             $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+     
+             // Check if data already exists for the given month and year
+             $existingData = $ratingModel
+                 ->where('month', $month)
+                 ->where('year', $year)
+                 ->where('offices', $formattedColumnName)
+                 ->where('level', 'Romblon')
+                 ->findAll();
+     
+             if ($existingData) {
+                 // Data exists, perform update
+                 $updated = $ratingModel
+                     ->where('month', $month)
+                     ->where('year', $year)
+                     ->where('offices', $formattedColumnName)
+                     ->where('level', 'Romblon')
+                     ->set([
+                         'total' => $totalPercentage,
+                         'percentage_60' => $averageSums[$columnName],
+                         'percentage_40' => $averageSums2[$columnName],
+                         'foreignOfficeId' => $counter,
+                     ])
+                     ->update();
+     
+                 if (!$updated) {
+                     return $this->failServerError('Failed to update data in rates table.');
+                 }
+             } else {
+                 // Data doesn't exist, perform insert
+                 $data = [
+                     'month' => $month,
+                     'year' => $year,
+                     'offices' => $formattedColumnName,
+                     'total' => $totalPercentage,
+                     'percentage_60' => $averageSums[$columnName],
+                     'percentage_40' => $averageSums2[$columnName],
+                     'level' => 'Romblon',
+                     'foreignOfficeId' => $counter,
+                 ];
+     
+                 // Perform insert
+                 $inserted = $ratingModel->insert($data);
+     
+                 if (!$inserted) {
+                     return $this->failServerError('Failed to insert data into rates table.');
+                 }
+             }
+     
+             $counter++;
+         }
+         // ---- END: Column update/insertion logic ----
 
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
@@ -1387,6 +1771,70 @@ class PdfController extends ResourceController
             $averageSums2[$avgCol2] = $result2;
         }
 
+         // ---- START: Column update/insertion logic ----
+         $counter = 1;
+         foreach ($mimaropaColumns as $column) {
+             $columnName = $column['Field'];
+     
+             // Skip irrelevant columns
+             if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                 continue;
+             }
+     
+             $formattedColumnName = str_replace('_', ' ', $columnName);
+             $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+     
+             // Check if data already exists for the given month and year
+             $existingData = $ratingModel
+                 ->where('month', $month)
+                 ->where('year', $year)
+                 ->where('offices', $formattedColumnName)
+                 ->where('level', 'Palawan')
+                 ->findAll();
+     
+             if ($existingData) {
+                 // Data exists, perform update
+                 $updated = $ratingModel
+                     ->where('month', $month)
+                     ->where('year', $year)
+                     ->where('offices', $formattedColumnName)
+                     ->where('level', 'Palawan')
+                     ->set([
+                         'total' => $totalPercentage,
+                         'percentage_60' => $averageSums[$columnName],
+                         'percentage_40' => $averageSums2[$columnName],
+                         'foreignOfficeId' => $counter,
+                     ])
+                     ->update();
+     
+                 if (!$updated) {
+                     return $this->failServerError('Failed to update data in rates table.');
+                 }
+             } else {
+                 // Data doesn't exist, perform insert
+                 $data = [
+                     'month' => $month,
+                     'year' => $year,
+                     'offices' => $formattedColumnName,
+                     'total' => $totalPercentage,
+                     'percentage_60' => $averageSums[$columnName],
+                     'percentage_40' => $averageSums2[$columnName],
+                     'level' => 'Palawan',
+                     'foreignOfficeId' => $counter,
+                 ];
+     
+                 // Perform insert
+                 $inserted = $ratingModel->insert($data);
+     
+                 if (!$inserted) {
+                     return $this->failServerError('Failed to insert data into rates table.');
+                 }
+             }
+     
+             $counter++;
+         }
+         // ---- END: Column update/insertion logic ----
+
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();
 
@@ -1600,6 +2048,70 @@ class PdfController extends ResourceController
             $result2 = $average2 * 40; // Multiply by 40%
             $averageSums2[$avgCol2] = $result2;
         }
+
+         // ---- START: Column update/insertion logic ----
+         $counter = 1;
+         foreach ($mimaropaColumns as $column) {
+             $columnName = $column['Field'];
+     
+             // Skip irrelevant columns
+             if (in_array($columnName, ['id', 'userid', 'month', 'year', 'office'])) {
+                 continue;
+             }
+     
+             $formattedColumnName = str_replace('_', ' ', $columnName);
+             $totalPercentage = $averageSums[$columnName] + $averageSums2[$columnName];
+     
+             // Check if data already exists for the given month and year
+             $existingData = $ratingModel
+                 ->where('month', $month)
+                 ->where('year', $year)
+                 ->where('offices', $formattedColumnName)
+                 ->where('level', 'Puerto')
+                 ->findAll();
+     
+             if ($existingData) {
+                 // Data exists, perform update
+                 $updated = $ratingModel
+                     ->where('month', $month)
+                     ->where('year', $year)
+                     ->where('offices', $formattedColumnName)
+                     ->where('level', 'Puerto')
+                     ->set([
+                         'total' => $totalPercentage,
+                         'percentage_60' => $averageSums[$columnName],
+                         'percentage_40' => $averageSums2[$columnName],
+                         'foreignOfficeId' => $counter,
+                     ])
+                     ->update();
+     
+                 if (!$updated) {
+                     return $this->failServerError('Failed to update data in rates table.');
+                 }
+             } else {
+                 // Data doesn't exist, perform insert
+                 $data = [
+                     'month' => $month,
+                     'year' => $year,
+                     'offices' => $formattedColumnName,
+                     'total' => $totalPercentage,
+                     'percentage_60' => $averageSums[$columnName],
+                     'percentage_40' => $averageSums2[$columnName],
+                     'level' => 'Puerto',
+                     'foreignOfficeId' => $counter,
+                 ];
+     
+                 // Perform insert
+                 $inserted = $ratingModel->insert($data);
+     
+                 if (!$inserted) {
+                     return $this->failServerError('Failed to insert data into rates table.');
+                 }
+             }
+     
+             $counter++;
+         }
+         // ---- END: Column update/insertion logic ----
 
         // Load mPDF library
         $mpdf = new \Mpdf\Mpdf();

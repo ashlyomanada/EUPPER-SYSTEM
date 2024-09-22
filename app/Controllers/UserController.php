@@ -92,175 +92,105 @@ class UserController extends ResourceController
         return $this->response->setJSON($columnNames);
     }
 
+    private function insertData($table, $data)
+    {
+        // Extract the values for UserId, Month, and Year
+        $userId = $data['UserId'];
+        $month = $data['Month'];
+        $year = $data['Year'];
+        
+        // Check if the record with the same UserId, Month, and Year already exists
+        $db = \Config\Database::connect();
+        $builder = $db->table($table);
+        $existingRecord = $builder->where('userId', $userId)
+                                  ->where('month', $month)
+                                  ->where('year', $year)
+                                  ->get()
+                                  ->getRow();
+        
+        if ($existingRecord) {
+            // If record exists, return an error response
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Record already exists']);
+        }
+    
+        // Construct the insert query if the record does not exist
+        $sql = "INSERT INTO $table (";
+        $values = "VALUES (";
+        foreach ($data as $key => $value) {
+            $sql .= "`$key`, ";
+            $values .= "'$value', ";
+        }
+        $sql = rtrim($sql, ", ") . ") ";
+        $values = rtrim($values, ", ") . ")";
+        $query = $sql . $values;
+    
+        // Execute the query
+        $result = $db->query($query);
+        
+        if ($result) {
+            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
+        } else {
+            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
+        }
+    }
+
     public function insertDataPPO()
     {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO ppo_cpo (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('ppo_cpo', $data);
     }
 
+    
     public function insertDataRMFB()
     {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO rmfb_tbl (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
-    }
-    
-    public function insertDataOcci(){
-        $request = service('request');
-        $data = $request->getJSON(true);
-        $sql = "INSERT INTO occidental_cps (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('rmfb_tbl', $data);
     }
 
-    public function insertDataOrmin(){
+    public function insertDataOcci()
+    {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO oriental_cps (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('occidental_cps', $data);
     }
 
-    public function insertDataRom(){
+    public function insertDataOrmin()
+    {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO romblon_cps (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('oriental_cps', $data);
     }
 
-    public function insertDataMar(){
+    public function insertDataRom()
+    {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO marinduque_cps (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('romblon_cps', $data);
     }
 
-    public function insertDataPal(){
+    public function insertDataMar()
+    {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO palawan_cps (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('marinduque_cps', $data);
     }
 
-    public function insertDataPuer(){
+    public function insertDataPal()
+    {
         $request = service('request');
         $data = $request->getJSON(true);
-        $sql = "INSERT INTO puertop_cps (";
-        $values = "VALUES (";
-        foreach ($data as $key => $value) {
-            $sql .= "`$key`, ";
-            $values .= "'$value', ";
-        }
-        $sql = rtrim($sql, ", ") . ") ";
-        $values = rtrim($values, ", ") . ")";
-        $query = $sql . $values;
-        $db = \Config\Database::connect();
-        $result = $db->query($query);
-        if ($result) {
-            return $this->response->setStatusCode(200)->setJSON(['success' => 'Data inserted successfully']);
-        } else {
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Failed to insert data']);
-        }
+        return $this->insertData('palawan_cps', $data);
     }
+
+    public function insertDataPuer()
+    {
+        $request = service('request');
+        $data = $request->getJSON(true);
+        return $this->insertData('puertop_cps', $data);
+    }
+
 
     public function viewUserPPORates($userId)
     {
@@ -414,114 +344,102 @@ class UserController extends ResourceController
         }
     }
 
-    // public function sendPasswordResetEmail()
-    // {
-    //     $json = $this->request->getJSON();
-    //     $email = $json->email;
-
-    //     // Check if the email exists in your database
-    //     $userModel = new MainModel();
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if (!$user) {
-    //         return $this->respond('Email not found',400);
-    //     }else{
-    //          // Generate a unique token and save it with expiration time
-    //     $token = bin2hex(random_bytes(32));
-    //     $expiration = Time::now()->addMinutes(30); // Token expiration time (30 minutes from now)
-
-    //     // Save the token and expiration time in the database
-    //     $userModel->update($user['user_id'], [
-    //         'reset_token' => $token,
-    //         'token_expires_at' => $expiration->toDateTimeString()
-    //     ]);
-
-    //     // Send the password reset email with token
-    //     $this->sendResetEmail($email, $token);
-
-    //     return $this->respond(['message' => 'Password reset email sent'], 200);
-    //     }
-
-       
-    // }
-
     public function sendPasswordResetEmail()
     {
         $json = $this->request->getJSON();
         $email = $json->email;
 
-        // Check if email exists
+        // Check if the email exists in your database
         $userModel = new MainModel();
         $user = $userModel->where('email', $email)->first();
 
         if (!$user) {
-            return $this->respond(['status' => false, 'message' => 'Email not found'], 404);
-        }
-
-        // Generate OTP (6 digits)
-        $otp = random_int(100000, 999999);
-
+            return $this->respond('Email not found',404);
+        }else{
+             // Generate a unique token and save it with expiration time
+        $token = bin2hex(random_bytes(32));
         $expiration = Time::now()->addMinutes(30); // Token expiration time (30 minutes from now)
 
         // Save the token and expiration time in the database
         $userModel->update($user['user_id'], [
-            'reset_token' => $otp,
+            'reset_token' => $token,
             'token_expires_at' => $expiration->toDateTimeString()
         ]);
 
         // Send the password reset email with token
-        $this->sendResetEmail($email, $otp);
+        $this->sendResetEmail($email, $token);
 
         return $this->respond(['message' => 'Password reset email sent'], 200);
+        }
+
+       
     }
 
+    // protected function sendResetEmail($email, $token)
+    // {
+    //     $emailConfig = config('Email');
+    //     $emailService = Services::email();
+    //     $emailService->initialize($emailConfig);
     
+    //     $emailService->setFrom('your_email@example.com', 'Your Name');
+    //     $emailService->setTo($email);
+    //     $emailService->setSubject('Reset Your Password');
+    
+    //     // Get the base URL from the configuration and construct the reset link
+    //     $resetLink = 'https://e-upper.online/resetPassword/' . $token;
+    
+    //     $emailService->setMessage("Click this link to reset your password: $resetLink");
+    
+    //     try {
+    //         $emailService->send();
+    //     } catch (\Exception $e) {
+    //         // Handle email sending failure
+    //         log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
+    //         // You can also throw an exception to handle it in the frontend
+    //         throw new \Exception('Failed to send password reset email');
+    //     }
+    // }
 
-
-    protected function sendResetEmail($email, $otp)
+    protected function sendResetEmail($email, $token)
     {
         $emailConfig = config('Email');
         $emailService = Services::email();
         $emailService->initialize($emailConfig);
-    
-        $emailService->setFrom('your_email@example.com', 'Your Name');
+
+        $emailService->setFrom('euperadministrator@gmail.com', 'EUPER SYSTEM');
         $emailService->setTo($email);
         $emailService->setSubject('Reset Your Password');
-    
-        $emailService->setMessage("This is the OTP: $otp you requested");
-    
+
+        // Construct the reset link
+        $resetLink = 'http://localhost:8081/resetPassword/' . $token;
+        // $resetLink = 'https://e-upper.online/resetPassword/' . $token;
+
+        // Create the email body using the template
+        // Create the email body using HTML format
+        $message = "
+        <p>Dear User,</p>
+        <p>We received a request to reset the password for your account. If you didn’t make this request, you can ignore this email.</p>
+        <p>To reset your password, please click the link below:</p>
+        <p><a href=\"$resetLink\">Set a new password</a></p>
+        <p>For security reasons, this link will expire in 24 hours. If the link expires, you can request a new password reset.</p>
+        <p>If you encounter any issues, feel free to contact our support team.</p>
+        <p>Thank you,<br>Euper System</p>
+            ";
+
+        // Set the email message and mail type
+        $emailService->setMessage($message);
+        $emailService->setMailType('html');  // This ensures HTML formatting
+
         try {
             $emailService->send();
         } catch (\Exception $e) {
             // Handle email sending failure
             log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
-            // You can also throw an exception to handle it in the frontend
             throw new \Exception('Failed to send password reset email');
         }
     }
+
     
-
-    public function verifyOtp()
-    {
-        $json = $this->request->getJSON();
-        $otp = $json->otp;
-
-        // Validate the OTP
-        $userModel = new MainModel();
-        $user = $userModel->where('reset_token', $otp)->first();
-
-        if (!$user) {
-            return $this->respond(['message' => 'Invalid OTP'], 400);
-        }
-
-        // Check if OTP is expired
-        if (strtotime($user['token_expires_at']) < time()) {
-            return $this->respond(['message' => 'OTP expired'], 400);
-        }
-
-        // OTP is valid, allow user to proceed to reset password
-        return $this->respond(['message' => 'OTP verified, proceed to reset your password'], 200);
-    }
 
     public function resetPassword()
     {
@@ -546,6 +464,119 @@ class UserController extends ResourceController
 
         return $this->respond(['message' => 'Password reset successfully'], 200);
     }
+
+    public function getMaxRateByUser(){
+        $json = $this->request->getJSON();
+        $userId = $json->UserId;
+
+        $model = new MainModel();
+        $result = $model->where("user_id", $userId)->first();
+
+        if($result){
+            return $this->respond($result, 200);
+        }else{
+            return $this->respond(401);
+        }
+    }
+
+    // public function sendPasswordResetEmail()
+    // {
+    //     $json = $this->request->getJSON();
+    //     $email = $json->email;
+
+    //     // Check if email exists
+    //     $userModel = new MainModel();
+    //     $user = $userModel->where('email', $email)->first();
+
+    //     if (!$user) {
+    //         return $this->respond(['status' => false, 'message' => 'Email not found'], 404);
+    //     }
+
+    //     // Generate OTP (6 digits)
+    //     $otp = random_int(100000, 999999);
+
+    //     $expiration = Time::now()->addMinutes(30); // Token expiration time (30 minutes from now)
+
+    //     // Save the token and expiration time in the database
+    //     $userModel->update($user['user_id'], [
+    //         'reset_token' => $otp,
+    //         'token_expires_at' => $expiration->toDateTimeString()
+    //     ]);
+
+    //     // Send the password reset email with token
+    //     $this->sendResetEmail($email, $otp);
+
+    //     return $this->respond(['message' => 'Password reset email sent'], 200);
+    // }
+
+    // protected function sendResetEmail($email, $otp)
+    // {
+    //     $emailConfig = config('Email');
+    //     $emailService = Services::email();
+    //     $emailService->initialize($emailConfig);
+    
+    //     $emailService->setFrom('your_email@example.com', 'Your Name');
+    //     $emailService->setTo($email);
+    //     $emailService->setSubject('Reset Your Password');
+    
+    //     $emailService->setMessage("This is the OTP: $otp you requested");
+    
+    //     try {
+    //         $emailService->send();
+    //     } catch (\Exception $e) {
+    //         // Handle email sending failure
+    //         log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
+    //         // You can also throw an exception to handle it in the frontend
+    //         throw new \Exception('Failed to send password reset email');
+    //     }
+    // }
+    
+
+    // public function verifyOtp()
+    // {
+    //     $json = $this->request->getJSON();
+    //     $otp = $json->otp;
+
+    //     // Validate the OTP
+    //     $userModel = new MainModel();
+    //     $user = $userModel->where('reset_token', $otp)->first();
+
+    //     if (!$user) {
+    //         return $this->respond(['message' => 'Invalid OTP'], 400);
+    //     }
+
+    //     // Check if OTP is expired
+    //     if (strtotime($user['token_expires_at']) < time()) {
+    //         return $this->respond(['message' => 'OTP expired'], 400);
+    //     }
+
+    //     // OTP is valid, allow user to proceed to reset password
+    //     return $this->respond(['message' => 'OTP verified, proceed to reset your password'], 200);
+    // }
+
+    // public function resetPassword()
+    // {
+    //     $json = $this->request->getJSON();
+    //     $token = $json->token;
+    //     $password = $json->password;
+
+    //     // Validate token and update password
+    //     $userModel = new MainModel();
+    //     $user = $userModel->where('reset_token', $token)->first();
+
+    //     if (!$user) {
+    //         return $this->failNotFound('Invalid token');
+    //     }
+
+    //     // Update user password
+    //     $userModel->update($user['user_id'], [
+    //         'password' => password_hash($password, PASSWORD_DEFAULT), // Hash the new password
+    //         'reset_token' => null, // Clear the reset token after password reset
+    //         'token_expires_at' => null,
+    //     ]);
+
+    //     return $this->respond(['message' => 'Password reset successfully'], 200);
+    // }
 
 
 }

@@ -25,6 +25,43 @@ class AdminController extends ResourceController
         $data = $main->where('role','user')->findAll();
         return $this->respond($data, 200);
     }
+
+    public function findUsersInfo(){
+        $json = $this->request->getJSON();
+        $username = $json->Username;
+        
+        $main = new MainModel();
+        $data = $main->where('username',$username)->findAll();
+        return $this->respond($data, 200);
+    }
+
+    public function saveMaxRate(){
+        $json = $this->request->getJSON();
+        $userId = $json->UserId;
+        $username = $json->Username;
+        $office = $json->Office;
+        $maxRate = $json->MaxRate;
+
+        $data = [
+            "username" => $username,
+            "office" => $office,
+            "maxRate" => $maxRate,
+
+        ];
+
+        if($data){
+            $model = new MainModel();
+            $result =  $model->update($userId, $data);
+           if($result){
+            return $this->respond(200);
+           }else{
+            return $this->respond(401);
+           }
+        }else{
+            return $this->respond(500);
+        }
+
+    }
     
 
     public function getAdmins(){
@@ -955,11 +992,43 @@ class AdminController extends ResourceController
         return $this->respond(['success' => true, 'message' => 'All user statuses updated successfully']);
     }
 
+    // public function toggleUserStatus()
+    // {
+    //     // $userId = $this->request->getVar('userId');
+    //     $json = $this->request->getJSON();
+    //     $userId = $json->userId;
+
+    //     $model = new MainModel();
+    //     $user = $model->find($userId);
+
+    //     if (empty($user)) {
+    //         return $this->failNotFound('User not found');
+    //     }
+
+    //     // Toggle the status
+    //     $newStatus = ($user['status'] == 'Enable') ? 'Disable' : 'Enable';
+    //     $user['status'] = $newStatus;
+
+    //     // Save the updated user status to the database using the $model instance
+    //     try {
+    //         $model->save($user);
+    //         return $this->respond(['success' => true, 'message' => 'User status updated successfully']);
+    //     } catch (\Exception $e) {
+    //         return $this->failServerError('Error updating user status');
+    //     }
+    // }
+
     public function toggleUserStatus()
     {
-        $userId = $this->request->getVar('userId');
+        // Get the JSON payload from the request
+        $json = $this->request->getJSON();
+        $userId = $json->userId;
+
+        // Initialize the model
         $model = new MainModel();
-        $user = $model->find($userId);
+
+        // Fetch the user with the given ID
+        $user = $model->where('user_id', $userId)->first();
 
         if (empty($user)) {
             return $this->failNotFound('User not found');
@@ -967,16 +1036,16 @@ class AdminController extends ResourceController
 
         // Toggle the status
         $newStatus = ($user['status'] == 'Enable') ? 'Disable' : 'Enable';
-        $user['status'] = $newStatus;
 
-        // Save the updated user status to the database using the $model instance
+        // Update the status in the database
         try {
-            $model->save($user);
+            $model->update($userId, ['status' => $newStatus]);
             return $this->respond(['success' => true, 'message' => 'User status updated successfully']);
         } catch (\Exception $e) {
             return $this->failServerError('Error updating user status');
         }
     }
+
 
     public function saveUser()
     {
