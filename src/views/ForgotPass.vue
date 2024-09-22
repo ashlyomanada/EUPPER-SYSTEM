@@ -27,10 +27,19 @@
         <p class="signin">
           Already have an account? <router-link to="/">Sign in</router-link>
         </p>
-        <p class="error-message">
-          {{ errorMessage }}
-        </p>
       </form>
+    </div>
+
+    <div class="alert-container">
+      <v-alert v-if="errorMessage" type="error" class="error-message">{{
+        errorMessage
+      }}</v-alert>
+    </div>
+
+    <div class="alert-container">
+      <v-alert v-if="successMessage" type="success" class="error-message">{{
+        successMessage
+      }}</v-alert>
     </div>
   </div>
 </template>
@@ -44,6 +53,7 @@ export default {
     return {
       email: "",
       errorMessage: "",
+      successMessage: "",
       registrationStatus: null,
       processing: false, // Flag to track form processing state
     };
@@ -64,9 +74,12 @@ export default {
 
         if (response.status === 200) {
           this.registrationStatus = "success";
-          alert("Check your email for verification.");
-          this.router.push("/otp"); // Navigate to OTP page
+
+          this.successMessage = "Check your email for verification.";
           this.email = ""; // Clear email only after success
+          setTimeout(() => {
+            this.successMessage = null;
+          }, 5000);
         } else {
           this.registrationStatus = "error";
           this.errorMessage = "An unexpected error occurred. Please try again.";
@@ -80,7 +93,11 @@ export default {
           this.errorMessage =
             "Failed to send the password reset email. Check your connection.";
         }
-        console.error(error); // Log the error for debugging
+        // console.error(error); // Log the error for debugging
+
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 5000);
       } finally {
         this.processing = false; // Always reset processing flag in `finally`
       }

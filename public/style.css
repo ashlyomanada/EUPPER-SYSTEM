@@ -503,6 +503,10 @@ main::-webkit-scrollbar-thumb {
 #content main .table-data .todo .todo-list li:last-child {
   margin-bottom: 0;
 }
+.rating-header {
+  justify-content: space-between;
+}
+
 /* MAIN */
 /* CONTENT */
 

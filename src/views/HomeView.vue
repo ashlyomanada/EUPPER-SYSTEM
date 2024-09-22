@@ -127,7 +127,7 @@
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <a style="cursor: pointer" @click="logout" class="logout">
+        <a style="cursor: pointer" @click="confirmLogout" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </a>
@@ -159,7 +159,7 @@
           id="profile"
           @click="showComponent('UserProfile')"
         >
-          <img :src="`http://localhost:8080/${profilePic}`" />
+          <img :src="`${baseURL}${profilePic}`" />
         </a>
       </div>
     </nav>
@@ -217,7 +217,30 @@
     </main>
     <!-- MAIN -->
   </section>
-  <!-- CONTENT -->
+
+  <div
+    class="modal fade"
+    id="logout-modal2"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <h3 class="alertContent">Are you sure you want to log out?</h3>
+        </div>
+        <div class="modal-footer d-flex justify-content-center gap-3">
+          <button type="button" class="btn btn-primary" @click="logout">
+            Yes
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -236,6 +259,7 @@ import router from "@/router";
 import MPSRatingSheet from "../components/ratingSheetForm/MPSRatingSheet.vue";
 import Vue from "vue";
 import * as bootstrap from "bootstrap";
+import { Modal } from "bootstrap";
 
 export default {
   components: {
@@ -268,6 +292,10 @@ export default {
       status: "",
       currentDateTime: "",
       dynamicallyLoadedScripts: [],
+      baseURL: axios.defaults.baseURL,
+      showButtons: false,
+      showButtons2: false,
+      showButtons3: false,
     };
   },
   async created() {
@@ -303,10 +331,26 @@ export default {
         console.error("Error fetching user data:", error);
       }
     },
+    confirmLogout() {
+      const modalElement = document.getElementById("logout-modal2");
+      const modalInstance = new Modal(modalElement);
+      modalInstance.show();
+    },
     async logout() {
-      this.unloadScripts();
+      const modalElement = document.getElementById("logout-modal2");
+      const modalInstance = new Modal(modalElement);
+      const backdrop = document.querySelector(".modal-backdrop");
+      if (backdrop) {
+        backdrop.remove();
+      }
+
+      modalInstance.hide();
+      if (sessionStorage.getItem("id") == null) {
+        this.unloadScripts();
+      }
       sessionStorage.removeItem("id");
       router.push("/");
+      document.title = "EUPER";
     },
     okayBtn() {
       this.status = "Closed";

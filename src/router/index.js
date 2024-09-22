@@ -13,40 +13,46 @@ const routes = [
     component: Register,
   },
   {
-    path: "/resetPassword",
+    path: "/resetPassword/:token", // Route with token parameter
     name: "ResetPassword",
     component: ResetPass,
+    props: true,
   },
   {
     path: "/adminHome",
     component: () => import("../views/AdminDashboard.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true }, // Add this meta field to indicate this route requires authentication
   },
   {
     path: "/home",
     component: () => import("../views/HomeView.vue"),
-    meta: { requiresAuth: true },
+    meta: { requiresAuth: true }, // Add this meta field to indicate this route requires authentication
   },
   {
-    path: "/otp",
-    component: () => import("../views/Otp.vue"),
+    path: "/sendNotif",
+    component: () => import("../views/SendNotif.vue"),
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(), // No need for 'process.env.BASE_URL', unless your app is in a subfolder
   routes,
 });
 
 // Add route guard
 router.beforeEach((to, from, next) => {
+  // Check if the route requires authentication
   if (to.matched.some((record) => record.meta.requiresAuth)) {
+    // Check if there is a token in session storage (indicating the user is logged in)
     if (!sessionStorage.getItem("id")) {
+      // If not logged in, redirect to login page
       next("/");
     } else {
+      // If logged in, proceed to the requested route
       next();
     }
   } else {
+    // If the route does not require authentication, proceed normally
     next();
   }
 });

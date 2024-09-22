@@ -5,13 +5,8 @@
         <h3>List of Users</h3>
         <div class="manageItems d-flex justify-content-between"></div>
         <div class="manageItems d-flex justify-content-between">
-          <div class="list-items">
-            <input
-              type="datetime-local"
-              v-model="dueDate"
-              style="background: var(--light); color: var(--dark)"
-            />
-            <button class="find px-2" @click="SetDate">Set Closing</button>
+          <div class="list-items d-flex gap-2">
+            <button class="find px-2" @click="openDueDate">Set Closing</button>
           </div>
           <button class="find" @click="changeAllUserStatus">
             <i class="fa-solid fa-power-off"></i>
@@ -23,6 +18,8 @@
               type="text"
               class="year"
               id="searchText"
+              @change="getUsersInfo"
+              required
             />
             <button
               class="find d-flex align-items-center px-4"
@@ -47,40 +44,47 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="UsersInfo in UsersInfo" :key="UsersInfo.user_id">
-            <td>{{ UsersInfo.username }}</td>
-            <td>{{ UsersInfo.office }}</td>
-            <td>{{ UsersInfo.phone_no }}</td>
-            <td>{{ UsersInfo.email }}</td>
-            <td>{{ UsersInfo.status }}</td>
+          <tr v-for="UserInfos in UsersInfo" :key="UserInfos.user_id">
+            <td>{{ UserInfos.username }}</td>
+            <td>{{ UserInfos.office }}</td>
+            <td>{{ UserInfos.phone_no }}</td>
+            <td>{{ UserInfos.email }}</td>
+            <td>{{ UserInfos.status }}</td>
             <td class="td-btn">
               <button
                 class="users-btn"
-                @click="toggleUserStatus(UsersInfo.user_id)"
+                @click="toggleUserStatus(UserInfos.user_id)"
               >
                 <i
                   class="fa-solid fa-power-off fa-lg"
                   :class="{
-                    'green-btn': UsersInfo.status === 'Enable',
-                    'red-btn': UsersInfo.status === 'Disable',
+                    'green-btn': UserInfos.status === 'Enable',
+                    'red-btn': UserInfos.status === 'Disable',
                   }"
                 ></i>
               </button>
             </td>
             <td class="td-btn">
-              <button class="pen-btn" @click="openForm(UsersInfo)">
+              <button class="pen-btn" @click="openForm(UserInfos)">
                 <i class="fa-solid fa-pen fa-lg"></i>
               </button>
             </td>
             <td class="td-btn">
-              <button class="users-btn" @click="openForm2(UsersInfo)">
+              <button class="users-btn" @click="openForm2(UserInfos)">
                 <i class="fa-solid fa-phone fa-lg"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
+      <h5 v-if="dataFetched" style="text-align: center">No Ratings Found</h5>
     </div>
+  </div>
+
+  <div class="alert-container">
+    <v-alert v-if="alertMessage" :type="errorType" class="error-message">{{
+      alertMessage
+    }}</v-alert>
   </div>
 
   <!-- Bootstrap Modal for Editing User -->
@@ -264,6 +268,108 @@
       </div>
     </div>
   </div>
+
+  <!-- Bootstrap Modal for setting due -->
+
+  <div
+    class="modal fade"
+    id="dueModal"
+    tabindex="-1"
+    aria-labelledby="editProfileModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">Select Duedate</h5>
+        </div>
+        <div
+          class="modal-body d-flex justify-content-center flex-column align-items-center"
+        >
+          <p>Current due date: {{ this.lastInsertedDate }}</p>
+          <input
+            type="datetime-local"
+            v-model="dueDate"
+            style="background: var(--light); color: var(--dark)"
+          />
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click.prevent="SetDate"
+          >
+            Save DueDate
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Modal for maximum  rate -->
+
+  <!-- <div
+    class="modal fade"
+    id="maximumRateModal"
+    tabindex="-1"
+    aria-labelledby="editProfileModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title" id="editProfileModalLabel">
+            Set Maximum Users Rate
+          </h5>
+        </div>
+        <div
+          class="modal-body d-flex justify-content-center align-items-center"
+        >
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Username</th>
+                <th scope="col">Office</th>
+                <th scope="col">Max Rate</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="UsersInfos in UsersInfo" :key="UsersInfos.user_id">
+                <td>{{ UsersInfos.username }}</td>
+                <td>{{ UsersInfos.office }}</td>
+                <td>
+                  {{ UsersInfos.maxRate }}
+                </td>
+                <td><button class="btn btn-danger">Edit MaxRate</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click.prevent="setMaxRate"
+          >
+            Save
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
 </template>
 
 <script>
@@ -286,21 +392,31 @@ export default {
       },
       sendingInProgress: false,
       dueDate: "",
-      lastInsertedDate: null,
+      lastInsertedDate: "",
       currentTime: null,
       editUserModal: null,
       sendSmsModal: null,
       successModal: null,
+      dataFetched: false,
+      alertMessage: "",
+      errorType: "",
+      checkInterval: null,
+      currentDue: "",
     };
   },
 
   created() {
     this.getUsersInfo();
     this.getDueDate();
-    setInterval(() => {
+
+    this.checkInterval = setInterval(() => {
       this.getDueDate();
-      this.checkTime();
-    }, 600);
+    }, 5000);
+  },
+
+  mounted() {
+    this.getDueDate();
+    this.getUsersInfo();
   },
 
   methods: {
@@ -312,6 +428,17 @@ export default {
 
         if (response.status === 200) {
           console.log("Successfully set date");
+          const modalElement = document.getElementById("dueModal");
+          const modalInstance =
+            Modal.getInstance(modalElement) || new Modal(modalElement);
+          modalInstance.hide();
+          this.alertMessage = "Successfully set a due date";
+          this.errorType = "success";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 5000);
         } else {
           console.log("Unsuccessfully set date");
         }
@@ -320,33 +447,54 @@ export default {
       }
     },
 
+    openDueDate() {
+      const modalElement = document.getElementById("dueModal");
+      const modalInstance = new Modal(modalElement);
+      modalInstance.show();
+    },
+
     async getDueDate() {
       try {
+        const date = new Date();
+
+        // Extracting year, month, day, hours, minutes, and seconds
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+
+        // Format the date to "YYYY-MM-DD HH:mm:ss"
+        const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}`;
+
         const response = await axios.get("/selectDue");
-        this.lastInsertedDate = response.data.date;
+        const respData = response.data.date;
+
+        if (respData) {
+          // Ensure that respData is in the correct format
+          this.lastInsertedDate = respData;
+
+          const trimmedDateString = this.lastInsertedDate.slice(0, 16);
+
+          // console.log("Last Inserted Date:", trimmedDateString); // Add logging for debugging
+          // console.log("Formated Date:", formattedDate);
+
+          // Compare the two formatted dates
+          if (formattedDate === trimmedDateString) {
+            console.log("Condition met: calling changeAllUserStatus");
+            this.changeAllUserStatus(); // Call function only if condition is met
+            clearInterval(this.checkInterval);
+          } else {
+            // console.log("Condition not met: Dates do not match");
+          }
+        } else {
+          console.error("No date returned from the response");
+        }
       } catch (e) {
-        console.log(e);
+        console.log("Error in getDueDate:", e);
       }
     },
-
-    checkTime() {
-      const currentDate = new Date();
-      const lastInsertedDate = new Date(this.lastInsertedDate);
-      const formattedCurrentDate = `${currentDate.getFullYear()}-${String(
-        currentDate.getMonth() + 1
-      ).padStart(2, "0")}-${String(currentDate.getDate()).padStart(
-        2,
-        "0"
-      )} ${String(currentDate.getHours()).padStart(2, "0")}:${String(
-        currentDate.getMinutes()
-      ).padStart(2, "0")}:${String(currentDate.getSeconds()).padStart(2, "0")}`;
-
-      if (formattedCurrentDate === this.lastInsertedDate) {
-        this.changeAllUserStatus();
-        this.dueDate = "";
-      }
-    },
-
     async getUsersInfo() {
       try {
         const UsersInfo = await axios.get("getUsersInfo");
@@ -395,11 +543,20 @@ export default {
         const response = await axios.post("/changeAllUserStatus");
         if (response.status === 200) {
           const responseData = response.data;
+          this.alertMessage = "All users status successfully changed.";
+          this.errorType = "success";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = "success";
+          }, 3000);
 
           if (responseData && responseData.success) {
             this.getUsersInfo();
           } else {
             console.error("Status change failed:", responseData.message);
+            this.alertMessage = "Failed to change status";
+            this.errorType = "error";
           }
         } else {
           console.error(`Unexpected response status: ${response.status}`);
@@ -411,8 +568,8 @@ export default {
 
     async toggleUserStatus(userInfo) {
       try {
-        const response = await axios.post("/toggleUserStatus/", {
-          userId: userInfo,
+        const response = await axios.post("/toggleUserStatus", {
+          userId: parseInt(userInfo),
         });
 
         if (response.status === 200) {
@@ -431,16 +588,26 @@ export default {
       }
     },
 
-    findData() {
-      const searchText = document.querySelector("#searchText").value;
+    async findData() {
+      try {
+        const response = await axios.post("/findUsersInfo", {
+          Username: this.searchText,
+        });
 
-      if (searchText === "") {
-        this.getUsersInfo();
-        return;
+        if (response.status === 200) {
+          this.UsersInfo = response.data;
+          this.dataFetched = false;
+        }
+
+        if (this.UsersInfo.length === 0) {
+          this.dataFetched = true;
+        }
+      } catch (error) {
+        console.log(error);
+        if (error.response && error.response.status === 400) {
+          console.log(error.response);
+        }
       }
-      this.UsersInfo = this.UsersInfo.filter((item) => {
-        return item.username === searchText;
-      });
     },
 
     async sendSms() {
@@ -507,15 +674,7 @@ export default {
 }
 @media screen and (max-width: 768px) {
   .manageItems {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
   }
-
-  .list-items {
-    gap: 2rem;
-  }
-}
-
-@media screen and (max-width: 600px) {
 }
 </style>

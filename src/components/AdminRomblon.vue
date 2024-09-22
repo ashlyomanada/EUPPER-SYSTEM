@@ -43,10 +43,10 @@
               </button>
             </div>
             <div class="d-flex gap-2">
-              <button class="generate" @click="generateRomReport">
+              <button class="generate" @click="confirmationGenerateExcel">
                 Generate Excel Report
               </button>
-              <button class="generate" @click="generatePdf">
+              <button class="generate" @click="confirmationGeneratePdf">
                 Generate PDF Report
               </button>
             </div>
@@ -84,11 +84,80 @@
       <h5 style="text-align: center" v-if="noData">No data found</h5>
     </div>
   </div>
+
+  <div
+    class="modal fade"
+    id="romblonExcelConfirmation"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <p>
+            Are you sure do you want to generate an Excel Report for Romblon?,
+            please check if all users rated!
+          </p>
+
+          <div class="d-flex justify-content-center gap-3">
+            <button
+              type="button"
+              class="btn btn-primary"
+              @click="generateRomReport"
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="romblonPdfConfirmation"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <p>
+            Are you sure do you want to generate an PDF Report for Romblon?,
+            please check if all users rated!
+          </p>
+
+          <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn btn-primary" @click="generatePdf">
+              Yes
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              data-bs-dismiss="modal"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 import * as XLSX from "xlsx";
 import axios from "axios";
+import { Modal } from "bootstrap";
 
 export default {
   data() {
@@ -108,9 +177,25 @@ export default {
     this.fetchColumns();
     this.getUsersRate();
     this.getUsersOffice();
+    const currentDate = new Date();
+    this.month = currentDate.toLocaleString("default", {
+      month: "long",
+    });
+    this.year = currentDate.getFullYear();
   },
 
   methods: {
+    confirmationGenerateExcel() {
+      const modalElement = document.getElementById("romblonExcelConfirmation");
+      const modalInstance = new Modal(modalElement);
+      modalInstance.show();
+    },
+    confirmationGeneratePdf() {
+      const modalElement = document.getElementById("romblonPdfConfirmation");
+      const modalInstance = new Modal(modalElement);
+      modalInstance.show();
+    },
+
     async fetchColumns() {
       try {
         const response = await axios.get("/getColumnNameRom");
@@ -227,6 +312,15 @@ export default {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        const modalElement = document.getElementById(
+          "romblonExcelConfirmation"
+        );
+        const modalInstance =
+          Modal.getInstance(modalElement) || new Modal(modalElement);
+
+        // Hide the modal
+        modalInstance.hide();
       } catch (error) {
         console.error("Error generating report:", error);
       }
@@ -255,6 +349,15 @@ export default {
           document.body.appendChild(a);
           a.click();
           window.URL.revokeObjectURL(url);
+
+          const modalElement = document.getElementById(
+            "romblonPdfConfirmation"
+          );
+          const modalInstance =
+            Modal.getInstance(modalElement) || new Modal(modalElement);
+
+          // Hide the modal
+          modalInstance.hide();
         })
         .catch((error) => {
           console.error("Error generating PDF:", error);

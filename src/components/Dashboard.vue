@@ -2,8 +2,7 @@
   <div class="head-title"></div>
 
   <div class="dash-box">
-    <div class="mainDashboard">
-      <MonthChart />
+    <div class="monthlyDashboard">
       <!-- <ul class="box-info">
         <li>
           <i class="bx bxs-calendar-check"></i>
@@ -27,6 +26,9 @@
           </span>
         </li>
       </ul> -->
+      <MonthChart />
+    </div>
+    <div class="mainDashboard">
       <PPOBarChart />
       <RMFBBarChart />
       <OccidentalBarChart />
@@ -117,10 +119,15 @@ export default defineComponent({
 });
 </script>
 <style>
+.monthlyDashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-rows: auto 1fr;
+}
 .mainDashboard {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows: auto 1fr;
   gap: 1rem;
   padding-top: 1rem;
   padding-bottom: 1rem;

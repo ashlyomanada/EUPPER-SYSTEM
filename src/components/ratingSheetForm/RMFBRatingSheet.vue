@@ -50,7 +50,7 @@
             v-model="formData[column]"
             required
             min="0"
-            :max="getMaxRateByOffice(office)"
+            :max="userMaxRate"
             step="any"
           />
         </div>
@@ -58,17 +58,33 @@
       </form>
     </div>
   </div>
-  <div class="modalBg" v-if="formVisible">
-    <div class="alertBox">
-      <img class="checkImg" src="./img/check2.gif" alt="" />
-      <h1 class="alertContent">Successfully Rated</h1>
-      <button class="btn btn-primary" @click="okayBtn">Okay</button>
+  <div
+    class="modal fade"
+    id="rmfbSuccessModal"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <img
+            v-if="success"
+            class="checkImg"
+            src="./img/check2.gif"
+            alt="Success"
+          />
+          <h1 class="alertContent">{{ alertMessage }}</h1>
+          <button class="btn btn-primary" @click.prevent="okayBtn">Okay</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { Modal } from "bootstrap";
 
 export default {
   data() {
@@ -82,38 +98,35 @@ export default {
       columns: [],
       formData: {},
       office: "",
+      alertMessage: "",
+      success: false,
+      userMaxRate: 0,
     };
   },
 
   created() {
     this.fetchColumns();
     this.fetchUserData();
+    const currentDate = new Date();
+    this.Month = currentDate.toLocaleString("default", {
+      month: "long",
+    });
+    this.Year = currentDate.getFullYear();
   },
 
+  async mounted() {
+    await this.getMaxRateByUser();
+  },
   methods: {
-    getMaxRateByOffice(office) {
-      switch (office) {
-        case "ROD":
-          return 167;
-        case "RIDMD":
-          return 166;
-        case "RID":
-          return 167;
-        case "RCADD":
-          return 100;
-        case "RLRDD":
-        case "RLDDD":
-        case "RPRMD":
-        case "RICTMD":
-          return 80;
-        case "RPSMD":
-          return 35;
-        case "RCD":
-          return 25;
-        case "RRD":
-          return 20;
-        default:
-          return 0;
+    async getMaxRateByUser() {
+      const userId = sessionStorage.getItem("id");
+      try {
+        const response = await axios.post("/getMaxRateByUser", {
+          UserId: userId,
+        });
+        this.userMaxRate = response.data.maxRate;
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -159,11 +172,11 @@ export default {
           ...this.formData, // Include formData properties
         };
 
-        // Log the data to console
-        // console.log("Data to be saved:", data);
-
         // Send data to server for insertion
         const response = await axios.post("/insertDataRMFB", data);
+
+        const modalElement = document.getElementById("rmfbSuccessModal");
+        const modalInstance = new Modal(modalElement);
 
         if (response.status === 200) {
           // Data successfully saved
@@ -172,24 +185,50 @@ export default {
           Object.keys(this.formData).forEach((key) => {
             this.formData[key] = "";
           });
-          this.formVisible = true;
+
+          this.alertMessage = "Successfully Rated";
+          this.success = true;
+          modalInstance.show();
+
           setTimeout(() => {
-            this.formVisible = false;
+            modalInstance.hide();
+            this.success = false;
           }, 5000);
-        } else {
-          // Display error message to user
-          console.error("Failed to save data.");
         }
       } catch (error) {
-        // Display error message to user
-        console.error("Error:", error);
+        const modalElement = document.getElementById("rmfbSuccessModal");
+        const modalInstance =
+          Modal.getInstance(modalElement) || new Modal(modalElement);
 
-        // Optionally, you can also display an error message to the user
-        // using a toast or some other notification mechanism
+        if (error.response && error.response.status === 400) {
+          this.alertMessage = "Record already exists";
+        } else if (error.response && error.response.status === 500) {
+          this.alertMessage = "Server error. Please try again later.";
+        } else {
+          this.alertMessage =
+            "Please check your internet connection and try again later.";
+        }
+
+        modalInstance.show();
+        setTimeout(() => {
+          modalInstance.hide();
+        }, 5000);
       }
     },
+
     okayBtn() {
-      this.formVisible = false;
+      const modalElement = document.getElementById("rmfbSuccessModal");
+      const modalInstance =
+        Modal.getInstance(modalElement) || new Modal(modalElement);
+
+      // Hide the modal
+      modalInstance.hide();
+
+      // Manually remove the backdrop if it still exists
+      const backdrop = document.querySelector(".modal-backdrop");
+      if (backdrop) {
+        backdrop.remove();
+      }
     },
 
     getPlaceholder(column) {

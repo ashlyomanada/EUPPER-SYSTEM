@@ -19,24 +19,24 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("/firebase-messaging-sw.js")
     .then((registration) => {
-      console.log("Service Worker registered with scope:", registration.scope);
+      // console.log("Service Worker registered with scope:", registration.scope);
 
       // Wait for the service worker to become active
       registration.onupdatefound = () => {
         const installingWorker = registration.installing;
         installingWorker.onstatechange = () => {
           if (installingWorker.state === "activated") {
-            console.log("Service Worker activated.");
+            // console.log("Service Worker activated.");
           }
         };
       };
 
       // If the service worker is already active, proceed
       if (registration.active) {
-        console.log("Service Worker is already active.");
+        // console.log("Service Worker is already active.");
       }
     })
     .catch((err) => {
-      console.log("Service Worker registration failed:", err);
+      // console.log("Service Worker registration failed:", err);
     });
 }

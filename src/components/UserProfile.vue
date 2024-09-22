@@ -96,7 +96,7 @@
             <div class="mb-3">
               <label for="email" class="form-label text-start">Email</label>
               <input
-                style="background: var (--light); color: var(--dark)"
+                style="background-color: var (--light); color: var(--dark)"
                 v-model="selectedUser.email"
                 type="email"
                 class="form-control"
@@ -110,7 +110,7 @@
                 >Phone Number</label
               >
               <input
-                style="background: var (--light); color: var(--dark)"
+                style="background-color: var (--light); color: var(--dark)"
                 v-model="selectedUser.phone_no"
                 type="text"
                 class="form-control"
@@ -381,6 +381,10 @@ export default {
 </script>
 
 <style>
+#phone,
+#email {
+  background-color: var(--light);
+}
 .alert-container {
   position: absolute;
   top: 0;

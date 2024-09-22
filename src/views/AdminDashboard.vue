@@ -91,6 +91,16 @@
             <span class="text">User Ratings</span>
           </a>
         </li>
+        <li :class="{ active: selectedComponent === 'ManageRate' }">
+          <a href="#" @click="showComponent('ManageRate')">
+            <i
+              class="fa-solid fa-gear"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
+            <span class="text">Manage Max Rate</span>
+          </a>
+        </li>
         <li :class="{ active: selectedComponent === 'Announcement' }">
           <a href="#" @click="showComponent('Announcement')">
             <i
@@ -101,6 +111,7 @@
             <span class="text">Announcement</span>
           </a>
         </li>
+
         <li :class="{ active: selectedComponent === 'AddAdmin' }">
           <a href="#" @click="showComponent('AddAdmin')">
             <i
@@ -192,7 +203,7 @@
     </ul>
     <ul class="side-menu" style="padding-left: 0">
       <li>
-        <a style="cursor: pointer" @click="logout" to="/" class="logout">
+        <a style="cursor: pointer" @click="confirmLogout" class="logout">
           <i class="bx bxs-log-out-circle"></i>
           <span class="text">Logout</span>
         </a>
@@ -222,9 +233,34 @@
       <AdminOccidental v-if="selectedComponent === 'AdminOccidental'" />
       <AddAdmin v-if="selectedComponent === 'AddAdmin'" />
       <AddUser v-if="selectedComponent === 'AddUser'" />
+      <ManageRate v-if="selectedComponent === 'ManageRate'" />
     </main>
     <!-- MAIN -->
   </section>
+
+  <div
+    class="modal fade"
+    id="logout-modal"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <h3 class="alertContent">Are you sure you want to log out?</h3>
+        </div>
+        <div class="modal-footer d-flex justify-content-center gap-3">
+          <button type="button" class="btn btn-primary" @click="logout">
+            Yes
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- CONTENT ---->
 </template>
 
@@ -244,7 +280,9 @@ import AddRMFB from "../components/AddRMFB.vue";
 import AdminOccidental from "../components/AddMPS.vue";
 import AddUser from "../components/AddUser.vue";
 import AddAdmin from "../components/AddAdmin.vue";
+import ManageRate from "../components/ManageRate.vue";
 import router from "@/router";
+import { Modal } from "bootstrap";
 
 export default {
   components: {
@@ -262,6 +300,7 @@ export default {
     AdminOccidental,
     AddUser,
     AddAdmin,
+    ManageRate,
   },
 
   data() {
@@ -284,7 +323,21 @@ export default {
     this.fetchUserData();
   },
   methods: {
-    async logout() {
+    confirmLogout() {
+      const modalElement = document.getElementById("logout-modal");
+      const modalInstance = new Modal(modalElement);
+      modalInstance.show();
+    },
+    logout() {
+      const modalElement = document.getElementById("logout-modal");
+      const modalInstance = new Modal(modalElement);
+      const backdrop = document.querySelector(".modal-backdrop");
+      if (backdrop) {
+        backdrop.remove();
+      }
+
+      modalInstance.hide();
+
       sessionStorage.removeItem("id");
       router.push("/");
     },

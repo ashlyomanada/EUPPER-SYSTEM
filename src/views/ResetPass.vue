@@ -2,7 +2,7 @@
   <div class="register-container">
     <div class="register">
       <div class="picture-container">
-        <img src="./img/logo.png" class="loginLogo" alt="" />
+        <img :src="logo" class="loginLogo" alt="" />
         <div class="name-container">
           <h1>EUPER SYSTEM</h1>
           <h2>PRO MIMAROPA</h2>
@@ -30,8 +30,19 @@
         <p class="signin">
           Already have an account? <router-link to="/">Sign in</router-link>
         </p>
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </form>
+    </div>
+
+    <div class="alert-container">
+      <v-alert v-if="errorMessage" type="error" class="error-message">{{
+        errorMessage
+      }}</v-alert>
+    </div>
+
+    <div class="alert-container">
+      <v-alert v-if="successMessage" type="success" class="error-message">{{
+        successMessage
+      }}</v-alert>
     </div>
   </div>
 </template>
@@ -47,34 +58,56 @@ export default {
       password: "",
       confirmPassword: "",
       errorMessage: "",
+      successMessage: "",
+      logo: `${axios.defaults.baseURL}/logo.png`,
     };
   },
   methods: {
     async resetPassword() {
       if (this.password !== this.confirmPassword) {
-        this.errorMessage = "Passwords do not match";
+        this.errorMessage = "Password and Confirm Password doesn't match";
         return;
       }
 
-      const validOtp = sessionStorage.getItem("otp");
+      if (this.password.length < 8 && this.confirmPassword.length < 8) {
+        this.errorMessage = "Passwords must be at least 8 characters";
+        return;
+      }
 
       try {
         const response = await axios.post("/resetPassword", {
-          token: parseInt(validOtp),
+          token: this.token,
           password: this.password,
         });
 
-        alert(response.data.message);
-        sessionStorage.clear();
-        // Show success message
+        if (response.status === 200) {
+          this.registrationStatus = "success";
+          this.successMessage = "Successfully updated your password.";
+          this.$router.push("/");
+          this.password = "";
+          this.confirmPassword = "";
 
-        // Redirect to login page or other route after successful password reset
-        this.$router.push("/");
-        this.password = "";
-        this.confirmPassword = "";
+          setTimeout(() => {
+            this.successMessage = null;
+          }, 5000);
+        } else {
+          this.registrationStatus = "error";
+          this.errorMessage = "An unexpected error occurred. Please try again.";
+        }
       } catch (error) {
-        console.error("Failed to reset password:", error);
-        this.errorMessage = "Failed to reset password. Please try again.";
+        if (error.response && error.response.status === 404) {
+          this.errorMessage =
+            "The password reset might be expired. Please try again";
+        } else if (error.response && error.response.status === 500) {
+          this.errorMessage = "Server error. Please try again later.";
+        } else {
+          this.errorMessage =
+            "Check your Internet Connection. Please try again.";
+        }
+
+        setTimeout(() => {
+          this.errorMessage = null;
+        }, 5000);
       }
     },
   },
@@ -82,6 +115,12 @@ export default {
 </script>
 
 <style>
+.alert-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100;
+}
 .error-message {
   color: red;
   margin-top: 10px;

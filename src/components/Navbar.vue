@@ -146,9 +146,10 @@ export default {
 }
 
 .nav-items {
-  width: 40%;
+  width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: flex-end;
+  gap: 2rem;
 }
 
 .bx {
@@ -163,12 +164,6 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 25px;
-}
-
-@media screen and (max-width: 768px) {
-  .nav-items {
-    width: 50%;
-  }
 }
 
 @media screen and (max-width: 600px) {

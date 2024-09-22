@@ -32,6 +32,7 @@
           >
         </form>
       </div>
+
       <div class="alert-container">
         <v-alert v-if="errorMessage" type="error" class="error-message">{{
           errorMessage
@@ -44,6 +45,7 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+
 export default {
   data() {
     return {
@@ -58,34 +60,33 @@ export default {
       this.errorMessage = null;
     }, 5000);
   },
+
   methods: {
-    login() {
+    async login() {
       const data = {
         email: this.email,
         password: this.password,
       };
 
-      axios
-        .post("/login", JSON.stringify(data), {
+      try {
+        const response = await axios.post("/login", JSON.stringify(data), {
           headers: {
             "Content-Type": "application/json",
           },
-        })
-        .then((response) => {
-          if (response.data.message === "Login successful") {
-            const role = response.data.role;
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("id", response.data.id);
-            router.push(role === "user" ? "/home" : "/adminHome");
-          }
-        })
-
-        .catch((error) => {
-          console.error(error);
-          this.email = "";
-          this.password = "";
-          this.errorMessage = "Invalid email or password, try again!";
         });
+
+        if (response.data.message === "Login successful") {
+          const role = response.data.role;
+          sessionStorage.setItem("token", response.data.token);
+          sessionStorage.setItem("id", response.data.id);
+          router.push(role === "user" ? "/home" : "/adminHome");
+        }
+      } catch (error) {
+        // console.error(error);
+        this.email = "";
+        this.password = "";
+        this.errorMessage = "Invalid email or password, try again!";
+      }
     },
   },
 };
@@ -109,3 +110,4 @@ export default {
   z-index: 100;
 }
 </style>
+-

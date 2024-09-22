@@ -1,7 +1,7 @@
 {
   "name": "EUPER",
   "short_name": "EUPER",
-  "theme_color": "#ffff",
+  "theme_color": "#3c91e6",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
@@ -28,5 +28,5 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#000000"
+  "background_color": "#3c91e6"
 }

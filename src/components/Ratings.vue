@@ -204,6 +204,12 @@
       </div>
     </div>
   </div>
+
+  <div class="alert-container" style="z-index: 2000">
+    <v-alert v-if="alertMessage" :type="errorType" class="error-message">{{
+      alertMessage
+    }}</v-alert>
+  </div>
 </template>
 
 <script>
@@ -223,12 +229,15 @@ export default {
       editRatingModal: null,
       currentPage: 1,
       itemsPerPage: 10,
+      alertMessage: "",
+      errorType: "",
     };
   },
 
-  created() {
+  async created() {
     this.fetchColumns();
     this.getUsername();
+    await this.fetchDataByTbl();
   },
 
   computed: {
@@ -328,11 +337,43 @@ export default {
           console.log("Rating updated successfully!");
           this.editRatingModal.hide();
           this.fetchDataByTbl();
+          this.alertMessage = "Rating updated successfully";
+          this.errorType = "success";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
         } else {
           console.error("Failed to update rating.");
         }
       } catch (error) {
         console.error("Error updating rating:", error);
+        if (error.response.status === 404) {
+          this.alertMessage = "Nothing to update";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else if (error.response.status === 500) {
+          this.alertMessage = "Server error, please try again later";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else {
+          this.alertMessage = "Please check your internet connection";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        }
       }
     },
 

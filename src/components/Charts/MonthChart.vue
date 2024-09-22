@@ -1,7 +1,7 @@
 <template>
-  <div class="Occidental">
-    <canvas ref="chart" width="200" height="200"></canvas>
-    <div class="d-flex justify-content-center gap-2">
+  <div class="monthlyContainer">
+    <canvas ref="chart" width="400" height="200"></canvas>
+    <div class="monthlyControls">
       <select class="form-control text-center" v-model="month">
         <option value="January">January</option>
         <option value="February">February</option>
@@ -17,7 +17,7 @@
         <option value="December">December</option>
       </select>
       <input
-        id="year"
+        id="monthlyYear"
         type="number"
         class="form-control text-center"
         v-model="year"
@@ -151,13 +151,26 @@ export default {
 };
 </script>
 
-<style scoped>
-#year {
-  color: var(--dark);
-  border: 1px solid var(--dark);
+<style>
+.monthlyContainer {
+  display: flex;
+  max-width: 90vw;
+  max-height: 90vh;
+  justify-content: center;
+  flex-direction: column;
 }
 .Occidental {
   padding: 2rem;
   border-radius: 3rem;
+}
+.monthlyControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.monthlyYear {
+  color: var(--dark);
+  border: 1px solid var(--dark);
 }
 </style>
