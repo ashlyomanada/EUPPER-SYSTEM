@@ -1,0 +1,60 @@
+ERROR - 2024-10-11 13:31:45 --> mysqli_sql_exception: Table 'project.ws' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('DESCRIBE ws', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DESCRIBE ws')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DESCRIBE ws')
+#3 C:\laragon\www\projectbackend\app\Controllers\UserController.php(694): CodeIgniter\Database\BaseConnection->query('DESCRIBE ws')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->getColumnNameFromTable('ws', 'ws')
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-10-11 13:31:46 --> Table 'project.ws' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\UserController.php(694): CodeIgniter\Database\BaseConnection->query('DESCRIBE ws')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->getColumnNameFromTable('ws', 'ws')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-10-11 13:31:52 --> mysqli_sql_exception: Table 'project.ws' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('DESCRIBE ws', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DESCRIBE ws')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DESCRIBE ws')
+#3 C:\laragon\www\projectbackend\app\Controllers\UserController.php(694): CodeIgniter\Database\BaseConnection->query('DESCRIBE ws')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->getColumnNameFromTable('ws', 'ws')
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-10-11 13:31:52 --> Table 'project.ws' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\UserController.php(694): CodeIgniter\Database\BaseConnection->query('DESCRIBE ws')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->getColumnNameFromTable('ws', 'ws')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+ERROR - 2024-10-11 13:57:24 --> mysqli_sql_exception: Table 'project.ws' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('DESCRIBE ws', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DESCRIBE ws')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DESCRIBE ws')
+#3 C:\laragon\www\projectbackend\app\Controllers\UserController.php(694): CodeIgniter\Database\BaseConnection->query('DESCRIBE ws')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\UserController->getColumnNameFromTable('ws', 'ws')
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-10-11 13:57:24 --> Table 'project.ws' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\UserController.php(694): CodeIgniter\Database\BaseConnection->query('DESCRIBE ws')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\UserController->getColumnNameFromTable('ws', 'ws')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

@@ -8,6 +8,10 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\MainModel;
 use CodeIgniter\I18n\Time;
 use Config\Services;
+use App\Models\RatingModel;
+use CodeIgniter\HTTP\ResponseInterface;
+
+
 
 class UserController extends ResourceController
 {
@@ -578,5 +582,149 @@ class UserController extends ResourceController
     //     return $this->respond(['message' => 'Password reset successfully'], 200);
     // }
 
+    public function getTotalPerMonthUserPPORates($userId)
+    {
+        if (!empty($userId)) {
+            $db = \Config\Database::connect(); // Load the database connection
+
+            // Use the database connection to execute the query
+            $query = $db->query("SELECT * FROM ppo_cpo WHERE userid = ?", [$userId]);
+            $userRatings = $query->getResultArray();
+
+            if (!empty($userRatings)) {
+                return $this->respond($userRatings, 200);
+            } else {
+                return $this->failNotFound('User ratings not found');
+            }
+        } else {
+            return $this->fail('User id is required', 400);
+        }
+    }
+
+    protected $modelName = 'App\Models\RatingModel';
+    protected $format    = 'json';
+
+    public function predict()
+    {
+        $db = \Config\Database::connect();
+        $builder = $db->table('rates');
+
+        // Get data for the current year and the next month
+        $currentYear = date('Y');
+        $nextMonth = date('m', strtotime('+1 month'));
+        
+        // Query to get the maximum rates prediction for next month based on historical data
+        // and where the level is PPO
+        $query = $builder
+            ->select('offices, MAX(total) as max_rate')
+            ->where('year', $currentYear)
+            ->where('level', 'PPO') // Filter where level is PPO
+            ->groupBy('offices')
+            ->orderBy('max_rate', 'DESC')
+            ->get();
+
+        $data = $query->getResult();
+
+        return $this->respond(["NextMonth" => $nextMonth,"CurrentYear" => $currentYear, "Data" => $data]);
+    }
+
+    public function getAllAverageRatesPPO($year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $table = 'ppo_cpo';
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', 'PPO')
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
+    }
+
+    public function viewUserAnalytics($userId, $table, $year)
+    {
+        if (!empty($userId) && !empty($table) && !empty($year)) {
+            $db = \Config\Database::connect(); // Load the database connection
+    
+            // Query to fetch user ratings based on userId and year
+            $query = $db->query("SELECT * FROM $table WHERE userid = ? AND year = ?", [$userId, $year]);
+    
+            $userRatings = $query->getResultArray(); // Get result as an array
+    
+            if (!empty($userRatings)) {
+                return $this->respond($userRatings, 200); // Respond with the ratings
+            } else {
+                return $this->failNotFound('User ratings not found for the given year');
+            }
+        } else {
+            return $this->fail('User ID, table, and year are required', 400);
+        }
+    }
+    
+    public function getColumnNameFromTable($table)
+    {
+        $db = db_connect();
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        $columnNames = array_column($columns, 'Field');
+        return $this->response->setJSON($columnNames);
+    }
+
+    public function getRatePerMonth($month, $year, $level){
+        $model = new RatingModel();
+    
+        $result = $model->where('month', $month)
+                        ->where('year', $year)
+                        ->where('level', $level)
+                        ->orderBy('total', 'DESC')
+                        ->findAll();
+    
+        return $this->response->setJSON(['totalsByOffice' => $result]);
+    }
+
+    
+    public function getRatePerRanking($month, $year, $level) {
+        $model = new RatingModel();
+    
+        // Build the query
+        $query = $model->where('month', $month)
+                       ->where('year', $year)
+                       ->where('level', $level)
+                       ->orderBy('total', 'DESC')
+                       ->limit(6); // Limit the results to 6
+    
+        // Fetch the limited results using find()
+        $result = $query->find();
+    
+        return $this->response->setJSON(['totalsByOffice' => $result]);
+    }
+    
 
 }

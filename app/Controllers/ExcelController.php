@@ -367,7 +367,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'PPO')
+                        ->where('level', 'ppo_cpo')
                         ->findAll();
                 
                     if ($existingData) {
@@ -376,7 +376,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'PPO')
+                            ->where('level', 'ppo_cpo')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -396,7 +396,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'PPO',
+                            'level' => 'ppo_cpo',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -1191,7 +1191,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'RMFB')
+                        ->where('level', 'rmfb_tbl')
                         ->findAll();
                 
                     if ($existingData) {
@@ -1200,7 +1200,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'RMFB')
+                            ->where('level', 'rmfb_tbl')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -1220,7 +1220,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'RMFB',
+                            'level' => 'rmfb_tbl',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -1988,7 +1988,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'Occidental')
+                        ->where('level', 'occidental_cps')
                         ->findAll();
                 
                     if ($existingData) {
@@ -1997,7 +1997,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'Occidental')
+                            ->where('level', 'occidental_cps')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -2017,7 +2017,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'Occidental',
+                            'level' => 'occidental_cps',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -2745,7 +2745,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'Oriental')
+                        ->where('level', 'oriental_cps')
                         ->findAll();
                 
                     if ($existingData) {
@@ -2754,7 +2754,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'Oriental')
+                            ->where('level', 'oriental_cps')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -2774,7 +2774,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'Oriental',
+                            'level' => 'oriental_cps',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -3502,7 +3502,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'Marinduque')
+                        ->where('level', 'marinduque_cps')
                         ->findAll();
                 
                     if ($existingData) {
@@ -3511,7 +3511,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'Marinduque')
+                            ->where('level', 'marinduque_cps')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -3531,7 +3531,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'Marinduque',
+                            'level' => 'marinduque_cps',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -4259,7 +4259,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'Romblon')
+                        ->where('level', 'romblon_cps')
                         ->findAll();
                 
                     if ($existingData) {
@@ -4268,7 +4268,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'Romblon')
+                            ->where('level', 'romblon_cps')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -4288,7 +4288,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'Romblon',
+                            'level' => 'romblon_cps',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -5017,7 +5017,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'Palawan')
+                        ->where('level', 'palawan_cps')
                         ->findAll();
                 
                     if ($existingData) {
@@ -5026,7 +5026,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'Palawan')
+                            ->where('level', 'palawan_cps')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -5046,7 +5046,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'Palawan',
+                            'level' => 'palawan_cps',
                             'foreignOfficeId' => $counter,
                         ];
                 
@@ -5774,7 +5774,7 @@ class ExcelController extends ResourceController
                         ->where('month', $month)
                         ->where('year', $year)
                         ->where('offices', $formattedColumnName)
-                        ->where('level', 'Puerto')
+                        ->where('level', 'puertop_cps')
                         ->findAll();
                 
                     if ($existingData) {
@@ -5783,7 +5783,7 @@ class ExcelController extends ResourceController
                             ->where('month', $month)
                             ->where('year', $year)
                             ->where('offices', $formattedColumnName)
-                            ->where('level', 'Puerto')
+                            ->where('level', 'puertop_cps')
                             ->set(['total' => $totalPercentage, 
                                    'percentage_60' => $averageSums[$columnName], 
                                    'percentage_40' => $averageSums2[$columnName],
@@ -5803,7 +5803,7 @@ class ExcelController extends ResourceController
                             'total' => $totalPercentage,
                             'percentage_60' => $averageSums[$columnName],
                             'percentage_40' => $averageSums2[$columnName],
-                            'level' => 'Puerto',
+                            'level' => 'puertop_cps',
                             'foreignOfficeId' => $counter,
                         ];
                 

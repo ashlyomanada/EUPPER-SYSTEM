@@ -59,80 +59,247 @@ class MainController extends ResourceController
         }
     }
     
+    // public function upload()
+    // {
+    //     $request = $this->request;
+
+    //     // Debugging to check what data is received
+    //     log_message('debug', print_r($request->getPost(), true));
+    //     log_message('debug', print_r($_FILES, true));
+    //     // Get the file
+    //     $file = $request->getFile('file');
+
+    //     // Move the file to the writable/uploads directory
+    //     $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
+
+    //     // Check if the directory exists, if not, create it
+    //     if (!is_dir($uploadsDirectory)) {
+    //         mkdir($uploadsDirectory, 0777, true);
+    //     }
+
+    //     $file->move($uploadsDirectory);
+
+    //     // Insert the user information into the database
+    //     $filePath = 'uploads/' . $file->getName();
+        
+    //     $userData = [
+    //         'username' => $request->getPost('username'),
+    //         'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
+    //         'office' => $request->getPost('office'),
+    //         'phone_no' => $request->getPost('phone_no'),
+    //         'email' => $request->getPost('email'),
+    //         'image' => $filePath,
+    //         'status' => 'Enable',
+    //         'role' => 'user',
+    //         'reset_token' => null,
+    //         'token_expires_at' => null,
+    //         'officeType' => $request->getPost('officeType'),
+    //     ];
+
+    //     // Assuming you have a model named MainModel, you can use it to insert data into the database
+    //     $main = new MainModel();
+    //     $main->insert($userData);
+
+    //     // Redirect back to the form with a success message
+    //     return redirect()->to('/')->with('success', 'Registration successful!');
+    // }
+
     public function upload()
     {
         $request = $this->request;
+        $main = new MainModel();
 
-        // Debugging to check what data is received
-        log_message('debug', print_r($request->getPost(), true));
-        log_message('debug', print_r($_FILES, true));
-        // Get the file
-        $file = $request->getFile('file');
+        // Sanitize user inputs
+        $email = filter_var($request->getPost('email'), FILTER_SANITIZE_EMAIL);
+        $username = filter_var($request->getPost('username'), FILTER_SANITIZE_STRING);
+        $office = filter_var($request->getPost('office'), FILTER_SANITIZE_STRING);
+        $phone_no = filter_var($request->getPost('phone_no'), FILTER_SANITIZE_STRING);
+        $officeType = filter_var($request->getPost('officeType'), FILTER_SANITIZE_STRING);
 
-        // Move the file to the writable/uploads directory
-        $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
-
-        // Check if the directory exists, if not, create it
-        if (!is_dir($uploadsDirectory)) {
-            mkdir($uploadsDirectory, 0777, true);
+        // Check if the email already exists
+        $existingUser = $main->where('email', $email)->first();
+        if ($existingUser) {
+            // Log the event and return a JSON response with an error
+            log_message('error', 'Email already exists for registration: ' . $email);
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Email already exists.']);
         }
 
-        $file->move($uploadsDirectory);
+        // Validate the file input
+        $file = $request->getFile('file');
+        if (!$file->isValid()) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Invalid file uploaded.']);
+        }
 
-        // Insert the user information into the database
-        $filePath = 'uploads/' . $file->getName();
-        
+        // Validate file type and size
+        $validated = $this->validate([
+            'file' => [
+                'uploaded[file]',
+                'mime_in[file,image/jpg,image/jpeg,image/png]', // Allow only image files
+            
+            ]
+        ]);
+        if (!$validated) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'File validation failed.']);
+        }
+
+        // Move the file to the writable/uploads directory
+        $uploadsDirectory = FCPATH . 'uploads';
+        if (!is_dir($uploadsDirectory)) {
+            mkdir($uploadsDirectory, 0755, true); // Use 0755 permissions for better security
+        }
+
+        // Generate a unique filename to avoid overwriting existing files
+        $newFileName = $file->getRandomName();
+        $file->move($uploadsDirectory, $newFileName);
+        $filePath = 'uploads/' . $newFileName;
+
+        // Hash the password securely
+        $passwordHash = password_hash($request->getPost('password'), PASSWORD_DEFAULT);
+
+        // Prepare the user data for insertion
         $userData = [
-            'username' => $request->getPost('username'),
-            'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
-            'office' => $request->getPost('office'),
-            'phone_no' => $request->getPost('phone_no'),
-            'email' => $request->getPost('email'),
+            'username' => $username,
+            'password' => $passwordHash,
+            'office' => $office,
+            'phone_no' => $phone_no,
+            'email' => $email,
             'image' => $filePath,
             'status' => 'Enable',
             'role' => 'user',
             'reset_token' => null,
             'token_expires_at' => null,
-            'officeType' => $request->getPost('officeType'),
+            'officeType' => $officeType,
         ];
 
-        // Assuming you have a model named MainModel, you can use it to insert data into the database
-        $main = new MainModel();
-        $main->insert($userData);
+        // Insert user data into the database
+        try {
+            $main->insert($userData);
+            // Log successful registration
+            log_message('info', 'New user registered: ' . $email);
+        } catch (\Exception $e) {
+            // Log the error
+            log_message('error', 'Database error during registration: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setJSON(['error' => 'Server error. Please try again later.']);
+        }
 
-        // Redirect back to the form with a success message
-        return redirect()->to('/')->with('success', 'Registration successful!');
+        // Return success response
+        return $this->response->setJSON(['success' => 'Registration successful!']);
     }
+
+
+    // public function uploadAdmin()
+    // {
+    //     $request = $this->request;
+
+    //     // Debugging to check what data is received
+    //     log_message('debug', print_r($request->getPost(), true));
+    //     log_message('debug', print_r($_FILES, true));
+    //     // Get the file
+    //     $file = $request->getFile('file');
+
+    //     // Move the file to the writable/uploads directory
+    //     $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
+
+    //     // Check if the directory exists, if not, create it
+    //     if (!is_dir($uploadsDirectory)) {
+    //         mkdir($uploadsDirectory, 0777, true);
+    //     }
+
+    //     $file->move($uploadsDirectory);
+
+    //     // Insert the user information into the database
+    //     $filePath = 'uploads/' . $file->getName();
+        
+    //     $userData = [
+    //         'username' => $request->getPost('username'),
+    //         'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
+    //         'office' => $request->getPost('office'),
+    //         'phone_no' => $request->getPost('phone_no'),
+    //         'email' => $request->getPost('email'),
+    //         'image' => $filePath,
+    //         'status' => 'Enable',
+    //         'role' => 'admin',
+    //         'reset_token' => null,
+    //         'token_expires_at' => null,
+    //         'officeType' => 'Admin Office',
+    //     ];
+
+    //     // Assuming you have a model named MainModel, you can use it to insert data into the database
+    //     $main = new MainModel();
+    //     $main->insert($userData);
+
+    //     // Redirect back to the form with a success message
+    //     return redirect()->to('/')->with('success', 'Registration successful!');
+    // }
 
     public function uploadAdmin()
     {
         $request = $this->request;
-
-        // Debugging to check what data is received
-        log_message('debug', print_r($request->getPost(), true));
-        log_message('debug', print_r($_FILES, true));
-        // Get the file
-        $file = $request->getFile('file');
-
-        // Move the file to the writable/uploads directory
-        $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
-
-        // Check if the directory exists, if not, create it
-        if (!is_dir($uploadsDirectory)) {
-            mkdir($uploadsDirectory, 0777, true);
+        $main = new MainModel();
+    
+        // Sanitize user inputs
+        $email = filter_var($request->getPost('email'), FILTER_SANITIZE_EMAIL);
+        $username = filter_var($request->getPost('username'), FILTER_SANITIZE_STRING);
+        $office = filter_var($request->getPost('office'), FILTER_SANITIZE_STRING);
+        $phone_no = filter_var($request->getPost('phone_no'), FILTER_SANITIZE_STRING);
+    
+        // Validate required fields
+        if (empty($email) || empty($username) || empty($office) || empty($phone_no)) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'All fields are required.']);
         }
-
-        $file->move($uploadsDirectory);
-
-        // Insert the user information into the database
-        $filePath = 'uploads/' . $file->getName();
-        
+    
+        // Validate email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Invalid email format.']);
+        }
+    
+        // Check if the email already exists
+        $existingUser = $main->where('email', $email)->first();
+        if ($existingUser) {
+            // Log the event and return an error response
+            log_message('error', 'Email already exists for admin registration: ' . $email);
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Email already exists.']);
+        }
+    
+        // Validate file input
+        $file = $request->getFile('file');
+        if (!$file->isValid()) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'Invalid file uploaded.']);
+        }
+    
+        // Validate file type and size
+        $validated = $this->validate([
+            'file' => [
+                'uploaded[file]',
+                'mime_in[file,image/jpg,image/jpeg,image/png]', // Allow only image files
+               
+            ]
+        ]);
+        if (!$validated) {
+            return $this->response->setStatusCode(400)->setJSON(['error' => 'File validation failed.']);
+        }
+    
+        // Move the file to the writable/uploads directory
+        $uploadsDirectory = FCPATH . 'uploads';
+        if (!is_dir($uploadsDirectory)) {
+            mkdir($uploadsDirectory, 0755, true);  // Use 0755 for better security
+        }
+    
+        // Generate a unique filename to avoid overwriting existing files
+        $newFileName = $file->getRandomName();
+        $file->move($uploadsDirectory, $newFileName);
+        $filePath = 'uploads/' . $newFileName;
+    
+        // Secure password hashing
+        $passwordHash = password_hash($request->getPost('password'), PASSWORD_DEFAULT);
+    
+        // Prepare the admin data for insertion
         $userData = [
-            'username' => $request->getPost('username'),
-            'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
-            'office' => $request->getPost('office'),
-            'phone_no' => $request->getPost('phone_no'),
-            'email' => $request->getPost('email'),
+            'username' => $username,
+            'password' => $passwordHash,
+            'office' => $office,
+            'phone_no' => $phone_no,
+            'email' => $email,
             'image' => $filePath,
             'status' => 'Enable',
             'role' => 'admin',
@@ -140,14 +307,20 @@ class MainController extends ResourceController
             'token_expires_at' => null,
             'officeType' => 'Admin Office',
         ];
-
-        // Assuming you have a model named MainModel, you can use it to insert data into the database
-        $main = new MainModel();
-        $main->insert($userData);
-
-        // Redirect back to the form with a success message
-        return redirect()->to('/')->with('success', 'Registration successful!');
+    
+        // Insert the admin data into the database
+        try {
+            $main->insert($userData);
+            log_message('info', 'New admin registered: ' . $email);
+        } catch (\Exception $e) {
+            log_message('error', 'Database error during admin registration: ' . $e->getMessage());
+            return $this->response->setStatusCode(500)->setJSON(['error' => 'Server error. Please try again later.']);
+        }
+    
+        // Return success response
+        return $this->response->setJSON(['success' => 'Admin registration successful!']);
     }
+    
 
     public function uploadProfile()
     {
@@ -255,6 +428,20 @@ class MainController extends ResourceController
     //     }
     // }
 
+    public function checkUserStatus($id){
+        $model = new MainModel();
+        if($id){
+            $result = $model->where('user_id', $id)->first();
+            if($result){
+                return $this->respond($result,200);
+            }else{
+                return $this->respond(404);
+            }
+        }else{
+            return $this->respond(400);
+        }
+    }
+
     public function sendEmail()
     {
         try {
@@ -323,333 +510,13 @@ class MainController extends ResourceController
     }
 
 
-    public function getAllAverageRatesPPO($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'ppo_cpo';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'PPO')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesRMFB($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'rmfb_tbl';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'RMFB')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesOccidental($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'occidental_cps';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'Occidental')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesOriental($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'oriental_cps';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'Oriental')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesMarinduque($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'marinduque_cps';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'Marinduque')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesRomblon($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'romblon_cps';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'Romblon')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesPalawan($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'palawan_cps';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'Palawan')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
-    public function getAllAverageRatesPuerto($year)
-    {
-        $json = $this->request->getJSON();
-            $ratingModel = new \App\Models\RatingModel();
-        
-        $db = \Config\Database::connect();
-
-        $table = 'puertop_cps';
-        $query = $db->query("DESCRIBE $table");
-        $columns = $query->getResultArray();
-        
-        $iterate = 1;
-        $totalsByOffice = []; // Array to store total sum for each office
-        
-        foreach($columns as $column) {
-            $columnName = $column['Field'];
-        
-            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
-                continue;
-            }
-        
-            $officeTotal = $ratingModel->selectSum('total')
-                                       ->where('year', $year)
-                                       ->where('level', 'Puerto')
-                                       ->where('foreignOfficeId', $iterate)
-                                       ->first(); // Use first() to retrieve a single row
-        
-            // Store the total sum for the current office
-            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
-            $iterate++;
-        }
-        
-        $responseData = [
-            'totalsByOffice' => $totalsByOffice,
-        ];
-        
-        return $this->respond($responseData, 200);
-        
-    }
-
 
     public function getAllRatesPPO()
     {
         $ratingModel = new \App\Models\RatingModel();
         
         // Fetch all ratings from the database
-        $data = $ratingModel->where('level','PPO')->findAll();
+        $data = $ratingModel->where('level','ppo_cpo')->findAll();
         
         // Sort the ratings array by the 'total' field in descending order (highest to lowest)
         usort($data, function($a, $b) {
@@ -861,6 +728,53 @@ class MainController extends ResourceController
     }
 
 
+    // public function updateUserRating()
+    // {
+    //     $requestData = $this->request->getJSON();
+
+    //     if (empty($requestData->id)) {
+    //         return $this->fail('Rating ID is required', 400);
+    //     }
+
+    //     if (empty($requestData->TableName)) {
+    //         return $this->fail('Table Name is required', 400);
+    //     }
+
+    //     $tableName = $requestData->TableName;
+    //     $db = \Config\Database::connect(); // Load the database connection
+
+    //     // Prepare the update query
+    //     $query = "UPDATE $tableName SET ";
+    //     $params = [];
+    //     $firstParam = true;
+
+    //     foreach ($requestData as $key => $value) {
+    //         if ($key !== 'id' && $key !== 'TableName') { // Exclude 'id' and 'TableName' from update fields
+    //             if (!$firstParam) {
+    //                 $query .= ", ";
+    //             }
+    //             $query .= "$key = ?";
+    //             $params[] = $value;
+    //             $firstParam = false;
+    //         }
+    //     }
+
+    //     $query .= " WHERE id = ?";
+    //     $params[] = $requestData->id;
+
+    //     // Execute the update query
+    //     try {
+    //         $result = $db->query($query, $params);
+    //         if ($db->affectedRows() > 0) {
+    //             return $this->respond(['success' => true], 200);
+    //         } else {
+    //             return $this->failNotFound('Rating not found or no changes made');
+    //         }
+    //     } catch (\Exception $e) {
+    //         return $this->failServerError('Error updating rating: ' . $e->getMessage());
+    //     }
+    // }
+
     public function updateUserRating()
     {
         $requestData = $this->request->getJSON();
@@ -875,6 +789,25 @@ class MainController extends ResourceController
 
         $tableName = $requestData->TableName;
         $db = \Config\Database::connect(); // Load the database connection
+
+        // Validate if the record already exists with the same UserId, Month, and Year
+        $userId = $requestData->userid ?? null;
+        $month = $requestData->month ?? null;
+        $year = $requestData->year ?? null;
+
+        if ($userId && $month && $year) {
+            $builder = $db->table($tableName);
+            $existingRecord = $builder->where('userid', $userId)
+                                    ->where('month', $month)
+                                    ->where('year', $year)
+                                    ->where('id !=', $requestData->id) // Exclude the current record by id
+                                    ->get()
+                                    ->getRow();
+
+            if ($existingRecord) {
+                return $this->fail('Record with the same UserId, Month, and Year already exists', 400);
+            }
+        }
 
         // Prepare the update query
         $query = "UPDATE $tableName SET ";
@@ -907,6 +840,7 @@ class MainController extends ResourceController
             return $this->failServerError('Error updating rating: ' . $e->getMessage());
         }
     }
+
 
     public function getColumnNamePerTbl()
     {
@@ -1287,6 +1221,45 @@ class MainController extends ResourceController
         } else {
             return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
         }
+    }
+
+    public function getAllAverageRatesPerTbl($table,$year)
+    {
+        $json = $this->request->getJSON();
+            $ratingModel = new \App\Models\RatingModel();
+        
+        $db = \Config\Database::connect();
+
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+        
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+        
+        foreach($columns as $column) {
+            $columnName = $column['Field'];
+        
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+        
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', $table)
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+        
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+        
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+        
+        return $this->respond($responseData, 200);
+        
     }
 
 }

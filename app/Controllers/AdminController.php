@@ -8,6 +8,7 @@ use CodeIgniter\API\ResponseTrait;
 use App\Models\MainModel;
 use App\Models\AdminModel;
 use App\Models\RatingModel;
+use App\Models\OfficerModel;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
@@ -62,6 +63,70 @@ class AdminController extends ResourceController
         }
 
     }
+
+    public function deleteOfficer(){
+        $json = $this->request->getJSON();
+        $officerId = $json->officerId;
+
+        if($officerId){
+            $model = new OfficerModel();
+            $result = $model->delete($officerId);
+            if($result){
+                return $this->respond(200);
+            }else{
+                return $this->respond(500);
+            }
+        }else{
+            return $this->respond(400);
+        }
+    }
+
+    public function saveOfficer(){
+        $json = $this->request->getJSON();
+        $name = $json->Name;
+        $office = $json->Office;
+
+        $data = [
+            'name' => $name,
+            'office' => $office,
+        ];
+
+        if($data){
+            $model = new OfficerModel();
+            $result = $model->save($data);
+            if($result){
+                return $this->respond(200);
+            }else{
+                return $this->respond(500);
+            }
+        }else{
+            return $this->respond(404);
+        }
+    }
+
+    public function updateOfficerInfo(){
+        $json = $this->request->getJSON();
+        $officerId = $json->officerId;
+        $name = $json->name;
+        $office = $json->office;
+        
+        $data = [
+            'name' => $name,
+            'office' => $office,
+        ];
+
+        if($data){
+            $model = new OfficerModel();
+            $result = $model->update($officerId, $data);
+            if($result){
+                return $this->respond(200);
+            }else{
+                return $this->respond(500);
+            }
+        }else{
+            return $this->respond(404);
+        }
+    }
     
 
     public function getAdmins(){
@@ -69,6 +134,13 @@ class AdminController extends ResourceController
         $data = $main->findall();
         return $this->respond($data,200);
     }
+
+    public function getOfficers(){
+        $main = new OfficerModel();
+        $data = $main->findall();
+        return $this->respond($data,200);
+    }
+
     
     public function addColumnPPO(){
         $requestData = $this->request->getJSON();
@@ -1104,7 +1176,7 @@ class AdminController extends ResourceController
     public function countUser() {
         try {
             $main = new MainModel();
-            $data = $main->findAll();
+            $data = $main->where('role','user')->findAll();
             $count = count($data);
     
             $response = [
@@ -1146,17 +1218,8 @@ class AdminController extends ResourceController
         }
     }
 
-    public function getRatePerMonth($month, $year, $level){
-        $model = new RatingModel();
+   
     
-        $result = $model->where('month', $month)
-                        ->where('year', $year)
-                        ->where('level', $level)
-                        ->orderBy('total', 'ASC')
-                        ->findAll();
-    
-        return $this->response->setJSON(['totalsByOffice' => $result]);
-    }
     
 
     

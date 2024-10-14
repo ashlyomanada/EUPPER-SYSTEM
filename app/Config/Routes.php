@@ -11,6 +11,10 @@ $routes->get('/getUsers', 'AdminController::getUsers');
 $routes->get('/getUsersInfo', 'AdminController::getUsersInfo');
 $routes->post('/findUsersInfo', 'AdminController::findUsersInfo');
 $routes->get('/getAdmins', 'AdminController::getAdmins');
+$routes->get('/getOfficers', 'AdminController::getOfficers');
+$routes->post('/saveOfficer', 'AdminController::saveOfficer');
+$routes->post('/updateOfficerInfo', 'AdminController::updateOfficerInfo');
+$routes->post('/deleteOfficer', 'AdminController::deleteOfficer');
 $routes->get('/getUsersOffice', 'AdminController::getUsersOffice');
 $routes->post('/getUsersRatePPO', 'AdminController::getUsersRatePPO');
 $routes->post('/getUsersRateRMFB', 'AdminController::getUsersRateRMFB');
@@ -71,15 +75,7 @@ $routes->post('resetPassword', 'UserController::resetPassword');
 $routes->post('verifyOtp', 'UserController::verifyOtp');
 $routes->post('/getMaxRateByUser', 'UserController::getMaxRateByUser');
 
-
-$routes->get('/getAllAverageRatesPPO/(:num)', 'MainController::getAllAverageRatesPPO/$1');
-$routes->get('/getAllAverageRatesRMFB/(:num)', 'MainController::getAllAverageRatesRMFB/$1');
-$routes->get('/getAllAverageRatesOccidental/(:num)', 'MainController::getAllAverageRatesOccidental/$1');
-$routes->get('/getAllAverageRatesOriental/(:num)', 'MainController::getAllAverageRatesOriental/$1');
-$routes->get('/getAllAverageRatesMarinduque/(:num)', 'MainController::getAllAverageRatesMarinduque/$1');
-$routes->get('/getAllAverageRatesRomblon/(:num)', 'MainController::getAllAverageRatesRomblon/$1');
-$routes->get('/getAllAverageRatesPalawan/(:num)', 'MainController::getAllAverageRatesPalawan/$1');
-$routes->get('/getAllAverageRatesPuerto/(:num)', 'MainController::getAllAverageRatesPuerto/$1');
+$routes->get('/checkUserStatus/(:num)', 'MainController::checkUserStatus/$1');
 
 $routes->get('/getAllRatesPPO', 'MainController::getAllRatesPPO');
 $routes->get('/getAllRatesRMFB', 'MainController::getAllRatesRMFB');
@@ -127,6 +123,10 @@ $routes->get('/viewUserRombRates/(:num)', 'UserController::viewUserRombRates/$1'
 $routes->get('/viewUserPalRates/(:num)', 'UserController::viewUserPalRates/$1');
 $routes->get('/viewUserPuertoRates/(:num)', 'UserController::viewUserPuertoRates/$1');
 
+$routes->get('/getTotalPerMonthUserPPORates/(:num)', 'UserController::getTotalPerMonthUserPPORates/$1');
+$routes->get('predict', 'UserController::predict');
+
+
 $routes->post('/updateAdminInformation', 'AdminController::updateAdminInformation');
 $routes->post('generatePdfPPO', 'PdfController::generatePdfPPO');
 $routes->post('generatePdfRMFB', 'PdfController::generatePdfRMFB');
@@ -163,4 +163,8 @@ $routes->post('/deleteColumnMar', 'AdminController::deleteColumnMar');
 $routes->post('/deleteColumnPal', 'AdminController::deleteColumnPal');
 $routes->post('/deleteColumnPuer', 'AdminController::deleteColumnPuer');
 
-$routes->get('/getRatePerMonth/(:any)/(:num)/(:any)', 'AdminController::getRatePerMonth/$1/$2/$3');
+$routes->get('/getRatePerMonth/(:any)/(:num)/(:any)', 'UserController::getRatePerMonth/$1/$2/$3');
+$routes->get('/getRatePerRanking/(:any)/(:num)/(:any)', 'UserController::getRatePerRanking/$1/$2/$3');
+$routes->get('/viewUserAnalytics/(:num)/(:any)/(:num)', 'UserController::viewUserAnalytics/$1/$2/$3');
+$routes->get('/getColumnNameFromTable/(:any)', 'UserController::getColumnNameFromTable/$1');
+$routes->get('/getAllAverageRatesPerTbl/(:any)/(:num)', 'MainController::getAllAverageRatesPerTbl/$1/$2');

@@ -1,0 +1,35 @@
+CRITICAL - 2024-09-26 06:15:35 --> Class "App\Controllers\OfficerModel" not found
+in APPPATH\Controllers\PdfController.php on line 277.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-09-26 06:15:55 --> Class "App\Controllers\OfficerModel" not found
+in APPPATH\Controllers\PdfController.php on line 277.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-09-26 06:22:07 --> syntax error, unexpected token "."
+in APPPATH\Controllers\PdfController.php on line 285.
+ 1 SYSTEMPATH\Autoloader\Autoloader.php(285): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php')
+ 2 SYSTEMPATH\Autoloader\Autoloader.php(263): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers\\PdfController')
+ 3 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers\\PdfController')
+ 4 SYSTEMPATH\CodeIgniter.php(877): class_exists('\\App\\Controllers\\PdfController', true)
+ 5 SYSTEMPATH\CodeIgniter.php(481): CodeIgniter\CodeIgniter->startController()
+ 6 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-09-26 06:32:54 --> Undefined array key 0
+in VENDORPATH\mpdf\mpdf\src\Tag\Table.php on line 533.
+ 1 VENDORPATH\mpdf\mpdf\src\Tag\Table.php(533): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key 0', 'C:\\laragon\\www\\projectbackend\\vendor\\mpdf\\mpdf\\src\\Tag\\Table.php', 533)
+ 2 VENDORPATH\mpdf\mpdf\src\Tag.php(247): Mpdf\Tag\Table->close([...], 25)
+ 3 VENDORPATH\mpdf\mpdf\src\Mpdf.php(13827): Mpdf\Tag->CloseTag('TABLE', [...], 25)
+ 4 APPPATH\Controllers\PdfController.php(293): Mpdf\Mpdf->WriteHTML('<ul class="list-container" style="display: flex; gap: 1rem; padding: 1rem; justify-content: space-evenly;"><div style="display: flex; flex-direction: column;"><li style="list-style: none;">Ashly Omanada</li><li style="list-style: none;">Calapan City, Oriental Mindoro</li><li style="list-style: none;">Ashly Omanada</li><li style="list-style: none;">Calapan City</li></div></ul></table>')
+ 5 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdfPPO()
+ 6 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 7 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
