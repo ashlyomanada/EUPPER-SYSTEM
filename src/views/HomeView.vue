@@ -6,7 +6,17 @@
         <img src="./img/logo.png" alt="" id="logo2" />
         <h3 id="adminName2">{{ officeLocation }}</h3>
       </div>
-      <li v-if="status === 'Enable'" class="active">
+      <li class="active">
+        <a href="#" @click="showComponent('UserDashboard')">
+          <i
+            class="fa-solid fa-house"
+            aria-hidden="true"
+            style="padding: 0.5rem 0.8rem"
+          ></i>
+          <span class="text">Home</span>
+        </a>
+      </li>
+      <li v-if="status === 'Enable'">
         <a href="#" id="btn" @click="toggleButtons">
           <div class="rate">
             <i
@@ -14,7 +24,7 @@
               aria-hidden="true"
               style="padding: 0.5rem 0.8rem"
             ></i>
-            <span class="text">UPER</span>
+            <span class="text">Ratings Form</span>
           </div>
           <i v-if="showButtons" class="fa-solid fa-chevron-down"></i>
           <i v-else class="fa-solid fa-chevron-right"></i>
@@ -167,6 +177,7 @@
 
     <!-- MAIN -->
     <main id="usermain">
+      <UserDashboard v-if="selectedComponent === 'UserDashboard'" />
       <PPORatingSheet v-if="selectedComponent === 'PPORatingSheet'" />
       <Uper v-if="selectedComponent === 'Uper'" />
       <UserPPORates v-if="selectedComponent === 'UserPPORates'" />
@@ -252,6 +263,7 @@ import UserGmail from "../components/UserGmail.vue";
 import UserPPORates from "../components/UserPPO.vue";
 import UserRMFBRates from "../components/UserRMFB.vue";
 import UserMPSRates from "../components/UserMPS.vue";
+import UserDashboard from "../components/UserDashboard.vue";
 import PPORatingSheet from "../components/ratingSheetForm/PPORatingSheet.vue";
 import RMFBRatingSheet from "../components/ratingSheetForm/RMFBRatingSheet.vue";
 import axios from "axios";
@@ -274,6 +286,7 @@ export default {
     PPORatingSheet,
     RMFBRatingSheet,
     MPSRatingSheet,
+    UserDashboard,
   },
   watch: {
     selectedComponent: function (newComponent) {
@@ -282,7 +295,7 @@ export default {
   },
   data() {
     return {
-      selectedComponent: "PPORatingSheet",
+      selectedComponent: "UserDashboard",
       userId: null,
       userName: "",
       officeLocation: "",
@@ -296,6 +309,7 @@ export default {
       showButtons: false,
       showButtons2: false,
       showButtons3: false,
+      userStatus: "",
     };
   },
   async created() {
@@ -324,7 +338,7 @@ export default {
           this.profilePic = userData.image;
           this.status = userData.status;
           if (this.status === "Disable") {
-            this.selectedComponent = "UserPPORates";
+            this.selectedComponent = "UserDashboard";
           }
         }
       } catch (error) {
@@ -431,13 +445,7 @@ export default {
           adminName.style.visibility = "unset";
         }
       });
-      const searchButton = document.querySelector(
-        "#content nav form .form-input button"
-      );
-      const searchButtonIcon = document.querySelector(
-        "#content nav form .form-input button .bx"
-      );
-      const searchForm = document.querySelector("#content nav form");
+
       if (window.innerWidth < 768) {
         sidebar.classList.add("hide");
         logo.style.height = "38px";
@@ -458,10 +466,29 @@ export default {
         }
       });
     },
+
+    async checkUseStatus() {
+      try {
+        const id = sessionStorage.getItem("id");
+        const response = await axios.get(`/checkUserStatus/${id}`);
+        this.userStatus = response.data.role;
+
+        if (id) {
+          if (this.userStatus === "admin") {
+            router.push("/");
+            sessionStorage.removeItem("id");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
-  mounted() {
+  async mounted() {
     this.updateCurrentDateTime();
     setInterval(this.updateCurrentDateTime, 1000);
+
+    await this.checkUseStatus();
   },
 };
 </script>
@@ -506,7 +533,7 @@ a {
 }
 @media screen and (max-width: 768px) {
   .nav-items {
-    width: 50%;
+    width: 100%;
   }
 }
 @media screen and (max-width: 600px) {

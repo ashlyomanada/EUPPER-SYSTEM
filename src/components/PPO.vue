@@ -400,7 +400,7 @@ option {
   justify-content: space-between;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1100px) {
   .date-options {
     flex-direction: column;
     gap: 1rem;

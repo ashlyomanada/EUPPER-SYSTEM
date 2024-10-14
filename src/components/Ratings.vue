@@ -150,14 +150,33 @@
               <label class="form-label text-start" for="editMonth"
                 >Month:</label
               >
-              <input
+              <!-- <input
                 style="background: var(--light); color: var(--dark)"
                 required
                 type="text"
                 class="form-control"
                 id="editMonth"
                 v-model="selectedRating.month"
-              />
+              /> -->
+
+              <select
+                class="form-control"
+                v-model="selectedRating.month"
+                required
+              >
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
             </div>
             <div class="mb-3">
               <label class="form-label text-start" for="editYear">Year:</label>
@@ -228,7 +247,7 @@ export default {
       selectedRating: {},
       editRatingModal: null,
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 12,
       alertMessage: "",
       errorType: "",
     };
@@ -312,7 +331,13 @@ export default {
     },
 
     editRating(index) {
-      this.selectedRating = { ...this.userRatings[index] };
+      // Calculate the correct index in the full userRatings array
+      const globalIndex = (this.currentPage - 1) * this.itemsPerPage + index;
+
+      // Now, use this globalIndex to fetch the correct item
+      this.selectedRating = { ...this.userRatings[globalIndex] };
+
+      // Show the modal
       this.editRatingModal = new Modal(
         document.getElementById("editRatingModal")
       );
@@ -359,6 +384,15 @@ export default {
           }, 3000);
         } else if (error.response.status === 500) {
           this.alertMessage = "Server error, please try again later";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else if (error.response.status === 400) {
+          this.alertMessage =
+            "The month or year you entered is already exists.";
           this.errorType = "error";
 
           setTimeout(() => {
@@ -413,6 +447,7 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 .t-options {
@@ -422,5 +457,11 @@ export default {
 
 .pagination {
   margin-top: 20px;
+}
+
+@media screen and (max-width: 1100px) {
+  .table-options {
+    width: 100vw;
+  }
 }
 </style>

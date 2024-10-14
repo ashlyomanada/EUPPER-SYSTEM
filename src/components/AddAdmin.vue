@@ -78,6 +78,8 @@
                   @change="handleFileChange"
                   class="inputs"
                   required
+                  accept="image/*"
+                  ref="fileInput"
                 />
               </label>
             </div>
@@ -88,22 +90,14 @@
           <button type="submit" class="submit" style="color: white">
             Register
           </button>
-          <div
-            v-if="registrationStatus"
-            :class="[
-              registrationStatus === 'success'
-                ? 'success-message'
-                : 'error-message',
-            ]"
-          >
-            {{
-              registrationStatus === "success"
-                ? "Registration successful!"
-                : "Registration failed. Please try again."
-            }}
-          </div>
         </form>
       </div>
+    </div>
+
+    <div class="alert-container">
+      <v-alert v-if="alertMessage" :type="errorType" class="error-message">{{
+        alertMessage
+      }}</v-alert>
     </div>
   </div>
 </template>
@@ -122,7 +116,8 @@ export default {
         phone_no: "",
         file: null,
       },
-      registrationStatus: null,
+      alertMessage: null,
+      errorType: null,
     };
   },
   methods: {
@@ -134,10 +129,10 @@ export default {
         formData.append(key, this.formData[key]);
       }
 
-      // Logging to check the FormData
-      for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
+      // // Logging to check the FormData
+      // for (const pair of formData.entries()) {
+      //   console.log(pair[0], pair[1]);
+      // }
 
       // Use axios or fetch to send the form data to your CodeIgniter backend
       axios
@@ -147,7 +142,7 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
+          // console.log(response.data);
           this.formData = {
             username: "",
             office: "",
@@ -156,15 +151,28 @@ export default {
             phone_no: "",
             file: null, // Reset the file input
           };
-          this.registrationStatus = "success";
+          this.$refs.fileInput.value = "";
+          this.alertMessage =
+            "Successfully registered new account for Administrator.";
+          this.errorType = "success";
         })
         .catch((error) => {
-          console.error(error.response.data);
-          this.registrationStatus = "error";
-          // Handle error, e.g., show an error message
+          if (error.response.status === 400) {
+            this.alertMessage =
+              "The email you entered is already in used or the file you uploaded to large.";
+            this.errorType = "error";
+          } else if (error.response.status === 500) {
+            this.alertMessage = "Server error, Please try again later";
+            this.errorType = "error";
+          } else {
+            this.alertMessage =
+              "Please check internet connection and try again later";
+            this.errorType = "error";
+          }
         });
       setTimeout(() => {
-        this.registrationStatus = null;
+        this.errorType = null;
+        this.alertMessage = null;
       }, 5000);
     },
     handleFileChange(event) {

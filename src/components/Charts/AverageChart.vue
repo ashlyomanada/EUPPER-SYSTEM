@@ -1,19 +1,40 @@
 <template>
-  <div class="RMFB">
-    <canvas ref="chart" width="400" height="400"></canvas>
+  <div class="PPOCard shadow">
+    <canvas ref="chart" width="400" height="200"></canvas>
     <div class="d-flex justify-content-center gap-2">
+      <select
+        id="selectedTable"
+        class="form-control text-center"
+        v-model="selectedLevel"
+      >
+        <option class="levelValue" value="ppo_cpo">PPO</option>
+        <option class="levelValue" value="rmfb_tbl">RMFB</option>
+        <option class="levelValue" value="occidental_cps">
+          Occidental Mindoro
+        </option>
+        <option class="levelValue" value="oriental_cps">
+          Oriental Mindoro
+        </option>
+        <option class="levelValue" value="marinduque_cps">Marinduque</option>
+        <option class="levelValue" value="romblon_cps">Romblon</option>
+        <option class="levelValue" value="palawan_cps">Palawan</option>
+        <option class="levelValue" value="puertop_cps">Puerto Princesa</option>
+      </select>
       <input
-        id="year"
+        id="averageYear"
         type="number"
-        class="text-center"
+        class="form-control text-center"
         v-model="year"
         :placeholder="currentYear"
+        min="2000"
+        max="2100"
       />
       <button @click="fetchData" class="btn btn-success">Find</button>
     </div>
-    <div v-if="Object.keys(totalsByOffice).length === 0">
+    <div v-if="Object.keys(totalsByOffice).length === 0 && !error">
       No data found for the selected year.
     </div>
+    <div v-if="error">{{ error }}</div>
   </div>
 </template>
 
@@ -26,30 +47,43 @@ export default {
     return {
       year: new Date().getFullYear().toString(), // Set the default year to the current year
       totalsByOffice: {}, // Initialize totalsByOffice as an empty object
-      error: null, // Initialize error to null
+      error: "", // Initialize error to null
+      selectedLevel: "ppo_cpo",
+      selectedText: "", // Initially empty
+      chart: null,
     };
   },
+
   computed: {
     currentYear() {
       return new Date().getFullYear();
     },
   },
+
   mounted() {
-    this.fetchData();
+    this.fetchData(); // Fetch data on load (if needed, can be removed)
   },
+
   methods: {
     fetchData() {
+      this.error = null; // Reset error message
+
+      // Update the selectedText only when the Find button is clicked
+      const selectElement = document.querySelector("#selectedTable");
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      this.selectedText = selectedOption.text; // Use the innerText of the selected option
+
       axios
-        .get(`/getAllAverageRatesRMFB/${this.year}`)
+        .get(`/getAllAverageRatesPerTbl/${this.selectedLevel}/${this.year}`)
         .then((response) => {
           const { totalsByOffice } = response.data;
-          if (totalsByOffice) {
-            // Only update totalsByOffice if it's not null or undefined
+          if (totalsByOffice && Object.keys(totalsByOffice).length > 0) {
             this.totalsByOffice = totalsByOffice;
             const labels = this.formatLabels(Object.keys(totalsByOffice));
             this.renderChart(labels, Object.values(totalsByOffice));
           } else {
-            console.error("Error: totalsByOffice is null or undefined");
+            console.error("Error: totalsByOffice is null or empty");
+            this.totalsByOffice = {}; // Clear the data
             this.error = "No data found for the selected year.";
           }
         })
@@ -58,12 +92,15 @@ export default {
           this.error = "An error occurred while fetching data.";
         });
     },
+
     renderChart(labels, data) {
       const ctx = this.$refs.chart.getContext("2d");
+
       if (this.chart) {
         // Destroy the existing chart if it exists
         this.chart.destroy();
       }
+
       this.chart = new Chart(ctx, {
         type: "bar",
         data: {
@@ -97,7 +134,7 @@ export default {
           plugins: {
             title: {
               display: true,
-              text: `RMFB Offices Average per year`,
+              text: `${this.selectedText} Offices Average per Year`,
               font: {
                 size: 16,
               },
@@ -122,9 +159,9 @@ export default {
   color: var(--dark);
   border: 1px solid var(--dark);
 }
-.RMFB {
+.PPOCard {
   padding: 2rem;
-  border-radius: 3rem;
+  border-radius: 2rem;
 }
 
 @media screen and (max-width: 600px) {

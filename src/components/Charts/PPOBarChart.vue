@@ -128,4 +128,10 @@ export default {
   padding: 1rem;
   border-radius: 3rem;
 }
+
+@media screen and (max-width: 600px) {
+  #year {
+    width: 30%;
+  }
+}
 </style>

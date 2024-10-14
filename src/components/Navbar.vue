@@ -2,7 +2,9 @@
   <nav>
     <i class="bx bx-menu" @click="toggleMenu"></i>
     <div class="w-50 d-flex">
-      <a href="#" class="nav-link">PRO MIMAROPA E-UPER SYSTEM</a>
+      <a href="#" class="nav-link" style="color: var(--dark)"
+        >PRO MIMAROPA E-UPER SYSTEM</a
+      >
     </div>
 
     <div class="nav-items">

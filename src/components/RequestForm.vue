@@ -23,7 +23,7 @@
           readonly
         />
 
-        <div class="suggestedContainer d-flex gap-1">
+        <div class="suggestedContainer">
           <input
             v-if="showButton1"
             type="button"
@@ -57,7 +57,9 @@
 
         <button type="submit" :disabled="loading">
           <span v-if="loading">Requesting...</span>
-          <span v-else>Submit Request</span>
+          <span v-else
+            ><i class="fa-solid fa-paper-plane"></i> Submit Request</span
+          >
         </button>
       </form>
     </div>
@@ -289,6 +291,11 @@ export default {
   cursor: pointer;
 }
 
+.suggestedContainer {
+  display: flex;
+  gap: 0.5rem;
+}
+
 .modal-body {
   text-align: center;
 }
@@ -301,6 +308,19 @@ export default {
 @media screen and (max-width: 600px) {
   .suggestedContainer {
     flex-direction: column;
+    width: 100vw;
+    text-align: center;
+  }
+
+  form input,
+  .form textarea,
+  .form input {
+    width: 100vw;
+    text-align: start;
+  }
+
+  .form {
+    padding: 0;
   }
 }
 </style>

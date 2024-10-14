@@ -2,41 +2,36 @@
   <div class="head-title"></div>
 
   <div class="dash-box">
-    <div class="monthlyDashboard">
-      <!-- <ul class="box-info">
-        <li>
-          <i class="bx bxs-calendar-check"></i>
-          <span class="text">
-            <h3></h3>
-            <p>Ratings</p>
-          </span>
-        </li>
-        <li>
-          <i class="bx bxs-group"></i>
-          <span class="text">
-            <h3></h3>
-            <p>Users</p>
-          </span>
-        </li>
-        <li>
-          <i class="bx bxs-calendar-check"></i>
-          <span class="text">
-            <h3>0</h3>
-            <p>Announcements</p>
-          </span>
-        </li>
-      </ul> -->
-      <MonthChart />
+    <div class="adminDashboardContainer">
+      <div class="adminStatusBox">
+        <div class="d-flex align-items-center justify-content-center gap-2">
+          <i class="fa-solid fa-users" style="font-size: 3rem"></i>
+          <h4>No. of Users</h4>
+        </div>
+        <h4>{{ userCount }}</h4>
+      </div>
+
+      <div class="adminStatusBox">
+        <div class="d-flex align-items-center justify-content-center gap-2">
+          <i class="fa-regular fa-clock" style="font-size: 3rem"></i>
+          <h4>Due Date</h4>
+        </div>
+
+        <h4>{{ currentDue }}</h4>
+      </div>
     </div>
-    <div class="mainDashboard">
-      <PPOBarChart />
-      <RMFBBarChart />
-      <OccidentalBarChart />
-      <OrientalBarChart />
-      <MarinduqueBarChart />
-      <RomblonBarChart />
-      <PalawanBarChart />
-      <PuertoBarChart />
+
+    <div class="adminDashboardContainer">
+      <MonthChart />
+      <AverageChart />
+    </div>
+
+    <div class="adminDashboardContainer">
+      <AllRankingChart />
+    </div>
+
+    <div class="adminDashboardContainer">
+      <RateChart />
     </div>
   </div>
 </template>
@@ -44,53 +39,35 @@
 <script>
 import { defineComponent, PropType } from "vue";
 import MonthChart from "./Charts/MonthChart.vue";
-import PPOBarChart from "./Charts/PPOBarChart.vue";
-import RMFBBarChart from "./Charts/RMFBBarChart.vue";
-import OccidentalBarChart from "./Charts/OccidentalBarChart.vue";
-import OrientalBarChart from "./Charts/OrientalBarChart.vue";
-import MarinduqueBarChart from "./Charts/MarinduqueBarChart.vue";
-import RomblonBarChart from "./Charts/RomblonBarChart.vue";
-import PalawanBarChart from "./Charts/PalawanBarChart.vue";
-import PuertoBarChart from "./Charts/PuertoBarChart.vue";
+import AverageChart from "./Charts/AverageChart.vue";
+import axios from "axios";
+import AllRankingChart from "../components/Charts/AllRankingChart.vue";
+import RateChart from "../components/Charts/RateChart.vue";
 
 export default defineComponent({
   data() {
     return {
       ratingCount: 0,
       userCount: 0,
+      baseURL: axios.defaults.baseURL,
+      currentDue: null,
     };
   },
 
   components: {
     MonthChart,
-    PPOBarChart,
-    RMFBBarChart,
-    OccidentalBarChart,
-    OrientalBarChart,
-    MarinduqueBarChart,
-    RomblonBarChart,
-    PalawanBarChart,
-    PuertoBarChart,
+    AverageChart,
+    AllRankingChart,
+    RateChart,
   },
-  mounted() {
-    this.fetchRatingCount();
-    this.fetchUserCount();
-    //this.fetchData();
+  async mounted() {
+    await this.fetchUserCount();
+    await this.getDueDate();
   },
   methods: {
-    async fetchRatingCount() {
-      try {
-        const response = await fetch("http://localhost:8080/countUserRatings");
-        const data = await response.json();
-        this.ratingCount = data.count;
-        //console.log(data);
-      } catch (error) {
-        console.error("Error fetching rating count:", error);
-      }
-    },
     async fetchUserCount() {
       try {
-        const response = await fetch("http://localhost:8080/countUser");
+        const response = await fetch(`${this.baseURL}/countUser`);
         const data = await response.json();
         this.userCount = data.count;
         //console.log(data);
@@ -98,39 +75,32 @@ export default defineComponent({
         console.error("Error fetching rating count:", error);
       }
     },
-    async fetchData() {
+    async getDueDate() {
       try {
-        const response = await fetch(
-          `http://localhost:8080/calculateRatings/${this.selectedYear}`
-        );
-        const data = await response.json();
-
-        // Update your chart data and other components based on the response...
-        this.pieChartData.labels = data.months;
-        this.pieChartData.datasets[0].data = data.formattedPercentages;
-        this.pieChartData.datasets[0].backgroundColor = data.backgroundColor;
-        this.pieChartData.datasets[0].hoverBackgroundColor =
-          data.hoverBackgroundColor;
-      } catch (error) {
-        console.error("Error fetching data:", error);
+        const response = await axios.get("/selectDue");
+        this.currentDue = response.data.date;
+      } catch (e) {
+        console.log(e);
       }
     },
   },
 });
 </script>
 <style>
-.monthlyDashboard {
+.monthChartContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   grid-template-rows: auto 1fr;
+  gap: 1rem;
 }
-.mainDashboard {
+.adminDashboardContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-template-rows: auto 1fr;
-  gap: 1rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
+  column-gap: 1rem;
+  padding: 1rem;
+  color: var(--dark);
+  background: var(--light);
 }
 .dash-box {
   display: grid;
@@ -147,6 +117,23 @@ export default defineComponent({
   align-items: center;
   gap: 2rem;
   margin-top: 1rem;
+}
+
+.adminBox {
+  height: 100%;
+  width: 100%;
+}
+
+.adminStatusBox {
+  display: flex;
+  justify-content: space-between;
+  height: 150px;
+  width: 100%;
+  border-radius: 1rem;
+  padding: 2rem;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
 
 @media screen and (max-width: 600px) {

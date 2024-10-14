@@ -28,7 +28,7 @@
           </tr>
         </tbody>
       </table>
-      <h5 v-if="dataFetched" style="text-align: center">No Ratings Found</h5>
+      <h5 v-if="dataFetched" style="text-align: center">No Officers Found</h5>
     </div>
   </div>
 
@@ -134,8 +134,6 @@ export default {
 
   mounted() {
     this.getUsersInfo();
-    const maximumRateModalElement = document.getElementById("maximumRateModal");
-    this.maxRateModal = new Modal(maximumRateModalElement);
   },
 
   methods: {
@@ -161,6 +159,9 @@ export default {
     },
 
     async setMaxRate() {
+      const maximumRateModalElement =
+        document.getElementById("maximumRateModal");
+      const modalInstance = Modal.getInstance(maximumRateModalElement);
       try {
         const response = await axios.post("/saveMaxRate", {
           UserId: this.userId,
@@ -173,22 +174,22 @@ export default {
           this.alertMessage = "Successfully Set Max Rate";
           this.errorType = "success";
           this.getUsersInfo();
+          modalInstance.hide();
 
           setTimeout(() => {
             this.alertMessage = null;
             this.errorType = null;
-            this.maxRateModal.hide();
           }, 3000);
         }
       } catch (error) {
         if (error.response && error.response.status === 401) {
           this.alertMessage = "Please input a valid Max Rate";
           this.errorType = "error";
-          this.maxRateModal.hide();
+          modalInstance.hide();
         } else if (error.response && error.response.status === 500) {
           this.alertMessage = "Server error, please try again later";
           this.errorType = "error";
-          this.maxRateModal.hide();
+          modalInstance.hide();
         }
       }
     },

@@ -77,7 +77,7 @@
       <div v-show="showButtons2" class="li-div">
         <li :class="{ active: selectedComponent === 'ManageUser' }">
           <a href="#" @click="showComponent('ManageUser')">
-            <i class="bx bxs-group"></i>
+            <i class="bx bxs-group pl-1" style="padding-left: 0.6rem"></i>
             <span class="text">Users</span>
           </a>
         </li>
@@ -99,6 +99,16 @@
               style="padding: 0.5rem 0.8rem"
             ></i>
             <span class="text">Manage Max Rate</span>
+          </a>
+        </li>
+        <li :class="{ active: selectedComponent === 'ManageOfficer' }">
+          <a href="#" @click="showComponent('ManageOfficer')">
+            <i
+              class="fa-solid fa-gear"
+              aria-hidden="true"
+              style="padding: 0.5rem 0.8rem"
+            ></i>
+            <span class="text">Manage Officer</span>
           </a>
         </li>
         <li :class="{ active: selectedComponent === 'Announcement' }">
@@ -234,6 +244,7 @@
       <AddAdmin v-if="selectedComponent === 'AddAdmin'" />
       <AddUser v-if="selectedComponent === 'AddUser'" />
       <ManageRate v-if="selectedComponent === 'ManageRate'" />
+      <ManageOfficer v-if="selectedComponent === 'ManageOfficer'" />
     </main>
     <!-- MAIN -->
   </section>
@@ -281,6 +292,7 @@ import AdminOccidental from "../components/AddMPS.vue";
 import AddUser from "../components/AddUser.vue";
 import AddAdmin from "../components/AddAdmin.vue";
 import ManageRate from "../components/ManageRate.vue";
+import ManageOfficer from "../components/ManageOfficer.vue";
 import router from "@/router";
 import { Modal } from "bootstrap";
 
@@ -301,6 +313,7 @@ export default {
     AddUser,
     AddAdmin,
     ManageRate,
+    ManageOfficer,
   },
 
   data() {
@@ -319,8 +332,26 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
     this.fetchUserData();
+    if (window.screen.width < 768) {
+      const sidebar = document.querySelector("#sidebar");
+      const logo = document.getElementById("logo");
+      const adminName = document.getElementById("adminName");
+      sidebar.classList.add("hide");
+      logo.style.height = "38px";
+
+      if (sidebar.classList.contains("hide")) {
+        adminName.style.visibility = "hidden";
+      } else {
+        adminName.style.visibility = "unset";
+      }
+    } else {
+      sidebar.classList.remove("hide");
+      logo.style.height = "110px";
+    }
+
+    await this.checkUseStatus();
   },
   methods: {
     confirmLogout() {
@@ -374,6 +405,23 @@ export default {
         } catch (e) {
           console.log(e);
         }
+      }
+    },
+
+    async checkUseStatus() {
+      try {
+        const id = sessionStorage.getItem("id");
+        const response = await axios.get(`/checkUserStatus/${id}`);
+        this.userStatus = response.data.role;
+
+        if (id) {
+          if (this.userStatus === "user") {
+            router.push("/");
+            sessionStorage.removeItem("id");
+          }
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
   },

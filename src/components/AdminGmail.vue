@@ -19,7 +19,9 @@
           placeholder="Type message"
           v-model="messageContent"
         ></textarea>
-        <button type="submit">Send</button>
+        <button type="submit">
+          <i class="fa-solid fa-paper-plane"></i> Send
+        </button>
       </form>
     </div>
   </div>

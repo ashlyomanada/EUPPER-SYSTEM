@@ -29,6 +29,7 @@ li {
   --light-yellow: #fff2c6;
   --orange: #fd7238;
   --light-orange: #ffe0d3;
+  overflow: hidden;
 }
 
 html {
@@ -190,9 +191,29 @@ body {
   border-radius: 50%;
   box-shadow: -20px -20px 0 var(--light);
 }
-#content nav a {
+/* #content nav a {
   color: var(--dark);
+  background: var(--light);
+} */
+
+.pagination .page-item .page-link {
+  color: var(--dark);
+  background-color: var(--light);
+  border: 1px solid var(--dark); /* Optional for border */
 }
+
+.pagination .page-item.active .page-link {
+  background-color: var(--blue);
+  color: var(--light);
+  border-color: var(--dark); /* Match the active state */
+}
+
+.pagination .page-item .page-link:hover {
+  background-color: var(--blue);
+  color: var(--light);
+  border-color: var(--dark); /* Optional for hover effect */
+}
+
 #content nav .bx.bx-menu {
   cursor: pointer;
   color: var(--dark);
@@ -507,8 +528,39 @@ main::-webkit-scrollbar-thumb {
   justify-content: space-between;
 }
 
+.statusContainer {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  place-items: center;
+  height: 100%;
+  gap: 1rem;
+}
+
+.statusBox {
+  display: flex;
+
+  height: 100%;
+  width: 100%;
+  border-radius: 1rem;
+  padding: 2rem;
+  gap: 2rem;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
 /* MAIN */
 /* CONTENT */
+@media screen and (max-width: 1100px) {
+  #content main .table-data .order table th {
+    padding: 1rem;
+  }
+
+  #content main .table-data .order table td {
+    padding: 1rem;
+  }
+}
 
 @media screen and (max-width: 768px) {
   #sidebar {
@@ -630,5 +682,16 @@ main::-webkit-scrollbar-thumb {
 
   #content nav .bx.bx-menu {
     padding-left: 1.5rem;
+  }
+
+  .userBox {
+    margin-left: 2rem;
+    min-height: 500px;
+    min-width: 500px;
+  }
+
+  .adminBox {
+    min-height: 500px;
+    min-width: 500px;
   }
 }

@@ -168,14 +168,29 @@
               style="height: 10rem; border-radius: 50%"
               :src="`${baseURL}${profilePic}`"
             />
-            <input
+            <!-- <input
               id="editProfileInput"
               type="file"
               accept="image/*"
               style="background: var(--light); color: var(--dark)"
               @change="onFileChange"
               required
-            />
+            /> -->
+
+            <div class="input-group mb-3">
+              <label class="input-group-text" for="inputGroupFile01"
+                >Upload</label
+              >
+              <input
+                id="editProfileInput"
+                type="file"
+                accept="image/*"
+                style="background: var(--light); color: var(--dark)"
+                @change="onFileChange"
+                required
+                class="form-control"
+              />
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -529,6 +544,9 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
+  .main-profile-container {
+    padding: 0;
+  }
   .img-container {
     flex-direction: column;
     justify-content: center;

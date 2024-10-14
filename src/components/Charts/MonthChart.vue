@@ -1,5 +1,5 @@
 <template>
-  <div class="monthlyContainer">
+  <div class="monthlyContainer shadow">
     <canvas ref="chart" width="400" height="200"></canvas>
     <div class="monthlyControls">
       <select class="form-control text-center" v-model="month">
@@ -23,20 +23,28 @@
         v-model="year"
         :placeholder="currentYear"
       />
-      <select class="form-control text-center" v-model="level">
-        <option value="PPO">PPO</option>
-        <option value="RMFB">RMFB</option>
-        <option value="Occidental">Occidental Mindoro</option>
-        <option value="Oriental">Oriental Mindoro</option>
-        <option value="Marinduque">Marinduque</option>
-        <option value="Romblon">Romblon</option>
-        <option value="Palawan">Palawan</option>
-        <option value="Puerto">Puerto Princesa</option>
+
+      <select
+        id="selectedTable2"
+        class="form-control text-center"
+        v-model="level"
+      >
+        <option value="ppo_cpo">PPO</option>
+        <option value="rmfb_tbl">RMFB</option>
+        <option value="occidental_cps">Occidental Mindoro</option>
+        <option value="oriental_cps">Oriental Mindoro</option>
+        <option value="marinduque_cps">Marinduque</option>
+        <option value="romblon_cps">Romblon</option>
+        <option value="palawan_cps">Palawan</option>
+        <option value="puertop_cps">Puerto Princesa</option>
       </select>
       <button @click="fetchData" class="btn btn-success">Find</button>
     </div>
-    <div v-if="error">{{ error }}</div>
-    <div v-if="Object.keys(totalsByOffice).length === 0 && !error">
+    <div class="text-center my-2" v-if="error">{{ error }}</div>
+    <div
+      class="text-center my-2"
+      v-if="Object.keys(totalsByOffice).length === 0 && !error"
+    >
       No data found for the selected criteria.
     </div>
   </div>
@@ -52,9 +60,10 @@ export default {
       year: new Date().getFullYear().toString(), // Set the default year to the current year
       totalsByOffice: [], // Initialize totalsByOffice as an empty array
       error: null, // Initialize error to null
-      month: "January",
-      level: "PPO",
+      month: "",
+      level: "ppo_cpo",
       chart: null, // Initialize chart to null
+      selectedText: "PPO", //
     };
   },
   computed: {
@@ -64,9 +73,16 @@ export default {
   },
   mounted() {
     this.fetchData();
+    this.month = new Date().toLocaleString("default", { month: "long" });
   },
+
+  created() {},
   methods: {
     fetchData() {
+      const selectElement = document.querySelector("#selectedTable2");
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      this.selectedText = selectedOption.text; // Use the innerText of the selected option
+
       axios
         .get(`/getRatePerMonth/${this.month}/${this.year}/${this.level}`)
         .then((response) => {
@@ -74,9 +90,11 @@ export default {
           if (totalsByOffice && totalsByOffice.length > 0) {
             // Only update totalsByOffice if it's not null or undefined
             this.totalsByOffice = totalsByOffice;
+            this.error = null;
           } else {
             console.error("Error: totalsByOffice is null or undefined");
             this.error = "No data found for the selected criteria.";
+            this.totalsByOffice = [];
             setTimeout(() => {
               this.error = null;
             }, 5000);
@@ -135,7 +153,7 @@ export default {
           plugins: {
             title: {
               display: true,
-              text: `Monthly Rankings`,
+              text: `${this.selectedText} Monthly Rankings`,
               font: {
                 size: 16,
               },
@@ -158,6 +176,8 @@ export default {
   max-height: 90vh;
   justify-content: center;
   flex-direction: column;
+  border-radius: 2rem;
+  padding: 2rem;
 }
 .Occidental {
   padding: 2rem;

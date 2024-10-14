@@ -3,10 +3,12 @@
     <div class="order">
       <div class="head d-flex flex-column">
         <h3>List of Users</h3>
-        <div class="manageItems d-flex justify-content-between"></div>
-        <div class="manageItems d-flex justify-content-between">
+        <div class="manageItems"></div>
+        <div class="manageItems">
           <div class="list-items d-flex gap-2">
-            <button class="find px-2" @click="openDueDate">Set Closing</button>
+            <button class="find px-2" @click="openDueDate">
+              <i class="fa-solid fa-calendar-days"></i>Set Closing
+            </button>
           </div>
           <button class="find" @click="changeAllUserStatus">
             <i class="fa-solid fa-power-off"></i>
@@ -20,6 +22,7 @@
               id="searchText"
               @change="getUsersInfo"
               required
+              placeholder="Enter username here..."
             />
             <button
               class="find d-flex align-items-center px-4"
@@ -34,18 +37,22 @@
         <thead>
           <tr>
             <th>Username</th>
+            <th>User Profile</th>
             <th>Office</th>
             <th>Phone No.</th>
             <th>Email</th>
             <th>Status</th>
             <th>Action</th>
             <th>Update</th>
-            <th>Contact User</th>
+            <th>Message</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="UserInfos in UsersInfo" :key="UserInfos.user_id">
             <td>{{ UserInfos.username }}</td>
+            <td>
+              <img :src="`${baseUrl}${UserInfos.image}`" alt="" />
+            </td>
             <td>{{ UserInfos.office }}</td>
             <td>{{ UserInfos.phone_no }}</td>
             <td>{{ UserInfos.email }}</td>
@@ -70,14 +77,14 @@
               </button>
             </td>
             <td class="td-btn">
-              <button class="users-btn" @click="openForm2(UserInfos)">
-                <i class="fa-solid fa-phone fa-lg"></i>
+              <button class="message-btn" @click="openForm2(UserInfos)">
+                <i class="fa-solid fa-message"></i>
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      <h5 v-if="dataFetched" style="text-align: center">No Ratings Found</h5>
+      <h5 v-if="dataFetched" style="text-align: center">No Users Found</h5>
     </div>
   </div>
 
@@ -234,6 +241,7 @@
                 class="btn btn-primary"
                 :disabled="sendingInProgress"
               >
+                <i class="fa-solid fa-paper-plane"></i>
                 Send
               </button>
               <button
@@ -311,65 +319,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Bootstrap Modal for maximum  rate -->
-
-  <!-- <div
-    class="modal fade"
-    id="maximumRateModal"
-    tabindex="-1"
-    aria-labelledby="editProfileModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div
-        class="modal-content"
-        style="background: var(--light); color: var(--dark)"
-      >
-        <div class="modal-header">
-          <h5 class="modal-title" id="editProfileModalLabel">
-            Set Maximum Users Rate
-          </h5>
-        </div>
-        <div
-          class="modal-body d-flex justify-content-center align-items-center"
-        >
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Username</th>
-                <th scope="col">Office</th>
-                <th scope="col">Max Rate</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="UsersInfos in UsersInfo" :key="UsersInfos.user_id">
-                <td>{{ UsersInfos.username }}</td>
-                <td>{{ UsersInfos.office }}</td>
-                <td>
-                  {{ UsersInfos.maxRate }}
-                </td>
-                <td><button class="btn btn-danger">Edit MaxRate</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click.prevent="setMaxRate"
-          >
-            Save
-          </button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
 </template>
 
 <script>
@@ -402,6 +351,7 @@ export default {
       errorType: "",
       checkInterval: null,
       currentDue: "",
+      baseUrl: axios.defaults.baseURL,
     };
   },
 
@@ -651,6 +601,10 @@ export default {
 </script>
 
 <style scoped>
+.manageItems {
+  display: flex;
+  justify-content: space-between;
+}
 .labels {
   color: var(--dark);
 }
@@ -663,6 +617,9 @@ export default {
 .users-btn {
   color: rgb(47, 212, 47);
 }
+.message-btn {
+  color: rgb(255, 213, 0);
+}
 .green-btn {
   color: rgb(47, 212, 47);
 }
@@ -672,9 +629,23 @@ export default {
 .red-btn {
   color: rgb(233, 70, 70);
 }
+
+@media screen and (max-width: 1100px) {
+  .manageItems {
+    width: 100vw;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .manageItems {
     align-items: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .manageItems {
+    align-items: flex-start;
+    flex-direction: column-reverse;
   }
 }
 </style>

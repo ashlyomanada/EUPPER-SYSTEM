@@ -8,12 +8,22 @@
       <Palawan v-if="number === 4" />
       <PuertoPrincesa v-if="number === 5" />
     </div>
-    <div class="mps-btn-container">
-      <button v-if="number > 0" class="nextBtn" @click.prevent="decrease()">
+    <div class="mpsRating-btn-container">
+      <button
+        v-if="number > 0"
+        class="nextBtn d-flex justify-content-center align-items-center gap-2"
+        @click.prevent="decrease()"
+      >
+        <i class="fa-solid fa-arrow-left"></i>
         Previous
       </button>
-      <button v-if="number < 5" class="nextBtn" @click.prevent="increase()">
+      <button
+        v-if="number < 5"
+        class="nextBtn d-flex justify-content-center align-items-center gap-3"
+        @click.prevent="increase()"
+      >
         Next
+        <i class="fa-solid fa-arrow-right"></i>
       </button>
     </div>
   </div>
