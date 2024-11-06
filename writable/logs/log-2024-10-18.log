@@ -1,0 +1,54 @@
+CRITICAL - 2024-10-18 12:59:02 --> Cannot call constructor
+in APPPATH\Controllers\PdfController.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(891): App\Controllers\PdfController->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(485): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-10-18 12:59:13 --> Cannot call constructor
+in APPPATH\Controllers\PdfController.php on line 15.
+ 1 SYSTEMPATH\CodeIgniter.php(891): App\Controllers\PdfController->__construct()
+ 2 SYSTEMPATH\CodeIgniter.php(485): CodeIgniter\CodeIgniter->createController()
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-10-18 13:23:12 --> Undefined property: stdClass::$level
+in APPPATH\Controllers\PdfController.php on line 24.
+ 1 APPPATH\Controllers\PdfController.php(24): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$level', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 24)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdf()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-10-18 13:23:17 --> Undefined property: stdClass::$level
+in APPPATH\Controllers\PdfController.php on line 24.
+ 1 APPPATH\Controllers\PdfController.php(24): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined property: stdClass::$level', 'C:\\laragon\\www\\projectbackend\\app\\Controllers\\PdfController.php', 24)
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\PdfController->generatePdf()
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\PdfController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-10-18 13:47:26 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:26 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:30 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:30 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:31 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:31 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:31 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+CRITICAL - 2024-10-18 13:47:31 --> Cannot redeclare App\Controllers\UserController::viewUserRMFBRates()
+in APPPATH\Controllers\UserController.php on line 273.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()

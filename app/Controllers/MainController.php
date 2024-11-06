@@ -15,6 +15,7 @@ use Mpdf\Mpdf;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\RequestOptions;
+use Phpml\Regression\LeastSquares;
 use App\Models\DueModel;
 
 class MainController extends ResourceController
@@ -58,51 +59,6 @@ class MainController extends ResourceController
             return $this->respond(['message' => 'Internal Server Error'], 500);
         }
     }
-    
-    // public function upload()
-    // {
-    //     $request = $this->request;
-
-    //     // Debugging to check what data is received
-    //     log_message('debug', print_r($request->getPost(), true));
-    //     log_message('debug', print_r($_FILES, true));
-    //     // Get the file
-    //     $file = $request->getFile('file');
-
-    //     // Move the file to the writable/uploads directory
-    //     $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
-
-    //     // Check if the directory exists, if not, create it
-    //     if (!is_dir($uploadsDirectory)) {
-    //         mkdir($uploadsDirectory, 0777, true);
-    //     }
-
-    //     $file->move($uploadsDirectory);
-
-    //     // Insert the user information into the database
-    //     $filePath = 'uploads/' . $file->getName();
-        
-    //     $userData = [
-    //         'username' => $request->getPost('username'),
-    //         'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
-    //         'office' => $request->getPost('office'),
-    //         'phone_no' => $request->getPost('phone_no'),
-    //         'email' => $request->getPost('email'),
-    //         'image' => $filePath,
-    //         'status' => 'Enable',
-    //         'role' => 'user',
-    //         'reset_token' => null,
-    //         'token_expires_at' => null,
-    //         'officeType' => $request->getPost('officeType'),
-    //     ];
-
-    //     // Assuming you have a model named MainModel, you can use it to insert data into the database
-    //     $main = new MainModel();
-    //     $main->insert($userData);
-
-    //     // Redirect back to the form with a success message
-    //     return redirect()->to('/')->with('success', 'Registration successful!');
-    // }
 
     public function upload()
     {
@@ -185,52 +141,6 @@ class MainController extends ResourceController
         // Return success response
         return $this->response->setJSON(['success' => 'Registration successful!']);
     }
-
-
-    // public function uploadAdmin()
-    // {
-    //     $request = $this->request;
-
-    //     // Debugging to check what data is received
-    //     log_message('debug', print_r($request->getPost(), true));
-    //     log_message('debug', print_r($_FILES, true));
-    //     // Get the file
-    //     $file = $request->getFile('file');
-
-    //     // Move the file to the writable/uploads directory
-    //     $uploadsDirectory = FCPATH . 'uploads';  // Correct path using FCPATH
-
-    //     // Check if the directory exists, if not, create it
-    //     if (!is_dir($uploadsDirectory)) {
-    //         mkdir($uploadsDirectory, 0777, true);
-    //     }
-
-    //     $file->move($uploadsDirectory);
-
-    //     // Insert the user information into the database
-    //     $filePath = 'uploads/' . $file->getName();
-        
-    //     $userData = [
-    //         'username' => $request->getPost('username'),
-    //         'password' => password_hash($request->getPost('password'), PASSWORD_DEFAULT),
-    //         'office' => $request->getPost('office'),
-    //         'phone_no' => $request->getPost('phone_no'),
-    //         'email' => $request->getPost('email'),
-    //         'image' => $filePath,
-    //         'status' => 'Enable',
-    //         'role' => 'admin',
-    //         'reset_token' => null,
-    //         'token_expires_at' => null,
-    //         'officeType' => 'Admin Office',
-    //     ];
-
-    //     // Assuming you have a model named MainModel, you can use it to insert data into the database
-    //     $main = new MainModel();
-    //     $main->insert($userData);
-
-    //     // Redirect back to the form with a success message
-    //     return redirect()->to('/')->with('success', 'Registration successful!');
-    // }
 
     public function uploadAdmin()
     {
@@ -320,7 +230,6 @@ class MainController extends ResourceController
         // Return success response
         return $this->response->setJSON(['success' => 'Admin registration successful!']);
     }
-    
 
     public function uploadProfile()
     {
@@ -372,61 +281,6 @@ class MainController extends ResourceController
             return $this->response->setJSON(['status' => 'error', 'message' => 'Failed to update profile picture.']);
         }
     }
-    
-
-    // public function sendEmail()
-    // {
-    //     try {
-    //         // Get JSON data from the request
-    //         $formData = $this->request->getJSON();
-
-    //         // Define validation rules
-    //         $validationRules = [
-    //             'sender' => 'required|valid_email',
-    //             'message' => 'required|string|min_length[5]'
-    //         ];
-
-    //         // Validate the request data
-    //         if (!$this->validate($validationRules)) {
-    //             // If validation fails, return errors
-    //             return $this->response->setJSON([
-    //                 'error' => 'Validation failed',
-    //                 'messages' => $this->validator->getErrors()
-    //             ]);
-    //         }
-
-    //         // Load the email library
-    //         $email = \Config\Services::email();
-    //         $model = new MainModel();
-    //         $adminEmails = $model->where('role', 'admin')->findAll();
-
-    //         // Check if there are admin emails
-    //         if (empty($adminEmails)) {
-    //             return $this->response->setJSON(['error' => 'No admin email addresses found.']);
-    //         }
-
-    //         // Add each admin email address to the recipients
-    //         foreach ($adminEmails as $admin) {
-    //             $email->setTo($admin['email']);
-    //             $email->setFrom($formData->sender);
-    //             $email->setSubject('Request Form from ' . $formData->username);
-    //             $message = $formData->message;
-    //             $email->setMessage($message);
-
-    //             // Send email to each admin
-    //             if (!$email->send()) {
-    //                 log_message('error', 'Email failed to send to ' . $admin['email'] . '. Error: ' . $email->printDebugger(['headers']));
-    //                 return $this->response->setJSON(['error' => 'Email failed to send to some recipients.']);
-    //             }
-    //         }
-
-    //         return $this->response->setJSON(['message' => 'Emails sent successfully.']);
-    //     } catch (\Exception $e) {
-    //         // Log other exceptions
-    //         log_message('error', 'Exception: ' . $e->getMessage());
-    //         return $this->response->setJSON(['error' => 'Internal Server Error']);
-    //     }
-    // }
 
     public function checkUserStatus($id){
         $model = new MainModel();
@@ -508,8 +362,6 @@ class MainController extends ResourceController
             return $this->response->setJSON(['error' => 'Internal Server Error']);
         }
     }
-
-
 
     public function getAllRatesPPO()
     {
@@ -727,54 +579,6 @@ class MainController extends ResourceController
         return $this->respond($data, 200);
     }
 
-
-    // public function updateUserRating()
-    // {
-    //     $requestData = $this->request->getJSON();
-
-    //     if (empty($requestData->id)) {
-    //         return $this->fail('Rating ID is required', 400);
-    //     }
-
-    //     if (empty($requestData->TableName)) {
-    //         return $this->fail('Table Name is required', 400);
-    //     }
-
-    //     $tableName = $requestData->TableName;
-    //     $db = \Config\Database::connect(); // Load the database connection
-
-    //     // Prepare the update query
-    //     $query = "UPDATE $tableName SET ";
-    //     $params = [];
-    //     $firstParam = true;
-
-    //     foreach ($requestData as $key => $value) {
-    //         if ($key !== 'id' && $key !== 'TableName') { // Exclude 'id' and 'TableName' from update fields
-    //             if (!$firstParam) {
-    //                 $query .= ", ";
-    //             }
-    //             $query .= "$key = ?";
-    //             $params[] = $value;
-    //             $firstParam = false;
-    //         }
-    //     }
-
-    //     $query .= " WHERE id = ?";
-    //     $params[] = $requestData->id;
-
-    //     // Execute the update query
-    //     try {
-    //         $result = $db->query($query, $params);
-    //         if ($db->affectedRows() > 0) {
-    //             return $this->respond(['success' => true], 200);
-    //         } else {
-    //             return $this->failNotFound('Rating not found or no changes made');
-    //         }
-    //     } catch (\Exception $e) {
-    //         return $this->failServerError('Error updating rating: ' . $e->getMessage());
-    //     }
-    // }
-
     public function updateUserRating()
     {
         $requestData = $this->request->getJSON();
@@ -841,7 +645,6 @@ class MainController extends ResourceController
         }
     }
 
-
     public function getColumnNamePerTbl()
     {
         $json = $this->request->getJSON();
@@ -859,233 +662,91 @@ class MainController extends ResourceController
         $json = $this->request->getJSON();
         $userId = $json->User;
         $tableName = $json->TableName;
-
-        if (!empty($userId) && !empty($tableName)) {
+        $year = $json->Year; // Retrieve the year from the request
+    
+        if (!empty($userId) && !empty($tableName) && !empty($year)) {
             $db = \Config\Database::connect(); // Load the database connection
-
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM $tableName WHERE userid = ?", [$userId]);
+    
+            // Build the query to include both userId and year
+            $sql = "SELECT * FROM $tableName WHERE userid = ? AND year = ?";
+            $params = [$userId, $year]; // Add userId and year to the parameters array
+    
+            // Add the ORDER BY FIELD clause for month sorting
+            $sql .= " ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 
+                    'July', 'August', 'September', 'October', 'November', 'December') ASC";
+    
+            // Execute the query with the prepared parameters
+            $query = $db->query($sql, $params);
             $userRatings = $query->getResultArray();
-
+    
+            // Check if ratings exist and respond accordingly
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with the ratings and 200 OK
             } else {
                 return $this->failNotFound('User ratings not found');
             }
         } else {
-            return $this->fail('User id and TableName are required', 400);
+            return $this->fail('User id, TableName, and Year are required', 400);
         }
     }
-    
-    // public function sendSMS()
-    // {
-    //     // Retrieve JSON payload sent from Vue.js frontend
-    //     $json = $this->request->getJSON();
-
-    //     // Extract required data from JSON payload
-    //     $senderName = "Euper";
-    //     $phoneNumber = $json->recipient;
-    //     $message = $json->message;
-
-    //     $apiKey = 'fdc0fc4b3cf35557937435f41a072b43-ab235ced-7004-4b69-b1b1-166957845f9b';
-    //     $url = 'https://w1eley.api.infobip.com/sms/2/text/advanced';
-
-    //     $client = new Client([
-    //         'verify' => false, // Disable SSL certificate verification (use with caution)
-    //     ]);
-
-    //     try {
-    //         $response = $client->post($url, [
-    //             'headers' => [
-    //                 'Authorization' => 'App ' . $apiKey,
-    //                 'Content-Type' => 'application/json',
-    //                 'Accept' => 'application/json'
-    //             ],
-    //             'json' => [
-    //                 'messages' => [
-    //                     [
-    //                         'from' => $senderName,
-    //                         'destinations' => [
-    //                             ['to' => $phoneNumber]
-    //                         ],
-    //                         'text' => $message
-    //                     ]
-    //                 ]
-    //             ]
-    //         ]);
-
-    //         $statusCode = $response->getStatusCode();
-    //         $body = (string) $response->getBody();
-
-    //         if ($statusCode == 200) {
-    //             return $this->respond([
-    //                 'success' => true,
-    //                 'message' => 'SMS sent successfully',
-    //                 'response' => $body
-    //             ], 200);
-    //         } else {
-    //             return $this->failServerError('Unexpected HTTP status: ' . $statusCode);
-    //         }
-    //     } catch (RequestException $e) {
-    //         return $this->failServerError('Error: ' . $e->getMessage());
-    //     }
-    // }
 
     public function sendSMSToUser()
-{
-    // Get JSON input
-    $json = $this->request->getJSON();
-    $phoneNumber = $json->recipient;
-    $message = $json->message;
+    {
+        // Get JSON input
+        $json = $this->request->getJSON();
+        $phoneNumber = $json->recipient;
+        $message = $json->message;
 
-    // Define Semaphore API key
-    $apiKey = 'ef0a9cf7d5bf8f4b43bbdac91a2f1276'; // Replace with your actual Semaphore API key
+        // Define Semaphore API key
+        $apiKey = 'ef0a9cf7d5bf8f4b43bbdac91a2f1276'; // Replace with your actual Semaphore API key
 
-    // Set parameters for the Semaphore API request
-    $parameters = [
-        'apikey' => $apiKey,
-        'number' => $phoneNumber, // Recipient's phone number
-        'message' => $message,     // Message to send
-        'sendername' => 'EuperAdmin' // Custom sender name
-    ];
-
-    // Initialize cURL
-    $ch = curl_init();
-
-    // Set cURL options for Semaphore API
-    curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification (not recommended for production)
-
-    // Execute the cURL request
-    $output = curl_exec($ch);
-
-    // Close the cURL resource
-    curl_close($ch);
-
-    // Parse the response to check for success or failure
-    if ($output !== false) {
-        $response = [
-            'success' => true,
-            'message' => 'SMS sent successfully.',
-            'output' => $output // Add API response output if needed for further verification
+        // Set parameters for the Semaphore API request
+        $parameters = [
+            'apikey' => $apiKey,
+            'number' => $phoneNumber, // Recipient's phone number
+            'message' => $message,     // Message to send
+            'sendername' => 'EuperAdmin' // Custom sender name
         ];
 
-        // Return 200 OK status with JSON response
-        return $this->response->setStatusCode(200)->setJSON($response);
-    } else {
-        // If sending failed
-        $response = [
-            'success' => false,
-            'message' => 'Failed to send SMS.',
-            'output' => $output // Add API response output for debugging
-        ];
+        // Initialize cURL
+        $ch = curl_init();
 
-        // Return 500 Internal Server Error status with JSON response
-        return $this->response->setStatusCode(500)->setJSON($response);
+        // Set cURL options for Semaphore API
+        curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disable SSL verification (not recommended for production)
+
+        // Execute the cURL request
+        $output = curl_exec($ch);
+
+        // Close the cURL resource
+        curl_close($ch);
+
+        // Parse the response to check for success or failure
+        if ($output !== false) {
+            $response = [
+                'success' => true,
+                'message' => 'SMS sent successfully.',
+                'output' => $output // Add API response output if needed for further verification
+            ];
+
+            // Return 200 OK status with JSON response
+            return $this->response->setStatusCode(200)->setJSON($response);
+        } else {
+            // If sending failed
+            $response = [
+                'success' => false,
+                'message' => 'Failed to send SMS.',
+                'output' => $output // Add API response output for debugging
+            ];
+
+            // Return 500 Internal Server Error status with JSON response
+            return $this->response->setStatusCode(500)->setJSON($response);
+        }
     }
-}
 
-// public function sendSMSToUser()
-// {
-//     // Get JSON input
-//     $json = $this->request->getJSON();
-//     $phoneNumber = $json->recipient;
-//     $message = $json->message;
-
-//     // Format phone number (assuming it's a Philippine number starting with 0)
-//     $phoneNumber = '+63' . ltrim($phoneNumber, '0'); // Remove leading 0 and add country code
-
-//     // Semaphore API key
-//     $apiKey = 'ef0a9cf7d5bf8f4b43bbdac91a2f1276'; // Replace with your actual Semaphore API key
-
-//     // Parameters for Semaphore API
-//     $parameters = [
-//         'apikey' => $apiKey,
-//         'number' => $phoneNumber,
-//         'message' => $message,
-//         'sendername' => 'EuperAdmin'
-//     ];
-
-//     // Initialize cURL
-//     $ch = curl_init();
-
-//     // Set cURL options for Semaphore API
-//     curl_setopt($ch, CURLOPT_URL, 'https://semaphore.co/api/v4/messages');
-//     curl_setopt($ch, CURLOPT_POST, true);
-//     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameters));
-//     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For dev environment only, enable this for production
-
-//     // Execute the cURL request
-//     $output = curl_exec($ch);
-
-//     // Check for cURL errors
-//     if (curl_errno($ch)) {
-//         $error_msg = curl_error($ch);
-//         $response = [
-//             'success' => false,
-//             'message' => 'cURL Error: ' . $error_msg,
-//             'output' => ''
-//         ];
-
-//         curl_close($ch);
-//         return $this->response->setStatusCode(500)->setJSON($response);
-//     }
-
-//     // Close cURL resource
-//     curl_close($ch);
-
-//     // Decode Semaphore API response
-//     $apiResponse = json_decode($output, true);
-
-//     // Check if the API response is empty
-//     if (empty($apiResponse)) {
-//         $response = [
-//             'success' => false,
-//             'message' => 'Empty response from Semaphore API. Check your API key or request parameters.',
-//             'output' => $output
-//         ];
-
-//         return $this->response->setStatusCode(500)->setJSON($response);
-//     }
-
-//     // Check if there's a status in the API response
-//     if (isset($apiResponse['status']) && $apiResponse['status'] == 'success') {
-//         // SMS sent successfully, but still pending delivery
-//         $response = [
-//             'success' => true,
-//             'message' => 'SMS sent to Semaphore successfully and is pending delivery.',
-//             'output' => $output // Include the API response for reference
-//         ];
-
-//         return $this->response->setStatusCode(200)->setJSON($response);
-//     } else if (isset($apiResponse[0]['status']) && $apiResponse[0]['status'] == 'Pending') {
-//         // Handle Pending status from the response details
-//         $response = [
-//             'success' => true,
-//             'message' => 'SMS is pending delivery.',
-//             'output' => $output
-//         ];
-
-//         return $this->response->setStatusCode(200)->setJSON($response);
-//     } else {
-//         // If there's no valid status, return 'Unknown' status
-//         $response = [
-//             'success' => false,
-//             'message' => 'Failed to send SMS. Status: Unknown',
-//             'output' => $output // Include the API response for debugging
-//         ];
-
-//         return $this->response->setStatusCode(500)->setJSON($response);
-//     }
-// }
-
-
-
-    
     public function sendSMSToAllUser()
     {
         // Load the UserModel
@@ -1169,7 +830,6 @@ class MainController extends ResourceController
             return $this->failNotFound('No records found');
         }
     }
-    
 
     public function getUserData($userId)
     {
@@ -1181,7 +841,6 @@ class MainController extends ResourceController
             return $this->response->setStatusCode(404)->setJSON(['error' => 'User not found']);
         }
     }
-
 
     public function getUserAdmin($userId)
     {
@@ -1262,6 +921,200 @@ class MainController extends ResourceController
         
     }
 
+    public function getAllAverageRatesPredictionsPerTbl($table, $year)
+    {
+        $json = $this->request->getJSON();
+        $ratingModel = new \App\Models\RatingModel();
+    
+        $db = \Config\Database::connect();
+        $query = $db->query("DESCRIBE $table");
+        $columns = $query->getResultArray();
+    
+        $iterate = 1;
+        $totalsByOffice = []; // Array to store total sum for each office
+    
+        foreach ($columns as $column) {
+            $columnName = $column['Field'];
+    
+            if (in_array($columnName, ['id', 'userid', 'month', 'year'])) {
+                continue;
+            }
+    
+            $officeTotal = $ratingModel->selectSum('total')
+                                       ->where('year', $year)
+                                       ->where('level', $table)
+                                       ->where('foreignOfficeId', $iterate)
+                                       ->first(); // Use first() to retrieve a single row
+    
+            // Store the total sum for the current office
+            $totalsByOffice[$columnName] = number_format($officeTotal['total'] / 12, 2);
+            $iterate++;
+        }
+    
+        // Sort totals by office in descending order
+        arsort($totalsByOffice);
+    
+        $responseData = [
+            'totalsByOffice' => $totalsByOffice,
+        ];
+    
+        return $this->respond($responseData, 200);
+    }
+
+    // public function predictTotals($level, $year)
+    // {
+    //     // Define months in the correct order
+    //     $months = [
+    //         'January' => 1, 'February' => 2, 'March' => 3, 'April' => 4,
+    //         'May' => 5, 'June' => 6, 'July' => 7, 'August' => 8,
+    //         'September' => 9, 'October' => 10, 'November' => 11, 'December' => 12
+    //     ];
+
+    //     // Load the data from the 'rates' table for the specified year and level
+    //     $ratesModel = new \App\Models\RatingModel();
+    //     $data = $ratesModel->where('year', $year)
+    //                     ->where('level', $level)
+    //                     ->findAll();
+
+    //     $officeData = [];
+    //     foreach ($data as $row) {
+    //         $monthNum = $months[$row['month']] ?? null;
+    //         if ($monthNum) {
+    //             $office = $row['offices'];
+    //             $total = (float) $row['total'];
+                
+    //             // Organize data by office
+    //             if (!isset($officeData[$office])) {
+    //                 $officeData[$office] = [
+    //                     'samples' => [],
+    //                     'targets' => []
+    //                 ];
+    //             }
+
+    //             // Add month and total to samples and targets
+    //             $officeData[$office]['samples'][] = [$monthNum];
+    //             $officeData[$office]['targets'][] = $total;
+    //         }
+    //     }
+
+    //     $predictions = [];
+    //     foreach ($officeData as $office => $data) {
+    //         // Check for sufficient data variance
+    //         if (count(array_unique(array_column($data['samples'], 0))) < 2 || count(array_unique($data['targets'])) < 2) {
+    //             $predictions[$office] = 'Insufficient data for prediction';
+    //             continue;
+    //         }
+
+    //         // Train the model
+    //         $regression = new \Phpml\Regression\LeastSquares();
+    //         $regression->train($data['samples'], $data['targets']);
+
+    //         $nextMonth = (int) date('m') + 1;
+
+    //         // If it's December, wrap around to January
+    //         if ($nextMonth > 12) {
+    //             $nextMonth = 1;
+    //         }
+
+    //         // Convert to a two-digit month format if needed
+    //         $nextMonth = str_pad($nextMonth, 2, '0', STR_PAD_LEFT);
+
+    //         // Predict the total for the next month (e.g., month 2 for February)
+    //         $predictedTotal = $regression->predict([$nextMonth]);
+
+    //         // Store prediction
+    //         $predictions[$office] = round($predictedTotal, 2);
+    //     }
+
+    //     // Sort predictions from highest to lowest
+    //     arsort($predictions);
+
+    //     // Return predictions in the specified format
+    //     return $this->respond(['predictions' => $predictions], 200);
+        
+    // }
+
+    public function predictTotals($month, $level, $year)
+    {
+        // Define months in the correct order
+        $months = [
+            'January' => 1, 'February' => 2, 'March' => 3, 'April' => 4,
+            'May' => 5, 'June' => 6, 'July' => 7, 'August' => 8,
+            'September' => 9, 'October' => 10, 'November' => 11, 'December' => 12
+        ];
+    
+        // Convert month name to month number if it’s given as a string
+        $monthNum = is_string($month) ? ($months[$month] ?? null) : (int) $month;
+    
+        if (!$monthNum || $monthNum < 1 || $monthNum > 12) {
+            return $this->respond(['error' => 'Invalid month provided.'], 400);
+        }
+    
+        // Load data from the 'rates' table for the specified year and level
+        $ratesModel = new \App\Models\RatingModel();
+        $data = $ratesModel->where('year', $year)
+                           ->where('level', $level)
+                           ->findAll();
+    
+        // If no data is found for the specified year, fetch data by level only
+        if (empty($data)) {
+            $data = $ratesModel->where('level', $level)->findAll();
+            
+            // If still no data found, return a message
+            if (empty($data)) {
+                return $this->respond(['predictions' => 'No data available for the specified level'], 200);
+            }
+        }
+    
+        $officeData = [];
+        foreach ($data as $row) {
+            $dataMonthNum = $months[$row['month']] ?? null;
+            if ($dataMonthNum) {
+                $office = $row['offices'];
+                $total = (float) $row['total'];
+                
+                // Organize data by office
+                if (!isset($officeData[$office])) {
+                    $officeData[$office] = [
+                        'samples' => [],
+                        'targets' => []
+                    ];
+                }
+    
+                // Add month and total to samples and targets
+                $officeData[$office]['samples'][] = [$dataMonthNum];
+                $officeData[$office]['targets'][] = $total;
+            }
+        }
+    
+        $predictions = [];
+        foreach ($officeData as $office => $data) {
+            // Check for sufficient data variance
+            if (count(array_unique(array_column($data['samples'], 0))) < 2 || count(array_unique($data['targets'])) < 2) {
+                $predictions[$office] = 'Insufficient data for prediction';
+                continue;
+            }
+    
+            // Train the model
+            $regression = new \Phpml\Regression\LeastSquares();
+            $regression->train($data['samples'], $data['targets']);
+    
+            // Predict the total for the specified month
+            $predictedTotal = $regression->predict([$monthNum]);
+    
+            // Store prediction
+            $predictions[$office] = round($predictedTotal, 2);
+        }
+    
+        // Sort predictions from highest to lowest
+        arsort($predictions);
+    
+        // Return predictions in the specified format
+        return $this->respond(['predictions' => $predictions], 200);
+    }
+    
+
+    
 }
     
 

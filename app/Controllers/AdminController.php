@@ -147,7 +147,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE ppo_cpo ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE ppo_cpo ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -178,17 +178,44 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnPPO()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE ppo_cpo CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnPPO()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE ppo_cpo CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE ppo_cpo CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
@@ -213,7 +240,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE rmfb_tbl ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE rmfb_tbl ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -244,21 +271,49 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnRMFB()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE rmfb_tbl CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnRMFB()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE rmfb_tbl CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE rmfb_tbl CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function deleteColumnRMFB()
     {
@@ -279,7 +334,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE occidental_cps ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE occidental_cps ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -310,17 +365,44 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnOcci()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE occidental_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnOcci()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE occidental_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE occidental_cps CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
@@ -346,7 +428,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE oriental_cps ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE oriental_cps ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -377,17 +459,44 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnOrmin()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE oriental_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnOrmin()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE oriental_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE oriental_cps CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
@@ -412,7 +521,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE romblon_cps ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE romblon_cps ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -443,17 +552,44 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnRom()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE romblon_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnRom()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE romblon_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE romblon_cps CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
@@ -478,7 +614,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE marinduque_cps ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE marinduque_cps ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -509,17 +645,44 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnMar()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE marinduque_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnMar()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE marinduque_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE marinduque_cps CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
@@ -544,7 +707,7 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE palawan_cps ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE palawan_cps ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
@@ -575,17 +738,44 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnPal()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE palawan_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnPal()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE palawan_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE palawan_cps CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
@@ -611,11 +801,13 @@ class AdminController extends ResourceController
         $columnName = $requestData->columnName;
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE puertop_cps ADD COLUMN $columnName DECIMAL(10.0) NULL");
+            $db->query("ALTER TABLE puertop_cps ADD COLUMN $columnName DECIMAL(10,2) NULL");
             return $this->respond(['message' => 'Column added successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
+
+
     }
 
     public function displayColumnsPuer()
@@ -642,21 +834,49 @@ class AdminController extends ResourceController
         }
     }
 
+    // public function updateColumnPuer()
+    // {
+    //     $requestData = $this->request->getJSON();
+    //     $oldColumnName = $requestData->OldColumnName;
+    //     $newColumnName = $requestData->NewColumnName;
+    //     $newColumnType = 'DECIMAL(10,2)';
+
+    //     try {
+    //         $db = \Config\Database::connect();
+    //         $db->query("ALTER TABLE puertop_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
+    //         return $this->respond(['message' => 'Column updated successfully'], 200);
+    //     } catch (\Exception $e) {
+    //         return $this->fail(['error' => $e->getMessage()], 500);
+    //     }
+    // }
+
     public function updateColumnPuer()
     {
         $requestData = $this->request->getJSON();
         $oldColumnName = $requestData->OldColumnName;
         $newColumnName = $requestData->NewColumnName;
         $newColumnType = 'DECIMAL(10,2)';
+        $updatedOfficeName = str_replace('_', ' ', $newColumnName);  // Updated office name to match new column name
+
+        $ratesModel = new \App\Models\RatingModel();
 
         try {
             $db = \Config\Database::connect();
-            $db->query("ALTER TABLE puertop_cps CHANGE COLUMN $oldColumnName $newColumnName $newColumnType");
-            return $this->respond(['message' => 'Column updated successfully'], 200);
+
+            // Step 1: Change the column name in the table
+            $db->query("ALTER TABLE puertop_cps CHANGE COLUMN `$oldColumnName` `$newColumnName` $newColumnType");
+
+            // Step 2: Update the 'offices' column with the new office name for matching records
+            $ratesModel->where('offices', str_replace('_', ' ', $oldColumnName))
+                    ->set(['offices' => $updatedOfficeName])
+                    ->update();
+
+            return $this->respond(['message' => 'Column and office names updated successfully'], 200);
         } catch (\Exception $e) {
             return $this->fail(['error' => $e->getMessage()], 500);
         }
     }
+
 
     public function deleteColumnPuer()
     {

@@ -45,6 +45,7 @@ $routes->post('/getUsersRatePuerByMonth', 'AdminController::getUsersRatePuerByMo
 $routes->post('/getUsersRateByOffice', 'AdminController::getUsersRateByOffice');
 $routes->post('/saveMaxRate', 'AdminController::saveMaxRate');
 
+$routes->post('generateExcelReport', 'ExcelController::generateExcelReport');
 $routes->post('generatePPOOffice', 'ExcelController::generatePPOOffice');
 $routes->post('generateRMFBOffice', 'ExcelController::generateRMFBOffice');
 $routes->post('generateOcciReport', 'ExcelController::generateOcciReport');
@@ -114,7 +115,8 @@ $routes->get('/getUserAdmin/(:num)', 'MainController::getUserAdmin/$1');
 $routes->post('/insertDue', 'MainController::insertDue');
 $routes->get('/selectDue', 'MainController::selectDue');
 
-$routes->get('/viewUserPPORates/(:num)', 'UserController::viewUserPPORates/$1');
+$routes->get('/viewUserRates/(:num)/(:any)/(:any)', 'UserController::viewUserRates/$1/$2/$3');
+$routes->get('/viewUserPPORates/(:num)/(:any)', 'UserController::viewUserPPORates/$1/$2');
 $routes->get('/viewUserRMFBRates/(:num)', 'UserController::viewUserRMFBRates/$1');
 $routes->get('/viewUserOcciRates/(:num)', 'UserController::viewUserOcciRates/$1');
 $routes->get('/viewUserOrienRates/(:num)', 'UserController::viewUserOrienRates/$1');
@@ -128,14 +130,15 @@ $routes->get('predict', 'UserController::predict');
 
 
 $routes->post('/updateAdminInformation', 'AdminController::updateAdminInformation');
-$routes->post('generatePdfPPO', 'PdfController::generatePdfPPO');
-$routes->post('generatePdfRMFB', 'PdfController::generatePdfRMFB');
-$routes->post('generatePdfOccidental', 'PdfController::generatePdfOccidental');
-$routes->post('generatePdfOriental', 'PdfController::generatePdfOriental');
-$routes->post('generatePdfMarinduque', 'PdfController::generatePdfMarinduque');
-$routes->post('generatePdfRomblon', 'PdfController::generatePdfRomblon');
-$routes->post('generatePdfPalawan', 'PdfController::generatePdfPalawan');
-$routes->post('generatePdfPuerto', 'PdfController::generatePdfPuerto');
+$routes->post('generatePdf', 'PdfController::generatePdf');
+// $routes->post('generatePdfPPO', 'PdfController::generatePdfPPO');
+// $routes->post('generatePdfRMFB', 'PdfController::generatePdfRMFB');
+// $routes->post('generatePdfOccidental', 'PdfController::generatePdfOccidental');
+// $routes->post('generatePdfOriental', 'PdfController::generatePdfOriental');
+// $routes->post('generatePdfMarinduque', 'PdfController::generatePdfMarinduque');
+// $routes->post('generatePdfRomblon', 'PdfController::generatePdfRomblon');
+// $routes->post('generatePdfPalawan', 'PdfController::generatePdfPalawan');
+// $routes->post('generatePdfPuerto', 'PdfController::generatePdfPuerto');
 
 $routes->get('/displayColumnsPPO', 'AdminController::displayColumnsPPO');
 $routes->post('/updateColumnPPO', 'AdminController::updateColumnPPO');
@@ -168,3 +171,6 @@ $routes->get('/getRatePerRanking/(:any)/(:num)/(:any)', 'UserController::getRate
 $routes->get('/viewUserAnalytics/(:num)/(:any)/(:num)', 'UserController::viewUserAnalytics/$1/$2/$3');
 $routes->get('/getColumnNameFromTable/(:any)', 'UserController::getColumnNameFromTable/$1');
 $routes->get('/getAllAverageRatesPerTbl/(:any)/(:num)', 'MainController::getAllAverageRatesPerTbl/$1/$2');
+$routes->get('/getAllAverageRatesPredictionsPerTbl/(:any)/(:num)', 'MainController::getAllAverageRatesPredictionsPerTbl/$1/$2');
+$routes->post('/notifyAdmin', 'NotifController::notifyAdmin');
+$routes->get('/predictTotals/(:any)/(:any)/(:num)', 'MainController::predictTotals/$1/$2/$3');

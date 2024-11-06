@@ -1,0 +1,20 @@
+ERROR - 2024-10-29 12:55:56 --> mysqli_sql_exception: Table 'project.orirental_cps' doesn't exist in C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\laragon\www\projectbackend\system\Database\MySQLi\Connection.php(306): mysqli->query('DESCRIBE oriren...', 0)
+#1 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(692): CodeIgniter\Database\MySQLi\Connection->execute('DESCRIBE oriren...')
+#2 C:\laragon\www\projectbackend\system\Database\BaseConnection.php(606): CodeIgniter\Database\BaseConnection->simpleQuery('DESCRIBE oriren...')
+#3 C:\laragon\www\projectbackend\app\Controllers\MainController.php(970): CodeIgniter\Database\BaseConnection->query('DESCRIBE oriren...')
+#4 C:\laragon\www\projectbackend\system\CodeIgniter.php(919): App\Controllers\MainController->getAllAverageRatesPredictionsPerTbl('orirental_cps', '2024')
+#5 C:\laragon\www\projectbackend\system\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+#6 C:\laragon\www\projectbackend\system\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\laragon\www\projectbackend\public\index.php(89): CodeIgniter\CodeIgniter->run()
+#8 C:\laragon\www\projectbackend\system\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\...')
+#9 {main}
+CRITICAL - 2024-10-29 12:55:56 --> Table 'project.orirental_cps' doesn't exist
+in SYSTEMPATH\Database\BaseConnection.php on line 646.
+ 1 APPPATH\Controllers\MainController.php(970): CodeIgniter\Database\BaseConnection->query('DESCRIBE orirental_cps')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->getAllAverageRatesPredictionsPerTbl('orirental_cps', '2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

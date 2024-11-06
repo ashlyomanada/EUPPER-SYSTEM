@@ -1,0 +1,36 @@
+CRITICAL - 2024-11-04 07:27:52 --> Class "App\Models\RatesModel" not found
+in APPPATH\Controllers\MainController.php on line 970.
+ 1 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->predictTotals('2024')
+ 2 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 3 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 5 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-11-04 07:28:10 --> Matrix is singular
+in VENDORPATH\php-ai\php-ml\src\Math\LinearAlgebra\LUDecomposition.php on line 254.
+ 1 VENDORPATH\php-ai\php-ml\src\Math\Matrix.php(223): Phpml\Math\LinearAlgebra\LUDecomposition->solve(Object(Phpml\Math\Matrix))
+ 2 VENDORPATH\php-ai\php-ml\src\Regression\LeastSquares.php(73): Phpml\Math\Matrix->inverse()
+ 3 VENDORPATH\php-ai\php-ml\src\Regression\LeastSquares.php(39): Phpml\Regression\LeastSquares->computeCoefficients()
+ 4 APPPATH\Controllers\MainController.php(985): Phpml\Regression\LeastSquares->train([...], [...])
+ 5 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->predictTotals('2024')
+ 6 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 7 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 9 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-11-04 16:10:31 --> Unsupported operand types: int * string
+in VENDORPATH\php-ai\php-ml\src\Math\Matrix.php on line 159.
+ 1 VENDORPATH\php-ai\php-ml\src\Regression\LeastSquares.php(73): Phpml\Math\Matrix->multiply(Object(Phpml\Math\Matrix))
+ 2 VENDORPATH\php-ai\php-ml\src\Regression\LeastSquares.php(39): Phpml\Regression\LeastSquares->computeCoefficients()
+ 3 APPPATH\Controllers\MainController.php(1017): Phpml\Regression\LeastSquares->train([...], [...])
+ 4 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->predictTotals('2024')
+ 5 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 6 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 7 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 8 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')
+CRITICAL - 2024-11-04 17:00:25 --> str_replace() expects at least 3 arguments, 2 given
+in APPPATH\Controllers\MainController.php on line 971.
+ 1 APPPATH\Controllers\MainController.php(971): str_replace('_', ' ')
+ 2 SYSTEMPATH\CodeIgniter.php(919): App\Controllers\MainController->predictTotals('2024')
+ 3 SYSTEMPATH\CodeIgniter.php(494): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\MainController))
+ 4 SYSTEMPATH\CodeIgniter.php(353): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(89): CodeIgniter\CodeIgniter->run()
+ 6 SYSTEMPATH\Commands\Server\rewrite.php(47): require_once('C:\\laragon\\www\\projectbackend\\public\\index.php')

@@ -145,7 +145,6 @@ class UserController extends ResourceController
         return $this->insertData('ppo_cpo', $data);
     }
 
-    
     public function insertDataRMFB()
     {
         $request = service('request');
@@ -195,23 +194,36 @@ class UserController extends ResourceController
         return $this->insertData('puertop_cps', $data);
     }
 
-
-    public function viewUserPPORates($userId)
+    public function viewUserRates($userId, $year, $table) 
     {
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
+            
+            // Base query with userId
+            $sql = "SELECT * FROM $table WHERE userid = ?";
+            $params = [$userId]; // Add userId to the parameters array
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM ppo_cpo WHERE userid = ?", [$userId]);
+            // If year is provided, add it to the query and parameters
+            if (!empty($year)) {
+                $sql .= " AND year = ?";
+                $params[] = $year; // Add year to the parameters array
+            }
+
+            // Add month ordering to the query
+            $sql .= " ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC";
+
+            // Execute the query with parameters (userId and possibly year)
+            $query = $db->query($sql, $params);
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -220,17 +232,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM rmfb_tbl WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM rmfb_tbl 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -239,17 +258,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM occidental_cps WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM occidental_cps 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -258,17 +284,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM oriental_cps WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM oriental_cps 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -277,17 +310,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM marinduque_cps WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM marinduque_cps 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -296,17 +336,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM romblon_cps WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM romblon_cps 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -315,17 +362,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM palawan_cps WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM palawan_cps 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -334,17 +388,24 @@ class UserController extends ResourceController
         if (!empty($userId)) {
             $db = \Config\Database::connect(); // Load the database connection
 
-            // Use the database connection to execute the query
-            $query = $db->query("SELECT * FROM puertop_cps WHERE userid = ?", [$userId]);
+            // Use the database connection to execute the query with month ordering
+            $query = $db->query("
+                SELECT * 
+                FROM puertop_cps 
+                WHERE userid = ? 
+                ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC", 
+                [$userId]
+            );
+
             $userRatings = $query->getResultArray();
 
             if (!empty($userRatings)) {
-                return $this->respond($userRatings, 200);
+                return $this->respond($userRatings, 200); // Respond with data and 200 OK
             } else {
-                return $this->failNotFound('User ratings not found');
+                return $this->failNotFound('User ratings not found'); // Return 404 if no ratings
             }
         } else {
-            return $this->fail('User id is required', 400);
+            return $this->fail('User id is required', 400); // Return 400 if user ID is not provided
         }
     }
 
@@ -378,31 +439,6 @@ class UserController extends ResourceController
 
        
     }
-
-    // protected function sendResetEmail($email, $token)
-    // {
-    //     $emailConfig = config('Email');
-    //     $emailService = Services::email();
-    //     $emailService->initialize($emailConfig);
-    
-    //     $emailService->setFrom('your_email@example.com', 'Your Name');
-    //     $emailService->setTo($email);
-    //     $emailService->setSubject('Reset Your Password');
-    
-    //     // Get the base URL from the configuration and construct the reset link
-    //     $resetLink = 'https://e-upper.online/resetPassword/' . $token;
-    
-    //     $emailService->setMessage("Click this link to reset your password: $resetLink");
-    
-    //     try {
-    //         $emailService->send();
-    //     } catch (\Exception $e) {
-    //         // Handle email sending failure
-    //         log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
-    //         // You can also throw an exception to handle it in the frontend
-    //         throw new \Exception('Failed to send password reset email');
-    //     }
-    // }
 
     protected function sendResetEmail($email, $token)
     {
@@ -443,8 +479,6 @@ class UserController extends ResourceController
         }
     }
 
-    
-
     public function resetPassword()
     {
         $json = $this->request->getJSON();
@@ -482,105 +516,6 @@ class UserController extends ResourceController
             return $this->respond(401);
         }
     }
-
-    // public function sendPasswordResetEmail()
-    // {
-    //     $json = $this->request->getJSON();
-    //     $email = $json->email;
-
-    //     // Check if email exists
-    //     $userModel = new MainModel();
-    //     $user = $userModel->where('email', $email)->first();
-
-    //     if (!$user) {
-    //         return $this->respond(['status' => false, 'message' => 'Email not found'], 404);
-    //     }
-
-    //     // Generate OTP (6 digits)
-    //     $otp = random_int(100000, 999999);
-
-    //     $expiration = Time::now()->addMinutes(30); // Token expiration time (30 minutes from now)
-
-    //     // Save the token and expiration time in the database
-    //     $userModel->update($user['user_id'], [
-    //         'reset_token' => $otp,
-    //         'token_expires_at' => $expiration->toDateTimeString()
-    //     ]);
-
-    //     // Send the password reset email with token
-    //     $this->sendResetEmail($email, $otp);
-
-    //     return $this->respond(['message' => 'Password reset email sent'], 200);
-    // }
-
-    // protected function sendResetEmail($email, $otp)
-    // {
-    //     $emailConfig = config('Email');
-    //     $emailService = Services::email();
-    //     $emailService->initialize($emailConfig);
-    
-    //     $emailService->setFrom('your_email@example.com', 'Your Name');
-    //     $emailService->setTo($email);
-    //     $emailService->setSubject('Reset Your Password');
-    
-    //     $emailService->setMessage("This is the OTP: $otp you requested");
-    
-    //     try {
-    //         $emailService->send();
-    //     } catch (\Exception $e) {
-    //         // Handle email sending failure
-    //         log_message('error', 'Email sending failed: ' . $emailService->printDebugger(['headers']));
-    //         // You can also throw an exception to handle it in the frontend
-    //         throw new \Exception('Failed to send password reset email');
-    //     }
-    // }
-    
-
-    // public function verifyOtp()
-    // {
-    //     $json = $this->request->getJSON();
-    //     $otp = $json->otp;
-
-    //     // Validate the OTP
-    //     $userModel = new MainModel();
-    //     $user = $userModel->where('reset_token', $otp)->first();
-
-    //     if (!$user) {
-    //         return $this->respond(['message' => 'Invalid OTP'], 400);
-    //     }
-
-    //     // Check if OTP is expired
-    //     if (strtotime($user['token_expires_at']) < time()) {
-    //         return $this->respond(['message' => 'OTP expired'], 400);
-    //     }
-
-    //     // OTP is valid, allow user to proceed to reset password
-    //     return $this->respond(['message' => 'OTP verified, proceed to reset your password'], 200);
-    // }
-
-    // public function resetPassword()
-    // {
-    //     $json = $this->request->getJSON();
-    //     $token = $json->token;
-    //     $password = $json->password;
-
-    //     // Validate token and update password
-    //     $userModel = new MainModel();
-    //     $user = $userModel->where('reset_token', $token)->first();
-
-    //     if (!$user) {
-    //         return $this->failNotFound('Invalid token');
-    //     }
-
-    //     // Update user password
-    //     $userModel->update($user['user_id'], [
-    //         'password' => password_hash($password, PASSWORD_DEFAULT), // Hash the new password
-    //         'reset_token' => null, // Clear the reset token after password reset
-    //         'token_expires_at' => null,
-    //     ]);
-
-    //     return $this->respond(['message' => 'Password reset successfully'], 200);
-    // }
 
     public function getTotalPerMonthUserPPORates($userId)
     {
@@ -672,12 +607,17 @@ class UserController extends ResourceController
     {
         if (!empty($userId) && !empty($table) && !empty($year)) {
             $db = \Config\Database::connect(); // Load the database connection
-    
-            // Query to fetch user ratings based on userId and year
-            $query = $db->query("SELECT * FROM $table WHERE userid = ? AND year = ?", [$userId, $year]);
-    
+
+            // Query to fetch user ratings based on userId and year, with month ordering
+            $sql = "SELECT * FROM $table WHERE userid = ? AND year = ? 
+                    ORDER BY FIELD(month, 'January', 'February', 'March', 'April', 'May', 
+                    'June', 'July', 'August', 'September', 'October', 'November', 'December') ASC";
+
+            // Execute the query with userId and year parameters
+            $query = $db->query($sql, [$userId, $year]);
+
             $userRatings = $query->getResultArray(); // Get result as an array
-    
+
             if (!empty($userRatings)) {
                 return $this->respond($userRatings, 200); // Respond with the ratings
             } else {
@@ -687,7 +627,7 @@ class UserController extends ResourceController
             return $this->fail('User ID, table, and year are required', 400);
         }
     }
-    
+
     public function getColumnNameFromTable($table)
     {
         $db = db_connect();
@@ -709,7 +649,6 @@ class UserController extends ResourceController
         return $this->response->setJSON(['totalsByOffice' => $result]);
     }
 
-    
     public function getRatePerRanking($month, $year, $level) {
         $model = new RatingModel();
     
@@ -725,6 +664,5 @@ class UserController extends ResourceController
     
         return $this->response->setJSON(['totalsByOffice' => $result]);
     }
-    
 
 }
