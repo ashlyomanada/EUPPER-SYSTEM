@@ -22,7 +22,7 @@
     <h6 class="text-center" v-if="rateRanking.length === 0">No data found</h6>
 
     <div class="d-flex justify-content-center gap-2 align-items-center">
-      <select class="form-control text-center" v-model="month">
+      <select class="form-select text-center" v-model="month">
         <option value="January">January</option>
         <option value="February">February</option>
         <option value="March">March</option>
@@ -62,11 +62,16 @@
       </select>
 
       <button
-        class="btn btn-success d-flex gap-2 align-items-center shadow"
+        class="btn btn-success"
         @click.prevent="getRatePerRanking"
+        :disabled="isLoading"
       >
-        <i class="fa-solid fa-magnifying-glass"></i>
-        Find
+        <span v-if="!isLoading" class="d-flex gap-2 align-items-center">
+          <i v-if="!isLoading" class="fa-solid fa-magnifying-glass"></i>Find
+        </span>
+        <span v-if="isLoading" class="d-flex gap-2 align-items-center">
+          <i class="fa-solid fa-spinner"></i>Finding
+        </span>
       </button>
     </div>
   </div>
@@ -83,6 +88,7 @@ export default {
       level: "ppo_cpo",
       rateRanking: [],
       selectedText: "PPO",
+      isLoading: false,
     };
   },
 
@@ -121,6 +127,9 @@ export default {
           selectElement.options[selectElement.selectedIndex];
         this.selectedText = selectedOption.text;
         this.currentMonth = this.month;
+
+        this.isLoading = true;
+        setTimeout(() => (this.isLoading = false), 1000);
 
         const response = await axios.get(
           `/getRatePerRanking/${this.month}/${this.year}/${this.level}`

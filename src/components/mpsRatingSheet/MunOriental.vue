@@ -12,7 +12,7 @@
       </div>
       <form @submit.prevent="saveRating" class="ratingsheet-container">
         <div class="rateDate">
-          <select class="rateMonth" v-model="Month" name="month">
+          <select class="form-control text-center" v-model="Month" name="month">
             <option value="January">January</option>
             <option value="February">February</option>
             <option value="March">March</option>
@@ -28,7 +28,7 @@
           </select>
           <input
             type="number"
-            class="rateYear"
+            class="form-control text-center"
             name="year"
             min="2000"
             max="2100"
@@ -54,7 +54,12 @@
             step="any"
           />
         </div>
-        <button class="submitPPORate" type="submit">Submit</button>
+        <button class="submitPPORate" type="submit" :disabled="isSubmit">
+          <span v-if="!isSubmit"> Submit</span>
+          <span v-if="isSubmit">
+            <i class="fa-solid fa-spinner"></i> Submiting</span
+          >
+        </button>
       </form>
     </div>
   </div>
@@ -101,6 +106,9 @@ export default {
       alertMessage: "",
       success: false,
       userMaxRate: 0,
+      isSubmit: false,
+      userName: "",
+      level: "Municipalities of Oriental Mindoro",
     };
   },
 
@@ -119,13 +127,33 @@ export default {
   },
 
   methods: {
+    async sentNotif() {
+      try {
+        const notifResponse = axios.post("/notifyAdmin", {
+          UserName: this.userName,
+          Office: this.office,
+          Month: this.Month,
+          Year: this.Year,
+          Level: this.level,
+        });
+        if (notifResponse.status === 200) {
+          alert("successfully send  notification");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async getMaxRateByUser() {
       const userId = sessionStorage.getItem("id");
       try {
         const response = await axios.post("/getMaxRateByUser", {
           UserId: userId,
         });
+        // console.log(response.data);
         this.userMaxRate = response.data.maxRate;
+        this.userName = response.data.username;
+        this.office = response.data.office;
       } catch (error) {
         console.log(error);
       }
@@ -165,6 +193,7 @@ export default {
 
     async saveRating() {
       try {
+        this.isSubmit = true;
         this.UserId = sessionStorage.getItem("id");
         const data = {
           UserId: this.UserId,
@@ -175,7 +204,7 @@ export default {
 
         // Send data to server for insertion
         const response = await axios.post("/insertDataOrmin", data);
-
+        this.sentNotif();
         const modalElement = document.getElementById("orientalSuccessModal");
         const modalInstance = new Modal(modalElement);
 
@@ -186,6 +215,8 @@ export default {
           Object.keys(this.formData).forEach((key) => {
             this.formData[key] = "";
           });
+
+          setTimeout(() => (this.isSubmit = false), 1000);
 
           this.alertMessage = "Successfully Rated";
           this.success = true;
@@ -210,6 +241,7 @@ export default {
             "Please check your internet connection and try again later.";
         }
 
+        setTimeout(() => (this.isSubmit = false), 1000);
         modalInstance.show();
         setTimeout(() => {
           modalInstance.hide();

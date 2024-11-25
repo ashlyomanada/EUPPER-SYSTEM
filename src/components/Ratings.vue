@@ -29,9 +29,21 @@
             <option value="palawan_cps">Palawan MPS</option>
             <option value="puertop_cps">Puerto Princesa MPS</option>
           </select>
+
+          <label class="d-flex align-items-center" for="ratingYear"
+            >Select Year</label
+          >
+          <input
+            style="background: var(--light); color: var(--dark)"
+            required
+            class="form-control"
+            type="text"
+            id="ratingYear"
+            v-model="year"
+          />
           <button
             @click="fetchDataByTbl"
-            class="find d-flex align-items-center"
+            class="btn btn-primary d-flex align-items-center"
           >
             <i class="bx bx-search"></i>Find
           </button>
@@ -71,60 +83,6 @@
         </tbody>
       </table>
       <h5 v-if="!dataFetched" style="text-align: center">No Ratings Found</h5>
-
-      <!-- Bootstrap Pagination -->
-      <nav
-        v-if="dataFetched && userRatings.length > 0"
-        class="d-flex justify-content-center align-items-center"
-      >
-        <ul class="pagination justify-content-center">
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a class="page-link" href="#" @click.prevent="changePage(1)"
-              >First</a
-            >
-          </li>
-          <li class="page-item" :class="{ disabled: currentPage === 1 }">
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="changePage(currentPage - 1)"
-              >Previous</a
-            >
-          </li>
-          <li
-            v-for="page in totalPages"
-            :key="page"
-            class="page-item"
-            :class="{ active: currentPage === page }"
-          >
-            <a class="page-link" href="#" @click.prevent="changePage(page)">{{
-              page
-            }}</a>
-          </li>
-          <li
-            class="page-item"
-            :class="{ disabled: currentPage === totalPages }"
-          >
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="changePage(currentPage + 1)"
-              >Next</a
-            >
-          </li>
-          <li
-            class="page-item"
-            :class="{ disabled: currentPage === totalPages }"
-          >
-            <a
-              class="page-link"
-              href="#"
-              @click.prevent="changePage(totalPages)"
-              >Last</a
-            >
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 
@@ -150,15 +108,6 @@
               <label class="form-label text-start" for="editMonth"
                 >Month:</label
               >
-              <!-- <input
-                style="background: var(--light); color: var(--dark)"
-                required
-                type="text"
-                class="form-control"
-                id="editMonth"
-                v-model="selectedRating.month"
-              /> -->
-
               <select
                 class="form-control"
                 v-model="selectedRating.month"
@@ -203,6 +152,7 @@
                   :id="`edit${column}`"
                   v-model="selectedRating[column]"
                   step="any"
+                  :max="userMaxRate"
                 />
               </div>
             </template>
@@ -250,13 +200,17 @@ export default {
       itemsPerPage: 12,
       alertMessage: "",
       errorType: "",
+      year: new Date().getFullYear(),
+      userMaxRate: 0,
+      selectedId: 0,
     };
   },
 
-  async created() {
+  async mounted() {
     this.fetchColumns();
     this.getUsername();
     await this.fetchDataByTbl();
+    await this.getUserData();
   },
 
   computed: {
@@ -287,6 +241,7 @@ export default {
         const response = await axios.post("/getColumnNamePerTbl", {
           TableName: this.selectedTable,
         });
+
         this.columns = response.data.filter(
           (column) => !["id", "userid", "month", "year"].includes(column)
         );
@@ -299,6 +254,7 @@ export default {
       try {
         const response = await axios.get("/getAllUsersName");
         this.allUsersName = response.data;
+        // console.log(this.allUsersName);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -311,12 +267,17 @@ export default {
           const response = await axios.post(`/viewUserByTblRates`, {
             User: this.selectedUser,
             TableName: this.selectedTable,
+            Year: this.year,
           });
+
+          this.selectedId = response.data[0].userid;
+          // console.log(response.data[0].userid);
 
           if (response.status === 200) {
             this.userRatings = response.data;
             this.dataFetched = true;
             this.fetchColumnPerTbl();
+            this.getUserData();
           } else {
             this.dataFetched = false;
             console.error(`Failed to fetch data. Status: ${response.status}`);
@@ -328,6 +289,13 @@ export default {
         console.error("Error fetching data:", error);
         this.dataFetched = false;
       }
+    },
+
+    async getUserData() {
+      const userId = this.selectedId;
+      const response = await axios.get(`/getUserData/${userId}`);
+      this.userMaxRate = response.data.maxRate;
+      // console.log(this.userMaxRate);
     },
 
     editRating(index) {
@@ -448,6 +416,7 @@ export default {
   justify-content: space-between;
   margin-bottom: 2rem;
   width: 100%;
+  flex-direction: column;
 }
 
 .t-options {
@@ -459,9 +428,19 @@ export default {
   margin-top: 20px;
 }
 
+#ratingYear {
+  width: 10%;
+}
+
 @media screen and (max-width: 1100px) {
   .table-options {
     width: 100vw;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #ratingYear {
+    width: 20vw;
   }
 }
 </style>

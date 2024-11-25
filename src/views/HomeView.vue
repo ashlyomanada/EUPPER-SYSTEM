@@ -152,7 +152,9 @@
     <nav>
       <i class="bx bx-menu" @click="toggle"></i>
       <div class="w-50 d-flex">
-        <a href="#" class="nav-link">PRO MIMAROPA E-UPER SYSTEM</a>
+        <a href="#" class="nav-link" style="color: var(--dark)"
+          >PRO MIMAROPA E-UPER SYSTEM</a
+        >
       </div>
 
       <div class="nav-items">
@@ -494,6 +496,20 @@ export default {
 </script>
 
 <style>
+input,
+select,
+.btn,
+textarea {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+  border: var(--dark);
+}
+#content main .table-data .order {
+  flex-grow: 1;
+  flex-basis: 500px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+}
 a {
   text-decoration: none;
 }
@@ -501,6 +517,7 @@ a {
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 1rem;
   padding-bottom: 1rem;
 }
 #logo2 {
@@ -516,6 +533,7 @@ a {
   width: 40%;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
 #btn,
 #btn2 {
@@ -530,6 +548,11 @@ a {
 }
 .li-div {
   padding-left: 0.8rem;
+}
+@media screen and (max-width: 1024px) {
+  .nav-items {
+    width: 60%;
+  }
 }
 @media screen and (max-width: 768px) {
   .nav-items {

@@ -31,7 +31,10 @@
           </div>
         </div>
 
-        <RankingChart />
+        <!-- <RankingChart /> -->
+        <div class="rankingChartUserContainer">
+          <AllRankingChart />
+        </div>
       </div>
 
       <div class="userDashboard">
@@ -53,7 +56,7 @@
 <script>
 import axios from "axios";
 import UserChart from "../components/Charts/UserChart.vue";
-import RankingChart from "../components/Charts/RankingChart.vue";
+import AllRankingChart from "../components/Charts/AllRankingChart.vue";
 
 export default {
   data() {
@@ -71,7 +74,7 @@ export default {
 
   components: {
     UserChart,
-    RankingChart,
+    AllRankingChart,
   },
 
   async mounted() {
@@ -212,5 +215,11 @@ export default {
   align-items: center;
   gap: 2rem;
   margin-top: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .rankingChartUserContainer {
+    margin-left: 2rem;
+  }
 }
 </style>

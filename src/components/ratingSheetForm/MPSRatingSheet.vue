@@ -83,6 +83,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+  padding: 0rem 0rem 0.5rem 0.5rem;
 }
 .mpsRating-btn-container {
   width: 100%;

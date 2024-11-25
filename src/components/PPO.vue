@@ -36,23 +36,38 @@
                 v-model="year"
               />
               <button
-                class="find d-flex align-items-center"
+                class="btn btn-primary d-flex align-items-center"
                 @click="getUsersRateByMonth"
               >
                 <i class="bx bx-search"></i>Find
               </button>
             </div>
             <div class="d-flex gap-2">
-              <button class="generate" @click="confirmationGenerateExcel">
-                Generate Excel Report
+              <button
+                class="btn btn-success"
+                @click="confirmationGenerateExcel"
+                :disabled="isLoadingExcel"
+              >
+                <span v-if="!isLoadingExcel"> Generate Excel Report</span>
+                <span v-if="isLoadingExcel">
+                  <i class="fa-solid fa-spinner"></i> Downloading Report</span
+                >
               </button>
-              <button class="generate" @click="confirmationGeneratePdf">
-                Generate PDF Report
+              <button
+                class="btn btn-success"
+                @click="previewGeneratePdf"
+                :disabled="isLoading"
+              >
+                <span v-if="!isPreview"> Preview PDF Report</span>
+                <span v-if="isPreview">
+                  <i class="fa-solid fa-spinner"></i> Previewing Report</span
+                >
               </button>
             </div>
           </div>
         </div>
       </div>
+
       <table>
         <thead>
           <tr>
@@ -105,6 +120,7 @@
               type="button"
               class="btn btn-primary"
               @click="generatePPOReport"
+              :disabled="isLoadingExcel"
             >
               Yes
             </button>
@@ -137,7 +153,12 @@
           </p>
 
           <div class="d-flex justify-content-center gap-3">
-            <button type="button" class="btn btn-primary" @click="generatePdf">
+            <button
+              type="button"
+              class="btn btn-primary"
+              :disabled="isLoading"
+              @click="generatePdf"
+            >
               Yes
             </button>
             <button
@@ -148,6 +169,47 @@
               No
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="previewPDF"
+    tabindex="-1"
+    aria-labelledby="successModalLabel"
+  >
+    <div
+      class="modal-dialog modal-dialog-centered"
+      style="display: flex; justify-content: center"
+    >
+      <div
+        class="modal-content"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-header">
+          <h5 class="modal-title">Preview PDF Report</h5>
+        </div>
+        <div class="modal-body" style="" id="modalContent"></div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            @click.prevent="generatePdf"
+            class="btn btn-primary"
+          >
+            <span v-if="!isLoading"> Generate PDF Report</span>
+            <span v-if="isLoading">
+              <i class="fa-solid fa-spinner"></i> Downloading Report</span
+            >
+          </button>
         </div>
       </div>
     </div>
@@ -171,6 +233,10 @@ export default {
       userId: "",
       allOffices: [],
       baseURL: axios.defaults.baseURL,
+      isLoading: false,
+      isLoadingExcel: false,
+      url: "",
+      isPreview: false,
     };
   },
   created() {
@@ -188,6 +254,20 @@ export default {
     confirmationGenerateExcel() {
       const modalElement = document.getElementById("ppoExcelConfirmation");
       const modalInstance = new Modal(modalElement);
+      modalInstance.show();
+    },
+
+    modalPreviewPDF(blob) {
+      const modalElement = document.getElementById("previewPDF");
+      const modalInstance = new Modal(modalElement);
+
+      // Create a Blob URL
+      const url = URL.createObjectURL(blob);
+
+      // Set the Blob URL as the source for an iframe or object
+      const modalContent = document.getElementById("modalContent");
+      modalContent.innerHTML = `<iframe src="${url}" frameborder="0"></iframe>`;
+
       modalInstance.show();
     },
     confirmationGeneratePdf() {
@@ -235,7 +315,7 @@ export default {
           this.UsersRate = []; // Reset UsersRate to an empty array
         }
       } catch (error) {
-        console.error("Error filtering users rate:", error);
+        // console.error("Error filtering users rate:", error);
         this.noData = true; // Set noData to true in case of any error
         this.UsersRate = []; // Reset UsersRate to an empty array
       }
@@ -292,11 +372,15 @@ export default {
 
     async generatePPOReport() {
       try {
+        this.isLoadingExcel = true;
+
         const response = await axios.post(
-          `${this.baseURL}generatePPOOffice`,
+          `${this.baseURL}generateExcelReport`,
           {
             month: this.month,
             year: this.year,
+            table: "ppo_cpo",
+            levelName: "PROVINCIAL/CITY POLICE OFFICES",
           },
           { responseType: "blob" }
         );
@@ -316,6 +400,7 @@ export default {
         const modalInstance =
           Modal.getInstance(modalElement) || new Modal(modalElement);
 
+        setTimeout(() => (this.isLoadingExcel = false), 1000);
         // Hide the modal
         modalInstance.hide();
       } catch (error) {
@@ -324,13 +409,17 @@ export default {
     },
 
     generatePdf() {
-      // Replace 'your-server-url' with the actual URL of your server
+      // Replace 'your-server-url' with the actual URL of your
+      this.isLoading = true;
+
       axios
         .post(
-          "/generatePdfPPO",
+          "/generatePdf",
           {
             month: this.month,
             year: this.year,
+            level: "ppo_cpo",
+            officeName: "PROVINCIAL/CITY POLICE OFFICES",
           },
           {
             responseType: "blob", // Set the response type to 'blob' to handle binary data
@@ -352,10 +441,39 @@ export default {
             Modal.getInstance(modalElement) || new Modal(modalElement);
 
           // Hide the modal
+          setTimeout(() => (this.isLoading = false), 1000);
           modalInstance.hide();
         })
         .catch((error) => {
           console.error("Error generating PDF:", error);
+        });
+    },
+
+    previewGeneratePdf() {
+      this.isPreview = true;
+      axios
+        .post(
+          "/generatePdf",
+          {
+            month: this.month,
+            year: this.year,
+            level: "ppo_cpo",
+            officeName: "PROVINCIAL/CITY POLICE OFFICES",
+          },
+          {
+            responseType: "blob", // Handle binary data
+          }
+        )
+        .then((response) => {
+          // Create a Blob and URL for the PDF
+          const blob = new Blob([response.data], { type: "application/pdf" });
+
+          this.modalPreviewPDF(blob);
+          this.isPreview = false;
+        })
+        .catch((error) => {
+          console.error("Error generating PDF:", error);
+          this.isPreview = false;
         });
     },
   },
@@ -363,6 +481,12 @@ export default {
 </script>
 
 <style>
+.modal-fullscreen {
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+}
 select {
   color: var(--dark);
 }
@@ -398,6 +522,12 @@ option {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+iframe {
+  width: 100%;
+  height: 60vh;
+  border: none;
 }
 
 @media screen and (max-width: 1100px) {

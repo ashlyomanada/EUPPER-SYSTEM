@@ -1,15 +1,36 @@
 <template>
   <div class="table-data">
     <div class="order">
-      <div class="rating-header">
+      <div class="rating-header d-flex flex-column">
         <div class="rating-subheader">
           <h2>Unit Performance Evaluation Rating</h2>
           <h4 class="head-subtitle">Municipalities of Oriental Mindoro</h4>
         </div>
+        <form class="userViewContainer" @submit.prevent="fetchData">
+          <label for="year"> Select Year:</label>
+          <input
+            type="number"
+            class="form-control"
+            style="width: 30%"
+            name="year"
+            min="2000"
+            max="2100"
+            step="1"
+            placeholder="Year"
+            v-model="year"
+          />
+          <button
+            class="btn btn-primary d-flex align-items-center"
+            type="submit"
+          >
+            <i class="bx bx-search"></i>Find
+          </button>
+        </form>
       </div>
       <table v-if="dataFetched">
         <thead>
           <tr>
+            <th class="t-row">Action</th>
             <th class="t-row">Month</th>
             <th class="t-row">Year</th>
             <th v-for="(column, index) in columns" :key="index" class="t-row">
@@ -19,6 +40,14 @@
         </thead>
         <tbody>
           <tr v-for="(rating, index) in paginatedRatings" :key="index">
+            <td class="t-rateData">
+              <button
+                class="pen-btn btn btn-primary text-light"
+                @click="editRating(index)"
+              >
+                <i class="fa-solid fa-pen fa-lg"></i>
+              </button>
+            </td>
             <td class="t-data">{{ rating.month }}</td>
             <td class="t-data">{{ rating.year }}</td>
             <td
@@ -34,53 +63,104 @@
       <h4 v-else style="text-align: center">No Ratings Yet</h4>
     </div>
   </div>
-  <!-- Bootstrap Pagination -->
-  <nav
-    v-if="dataFetched"
-    class="d-flex justify-content-center align-items-center"
+  <!-- Bootstrap Modal for Editing Rating -->
+  <div
+    class="modal fade"
+    id="editRatingModal"
+    tabindex="-1"
+    aria-labelledby="editRatingModalLabel"
+    aria-hidden="true"
   >
-    <ul class="pagination justify-content-center">
-      <li class="page-item" :class="{ disabled: currentPage === 1 }">
-        <a class="page-link" href="#" @click.prevent="changePage(1)"> First </a>
-      </li>
-      <li class="page-item" :class="{ disabled: currentPage === 1 }">
-        <a
-          class="page-link"
-          href="#"
-          @click.prevent="changePage(currentPage - 1)"
-        >
-          Previous
-        </a>
-      </li>
-      <li
-        class="page-item"
-        v-for="page in totalPages"
-        :key="page"
-        :class="{ active: currentPage === page }"
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content text-start"
+        style="background: var(--light); color: var(--dark)"
       >
-        <a class="page-link" href="#" @click.prevent="changePage(page)">
-          {{ page }}
-        </a>
-      </li>
-      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-        <a
-          class="page-link"
-          href="#"
-          @click.prevent="changePage(currentPage + 1)"
-        >
-          Next
-        </a>
-      </li>
-      <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-        <a class="page-link" href="#" @click.prevent="changePage(totalPages)">
-          Last
-        </a>
-      </li>
-    </ul>
-  </nav>
+        <div class="modal-header">
+          <h5 class="modal-title" id="editRatingModalLabel">Edit Rating</h5>
+        </div>
+        <div class="modal-body text-start">
+          <form @submit.prevent="saveUserRates">
+            <div class="mb-3">
+              <label class="form-label text-start" for="editMonth"
+                >Month:</label
+              >
+
+              <select
+                class="form-control"
+                v-model="selectedRating.month"
+                required
+              >
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label text-start" for="editYear">Year:</label>
+              <input
+                style="background: var(--light); color: var(--dark)"
+                required
+                type="text"
+                class="form-control"
+                id="editYear"
+                v-model="selectedRating.year"
+              />
+            </div>
+            <!-- Loop through columns to dynamically render input fields -->
+            <template v-for="(column, colIndex) in columns" :key="colIndex">
+              <div class="mb-3">
+                <label class="form-label" :for="`edit${column}`">{{
+                  column.replace(/_/g, " ")
+                }}</label>
+                <input
+                  style="background: var(--light); color: var(--dark)"
+                  required
+                  type="number"
+                  class="form-control"
+                  :id="`edit${column}`"
+                  v-model="selectedRating[column]"
+                  step="any"
+                  :max="userMaxRate"
+                />
+              </div>
+            </template>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">
+                Save changes
+              </button>
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-container" style="z-index: 2000">
+    <v-alert v-if="alertMessage" :type="errorType" class="error-message">{{
+      alertMessage
+    }}</v-alert>
+  </div>
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 import axios from "axios";
 export default {
   data() {
@@ -90,12 +170,24 @@ export default {
       columns: [],
       currentPage: 1,
       itemsPerPage: 12,
+      year: null,
+      selectedRating: {},
+      selectedTable: "oriental_cps",
+      alertMessage: "",
+      errorType: "",
+      userMaxRate: 0,
     };
   },
 
   mounted() {
     this.fetchData();
     this.fetchColumns();
+    this.getUserData();
+  },
+
+  created() {
+    const year = new Date().getFullYear();
+    this.year = year;
   },
 
   computed: {
@@ -110,6 +202,12 @@ export default {
   },
 
   methods: {
+    async getUserData() {
+      const userId = sessionStorage.getItem("id");
+      const response = await axios.get(`/getUserData/${userId}`);
+      this.userMaxRate = response.data.maxRate;
+    },
+
     async fetchColumns() {
       try {
         const response = await axios.get("/getColumnNameOrmin");
@@ -123,15 +221,19 @@ export default {
 
     fetchData() {
       const storedUserId = sessionStorage.getItem("id");
+      const level = "oriental_cps";
       if (storedUserId) {
         axios
-          .get(`/viewUserOrienRates/${storedUserId}`)
+          .get(`/viewUserRates/${storedUserId}/${this.year}/${level}`)
           .then((response) => {
             this.userRatings = response.data;
             this.dataFetched = true;
           })
           .catch((error) => {
             console.error("Error fetching user data:", error);
+            if (error.response.status === 404) {
+              this.dataFetched = false;
+            }
           });
       }
     },
@@ -139,6 +241,82 @@ export default {
     changePage(page) {
       if (page >= 1 && page <= this.totalPages) {
         this.currentPage = page;
+      }
+    },
+
+    editRating(index) {
+      const globalIndex = (this.currentPage - 1) * this.itemsPerPage + index;
+      this.selectedRating = { ...this.userRatings[globalIndex] };
+      this.editRatingModal = new Modal(
+        document.getElementById("editRatingModal")
+      );
+      this.editRatingModal.show();
+    },
+
+    async saveUserRates() {
+      try {
+        if (!this.selectedRating.id) {
+          console.error("Rating ID is required.");
+          return;
+        }
+
+        const requestData = {
+          ...this.selectedRating,
+          TableName: this.selectedTable,
+        };
+
+        const response = await axios.post(`/updateUserRating`, requestData);
+
+        if (response.data.success) {
+          console.log("Rating updated successfully!");
+          this.editRatingModal.hide();
+          this.fetchData();
+          this.alertMessage = "Rating updated successfully";
+          this.errorType = "success";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else {
+          console.error("Failed to update rating.");
+        }
+      } catch (error) {
+        console.error("Error updating rating:", error);
+        if (error.response.status === 404) {
+          this.alertMessage = "Nothing to update";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else if (error.response.status === 500) {
+          this.alertMessage = "Server error, please try again later";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else if (error.response.status === 400) {
+          this.alertMessage =
+            "The month or year you entered is already exists.";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        } else {
+          this.alertMessage = "Please check your internet connection";
+          this.errorType = "error";
+
+          setTimeout(() => {
+            this.alertMessage = null;
+            this.errorType = null;
+          }, 3000);
+        }
       }
     },
   },

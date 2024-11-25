@@ -60,7 +60,7 @@ export default {
 .year,
 .find,
 .generate {
-  border: 1px solid var(--dark);
+  border: 1px solid var(--light);
   padding: 0.2rem 0.5rem;
 }
 .head-options {

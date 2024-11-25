@@ -28,7 +28,7 @@
               </button>
               <button
                 class="btn btn-danger"
-                @click="deleteOfficer(UserInfos.officerId)"
+                @click="prompDelete(UserInfos.officerId, UserInfos.name)"
               >
                 <i class="fa-solid fa-trash"></i>
               </button>
@@ -176,6 +176,40 @@
       </div>
     </div>
   </div>
+
+  <!-- Bootstrap Modal for Deleting User -->
+  <div
+    class="modal fade"
+    id="deleteOfficerModal"
+    tabindex="-1"
+    aria-labelledby="editUserModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div
+        class="modal-content text-start"
+        style="background: var(--light); color: var(--dark)"
+      >
+        <div class="modal-body text-start">
+          <p class="text-center">
+            Are you sure you want to delete this officer {{ officerName }} ?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            @click="deleteOfficer(officerId)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -196,6 +230,8 @@ export default {
       dataFetched: false,
       alertMessage: "",
       errorType: "",
+      officerName: "",
+      officerId: 0,
     };
   },
 
@@ -305,16 +341,31 @@ export default {
       }
     },
 
+    prompDelete(officerId, officerName) {
+      this.officerName = officerName;
+      this.officerId = officerId;
+      const confirmDeleteModal = new Modal(
+        document.getElementById("deleteOfficerModal")
+      );
+      confirmDeleteModal.show();
+    },
+
     async deleteOfficer(officerId) {
       try {
         const response = await axios.post("/deleteOfficer", {
-          officerId: officerId,
+          officerId: parseInt(officerId),
         });
 
         if (response.status === 200) {
           this.alertMessage = "Successfully deleted officer";
           this.errorType = "success";
           this.getUsersInfo();
+          const confirmDeleteModal = Modal.getInstance(
+            document.getElementById("deleteOfficerModal")
+          );
+          if (confirmDeleteModal) {
+            confirmDeleteModal.hide();
+          }
         }
       } catch (error) {
         if (error.response.status === 404) {
@@ -359,6 +410,12 @@ export default {
 @media screen and (max-width: 768px) {
   .manageItems {
     align-items: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .manageItems {
+    align-items: flex-start;
   }
 }
 </style>

@@ -84,7 +84,7 @@
           </div>
 
           <label>
-            <input
+            <!-- <input
               type="file"
               placeholder="Profile picture"
               @change="handleFileChange"
@@ -92,12 +92,27 @@
               required
               accept="image/*"
               ref="fileInput2"
+            /> -->
+            <input
+              class="form-control"
+              type="file"
+              placeholder="Profile picture"
+              @change="handleFileChange"
+              required
+              accept="image/*"
+              ref="fileInput2"
+              style="
+                background: var(--light);
+                color: var(--dark);
+                padding: 1rem;
+                border-radius: 0.5rem;
+              "
             />
           </label>
 
           <!-- Add this input to your form -->
 
-          <button type="submit" class="submit" style="color: white">
+          <button type="submit" class="btn btn-primary" style="color: white">
             Register
           </button>
         </form>
@@ -326,7 +341,7 @@ export default {
   width: 100%;
   padding: 10px 10px 20px 10px;
   outline: 0;
-  border: 1px solid var(--dark);
+  border: 1px solid var(--light);
   border-radius: 10px;
 }
 

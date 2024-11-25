@@ -29,7 +29,14 @@
         min="2000"
         max="2100"
       />
-      <button @click="fetchData" class="btn btn-success">Find</button>
+      <button @click="fetchData" class="btn btn-success" :disabled="isLoading">
+        <span v-if="!isLoading" class="d-flex gap-2 align-items-center">
+          <i v-if="!isLoading" class="fa-solid fa-magnifying-glass"></i>Find
+        </span>
+        <span v-if="isLoading" class="d-flex gap-2 align-items-center">
+          <i class="fa-solid fa-spinner"></i>Finding
+        </span>
+      </button>
     </div>
     <div v-if="Object.keys(totalsByOffice).length === 0 && !error">
       No data found for the selected year.
@@ -51,6 +58,7 @@ export default {
       selectedLevel: "ppo_cpo",
       selectedText: "", // Initially empty
       chart: null,
+      isLoading: false,
     };
   },
 
@@ -72,6 +80,12 @@ export default {
       const selectElement = document.querySelector("#selectedTable");
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       this.selectedText = selectedOption.text; // Use the innerText of the selected option
+
+      this.isLoading = true;
+
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
 
       axios
         .get(`/getAllAverageRatesPerTbl/${this.selectedLevel}/${this.year}`)

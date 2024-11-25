@@ -6,13 +6,18 @@ import { loadFonts } from "./plugins/webfontloader";
 import axios from "axios";
 import PPO from "./components/PPO.vue";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Toast from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
-axios.defaults.baseURL = "http://localhost:8080/";
-// axios.defaults.baseURL = "https://e-upper.online/backend/";
+// axios.defaults.baseURL = "http://localhost:8080/";
+axios.defaults.baseURL = "https://e-upper.online/backend/";
 loadFonts();
 
 const app = createApp(App);
 
+app.use(Toast, {
+  timeout: 3000, // Default timeout of 3 seconds
+});
 app.use(router).use(vuetify).component("PPO", PPO).mount("#app");
 
 if ("serviceWorker" in navigator) {

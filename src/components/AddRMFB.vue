@@ -70,6 +70,7 @@
                 v-model="newColumnName"
                 required
                 style="background: var(--light); color: var(--dark)"
+                placeholder="Enter Office Name..."
               />
             </div>
             <div class="d-flex justify-content-end">

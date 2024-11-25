@@ -55,7 +55,7 @@
           required
         ></textarea>
 
-        <button type="submit" :disabled="loading">
+        <button class="btn btn-primary" type="submit" :disabled="loading">
           <span v-if="loading">Requesting...</span>
           <span v-else
             ><i class="fa-solid fa-paper-plane"></i> Submit Request</span

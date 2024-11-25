@@ -12,7 +12,7 @@
       </div>
       <form @submit.prevent="saveRating" class="ratingsheet-container">
         <div class="rateDate">
-          <select class="rateMonth" v-model="Month" name="month">
+          <select class="form-control text-center" v-model="Month" name="month">
             <option value="January">January</option>
             <option value="February">February</option>
             <option value="March">March</option>
@@ -28,7 +28,7 @@
           </select>
           <input
             type="number"
-            class="rateYear"
+            class="form-control text-center"
             name="year"
             min="2000"
             max="2100"
@@ -38,6 +38,7 @@
             required
           />
         </div>
+
         <div
           v-for="(column, index) in columns"
           :key="index"
@@ -54,7 +55,12 @@
             step="0.01"
           />
         </div>
-        <button class="submitPPORate" type="submit">Submit</button>
+        <button class="submitPPORate" type="submit" :disabled="isSubmit">
+          <span v-if="!isSubmit"> Submit</span>
+          <span v-if="isSubmit">
+            <i class="fa-solid fa-spinner"></i> Submiting</span
+          >
+        </button>
       </form>
     </div>
   </div>
@@ -86,6 +92,7 @@
 <script>
 import axios from "axios";
 import { Modal } from "bootstrap";
+import { messaging, getToken, onMessage } from "@/firebase";
 
 export default {
   data() {
@@ -102,6 +109,10 @@ export default {
       alertMessage: "",
       success: false,
       userMaxRate: 0,
+      isSubmit: false,
+      fcmToken: "",
+      userName: "",
+      level: "PPO / CPO Level",
     };
   },
 
@@ -116,17 +127,70 @@ export default {
   },
 
   async mounted() {
+    await this.requestPermission();
     await this.getMaxRateByUser();
   },
 
   methods: {
+    async requestPermission() {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        // console.log("Notification permission granted.");
+        const registration = await navigator.serviceWorker.ready;
+        if (registration) {
+          // console.log("Service Worker is ready.");
+          try {
+            const currentToken = await getToken(messaging, {
+              vapidKey:
+                "BMl44ZV6cG8pDBXGieG0WYhRA0wKYSuiKC3xIR3hI2kxLJ4nfScWNZCu55G11dtYvQSiCSscFopIaRIPcG9rbWs",
+              serviceWorkerRegistration: registration,
+            });
+            if (currentToken) {
+              console.log("FCM Token:", currentToken);
+              // this.fcmToken = currentToken;
+            } else {
+              console.log(
+                "No registration token available. Request permission to generate one."
+              );
+            }
+          } catch (err) {
+            console.error("An error occurred while retrieving token. ", err);
+          }
+        } else {
+          console.error("Service Worker is not ready.");
+        }
+      } else {
+        console.log("Unable to get permission to notify.");
+      }
+    },
+
+    async sentNotif() {
+      try {
+        const notifResponse = axios.post("/notifyAdmin", {
+          UserName: this.userName,
+          Office: this.office,
+          Month: this.Month,
+          Year: this.Year,
+          Level: this.level,
+        });
+        if (notifResponse.status === 200) {
+          alert("successfully send  notification");
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     async getMaxRateByUser() {
       const userId = sessionStorage.getItem("id");
       try {
         const response = await axios.post("/getMaxRateByUser", {
           UserId: userId,
         });
+        // console.log(response.data);
         this.userMaxRate = response.data.maxRate;
+        this.userName = response.data.username;
+        this.office = response.data.office;
       } catch (error) {
         console.log(error);
       }
@@ -165,6 +229,7 @@ export default {
     },
     async saveRating() {
       try {
+        this.isSubmit = true;
         this.UserId = sessionStorage.getItem("id");
         const data = {
           UserId: this.UserId,
@@ -175,17 +240,19 @@ export default {
 
         // Send data to server for insertion
         const response = await axios.post("/insertDataPPO", data);
+        this.sentNotif();
 
         const modalElement = document.getElementById("ppoSuccessModal");
         const modalInstance = new Modal(modalElement);
 
         if (response.status === 200) {
-          // Data successfully saved
           this.Month = "";
           this.Year = "";
           Object.keys(this.formData).forEach((key) => {
             this.formData[key] = "";
           });
+
+          setTimeout(() => (this.isSubmit = false), 1000);
 
           this.alertMessage = "Successfully Rated";
           this.success = true;
@@ -210,6 +277,7 @@ export default {
             "Please check your internet connection and try again later.";
         }
 
+        setTimeout(() => (this.isSubmit = false), 1000);
         modalInstance.show();
         setTimeout(() => {
           modalInstance.hide();
@@ -281,14 +349,14 @@ export default {
 }
 .rate-month,
 .year-rate {
-  border: 1px solid var(--dark);
+  border: 1px solid var(--light);
   padding: 0.2rem 0.5rem;
   color: var(--dark);
   background: var(--light);
   width: 16%;
 }
 .rateDate {
-  width: 60%;
+  /* width: 60%; */
   display: flex;
   justify-content: center;
   gap: 2rem;
@@ -297,17 +365,18 @@ export default {
 .rateMonth,
 .rateYear {
   padding: 0.3rem 0.5rem;
-  border: 1px solid var(--dark);
+  border: 1px solid var(--light);
   border-radius: 0.5rem;
   color: var(--dark);
 }
 .rateInput {
   width: 60%;
-  border: 1px solid var(--dark);
+  /* border: 1px solid var(--dark); */
   padding: 0.3rem 0.5rem;
   text-align: center;
   color: var(--dark);
   border-radius: 0.5rem;
+  background: white;
 }
 .submitPPORate {
   background: green;

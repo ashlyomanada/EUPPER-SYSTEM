@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--poppins);
 }
 
 a {
@@ -12,6 +13,17 @@ a {
 
 li {
   list-style: none;
+}
+.bx-menu {
+  font-size: 2rem;
+}
+input,
+select,
+.btn,
+textarea {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+  border: var(--dark);
 }
 
 :root {
@@ -314,7 +326,7 @@ body {
 /* MAIN */
 #content main {
   width: 100%;
-  padding: 0px 24px;
+  padding: 0px 0px 0px 24px;
   font-family: var(--poppins);
   max-height: calc(100vh - 56px);
   height: 100vh;
@@ -426,7 +438,7 @@ main::-webkit-scrollbar-thumb {
   color: var(--dark);
 }
 #content main .table-data > div {
-  border-radius: 20px;
+  border-radius: 20px 0px 0px 20px;
   background: var(--light);
   padding: 24px;
   overflow-x: auto;
@@ -449,6 +461,8 @@ main::-webkit-scrollbar-thumb {
 #content main .table-data .order {
   flex-grow: 1;
   flex-basis: 500px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
 }
 #content main .table-data .order table {
   width: 100%;

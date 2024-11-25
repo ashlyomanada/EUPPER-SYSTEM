@@ -38,7 +38,14 @@
         <option value="palawan_cps">Palawan</option>
         <option value="puertop_cps">Puerto Princesa</option>
       </select>
-      <button @click="fetchData" class="btn btn-success">Find</button>
+      <button @click="fetchData" class="btn btn-success" :disabled="isLoading">
+        <span v-if="!isLoading" class="d-flex gap-2 align-items-center">
+          <i v-if="!isLoading" class="fa-solid fa-magnifying-glass"></i>Find
+        </span>
+        <span v-if="isLoading" class="d-flex gap-2 align-items-center">
+          <i class="fa-solid fa-spinner"></i>Finding
+        </span>
+      </button>
     </div>
     <div class="text-center my-2" v-if="error">{{ error }}</div>
     <div
@@ -64,6 +71,7 @@ export default {
       level: "ppo_cpo",
       chart: null, // Initialize chart to null
       selectedText: "PPO", //
+      isLoading: false,
     };
   },
   computed: {
@@ -73,16 +81,24 @@ export default {
   },
   mounted() {
     this.fetchData();
-    this.month = new Date().toLocaleString("default", { month: "long" });
   },
 
-  created() {},
+  created() {
+    const currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() - 1); // Subtract one month
+    this.month = currentDate.toLocaleString("default", { month: "long" });
+  },
   methods: {
     fetchData() {
       const selectElement = document.querySelector("#selectedTable2");
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       this.selectedText = selectedOption.text; // Use the innerText of the selected option
 
+      this.isLoading = true;
+
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
       axios
         .get(`/getRatePerMonth/${this.month}/${this.year}/${this.level}`)
         .then((response) => {
@@ -92,7 +108,7 @@ export default {
             this.totalsByOffice = totalsByOffice;
             this.error = null;
           } else {
-            console.error("Error: totalsByOffice is null or undefined");
+            // console.error("Error: totalsByOffice is null or undefined");
             this.error = "No data found for the selected criteria.";
             this.totalsByOffice = [];
             setTimeout(() => {
@@ -103,7 +119,7 @@ export default {
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-          this.error = "An error occurred while fetching data.";
+          this.error = "No data found for the selected criteria.";
         });
     },
     renderChart() {
@@ -172,8 +188,8 @@ export default {
 <style>
 .monthlyContainer {
   display: flex;
-  max-width: 90vw;
-  max-height: 90vh;
+  /* max-width: 90vw;
+  max-height: 90vh; */
   justify-content: center;
   flex-direction: column;
   border-radius: 2rem;

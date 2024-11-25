@@ -41,11 +41,16 @@
           <option value="puertop_cps">Puerto Princesa MPS</option>
         </select>
         <button
-          :disabled="isButtonDisabled"
+          :disabled="isLoading"
           class="btn btn-success d-flex gap-2 align-items-center justify-content-center"
           @click.prevent="onTableChange"
         >
-          <i class="fa-solid fa-magnifying-glass"></i>Find
+          <span v-if="!isLoading" class="d-flex gap-2 align-items-center">
+            <i v-if="!isLoading" class="fa-solid fa-magnifying-glass"></i>Find
+          </span>
+          <span v-if="isLoading" class="d-flex gap-2 align-items-center">
+            <i class="fa-solid fa-spinner"></i>Finding
+          </span>
         </button>
       </div>
 
@@ -89,7 +94,7 @@ export default {
       currentYear: new Date().getFullYear(), // Default to current year
       chartInstance: null, // Chart.js instance
       errorMessage: null, // Error message if no data is found
-      isButtonDisabled: false,
+      isLoading: false,
       selectedUser: 54,
       usersInfo: "",
       selectedText: "ROD",
@@ -116,13 +121,13 @@ export default {
     async onTableChange() {
       await this.fetchColumns(); // Fetch new columns when table changes
       await this.fetchRateData(); // Fetch new data for the selected table
-      this.isButtonDisabled = true;
-      setTimeout(() => {
-        this.isButtonDisabled = false;
-      }, 1000); // Simulating delay, use actual logic
     },
     async fetchColumns() {
       try {
+        this.isLoading = true;
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 1000); // Simulating delay, use actual logic
         const response = await axios.get(
           `/getColumnNameFromTable/${this.selectedTable}`
         );
@@ -138,6 +143,11 @@ export default {
       const userId = this.selectedUser;
       const table = this.selectedTable;
       const year = this.currentYear;
+
+      this.isLoading = true;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000); // Simulating delay, use actual logic
 
       try {
         const response = await axios.get(
@@ -157,7 +167,7 @@ export default {
         }
       } catch (error) {
         console.error("Error fetching rate data:", error);
-        this.errorMessage = "An error occurred while fetching the data.";
+        this.errorMessage = "No data found for the selected table and year.";
         this.clearChart();
       }
     },
@@ -238,10 +248,12 @@ export default {
     },
 
     getRandomColor() {
-      const r = Math.floor(Math.random() * 255);
-      const g = Math.floor(Math.random() * 255);
-      const b = Math.floor(Math.random() * 255);
-      return `rgba(${r}, ${g}, ${b}, 0.6)`;
+      const r = Math.floor(Math.random() * 156) + 50; // Random value between 50 and 205
+      const g = Math.floor(Math.random() * 156) + 50; // Random value between 50 and 205
+      const b = Math.floor(Math.random() * 156) + 50; // Random value between 50 and 205
+
+      // Darker background with lighter opacity
+      return `rgba(${r}, ${g}, ${b}, 0.8)`; // Opacity closer to 1 makes the color darker
     },
   },
 };

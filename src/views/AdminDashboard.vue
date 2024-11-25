@@ -189,8 +189,8 @@
           </a>
         </li>
       </div>
-      <li :class="{ active: selectedComponent === 'ManageAdmin' }">
-        <a href="#" @click="showComponent('ManageAdmin')">
+      <li :class="{ active: selectedComponent === 'AdminProfile' }">
+        <a href="#" @click="showComponent('AdminProfile')">
           <i
             class="fa fa-user-circle"
             aria-hidden="true"
@@ -236,7 +236,7 @@
       <RMFBRates v-if="selectedComponent === 'RMFBRates'" />
       <MPSRates v-if="selectedComponent === 'MPSRates'" />
       <ManageUser v-if="selectedComponent === 'ManageUser'" />
-      <ManageAdmin v-if="selectedComponent === 'ManageAdmin'" />
+      <AdminProfile v-if="selectedComponent === 'AdminProfile'" />
       <Announcement v-if="selectedComponent === 'Announcement'" />
       <AddPPO v-if="selectedComponent === 'AddPPO'" />
       <AddRMFB v-if="selectedComponent === 'AddRMFB'" />
@@ -281,7 +281,7 @@ import Navbar from "../components/Navbar.vue";
 import Dashboard from "../components/Dashboard.vue";
 import Ratings from "../components/Ratings.vue";
 import ManageUser from "../components/ManageUser.vue";
-import ManageAdmin from "../components/ManageAdmin.vue";
+// import ManageAdmin from "../components/ManageAdmin.vue";
 import Announcement from "../components/AdminGmail.vue";
 import PPORates from "../components/PPO.vue";
 import RMFBRates from "../components/RMFB.vue";
@@ -293,7 +293,9 @@ import AddUser from "../components/AddUser.vue";
 import AddAdmin from "../components/AddAdmin.vue";
 import ManageRate from "../components/ManageRate.vue";
 import ManageOfficer from "../components/ManageOfficer.vue";
+import AdminProfile from "../components/UserProfile.vue";
 import router from "@/router";
+import { messaging, getToken, onMessage } from "@/firebase";
 import { Modal } from "bootstrap";
 
 export default {
@@ -302,7 +304,6 @@ export default {
     Dashboard,
     Ratings,
     ManageUser,
-    ManageAdmin,
     Announcement,
     PPORates,
     RMFBRates,
@@ -314,6 +315,7 @@ export default {
     AddAdmin,
     ManageRate,
     ManageOfficer,
+    AdminProfile,
   },
 
   data() {
@@ -323,6 +325,7 @@ export default {
       showButtons2: false,
       showButtons3: false,
       userData: "",
+      fcmToken: "",
     };
   },
   watch: {
@@ -332,8 +335,11 @@ export default {
     },
   },
 
-  async mounted() {
+  created() {
     this.fetchUserData();
+  },
+
+  async mounted() {
     if (window.screen.width < 768) {
       const sidebar = document.querySelector("#sidebar");
       const logo = document.getElementById("logo");
@@ -352,8 +358,53 @@ export default {
     }
 
     await this.checkUseStatus();
+    await this.requestPermission();
+    await this.getAdminToken();
   },
   methods: {
+    async requestPermission() {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        // console.log("Notification permission granted.");
+        const registration = await navigator.serviceWorker.ready;
+        if (registration) {
+          // console.log("Service Worker is ready.");
+          try {
+            const currentToken = await getToken(messaging, {
+              vapidKey:
+                "BMl44ZV6cG8pDBXGieG0WYhRA0wKYSuiKC3xIR3hI2kxLJ4nfScWNZCu55G11dtYvQSiCSscFopIaRIPcG9rbWs",
+              serviceWorkerRegistration: registration,
+            });
+            if (currentToken) {
+              this.fcmToken = currentToken;
+            } else {
+              console.log(
+                "No registration token available. Request permission to generate one."
+              );
+            }
+          } catch (err) {
+            console.error("An error occurred while retrieving token. ", err);
+          }
+        } else {
+          console.error("Service Worker is not ready.");
+        }
+      } else {
+        console.log("Unable to get permission to notify.");
+      }
+    },
+
+    async getAdminToken() {
+      try {
+        const adminId = sessionStorage.getItem("id");
+        const notifResponse = axios.post("/saveFcmToken", {
+          AdminId: adminId,
+          FcmToken: this.fcmToken,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+
     confirmLogout() {
       const modalElement = document.getElementById("logout-modal");
       const modalInstance = new Modal(modalElement);
@@ -428,6 +479,20 @@ export default {
 };
 </script>
 <style>
+input,
+select,
+.btn,
+textarea {
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+  border: var(--dark);
+}
+#content main .table-data .order {
+  flex-grow: 1;
+  flex-basis: 500px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+}
 a {
   text-decoration: none;
 }
@@ -438,6 +503,7 @@ a {
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 1rem;
   padding-bottom: 1rem;
 }
 #logo {

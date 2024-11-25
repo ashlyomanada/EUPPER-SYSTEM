@@ -246,7 +246,7 @@ export default {
   width: 100%;
   padding: 10px 10px 20px 10px;
   outline: 0;
-  border: 1px solid black;
+  border: 1px solid var(--light);
   border-radius: 10px;
 }
 

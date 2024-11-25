@@ -2,11 +2,50 @@
   <div class="table-data">
     <div class="order">
       <div class="head">
-        <h3>Announcement To All Users</h3>
+        <h3>Announcement To Selected Users</h3>
       </div>
       <form class="form" id="form" @submit.prevent="sendSms">
-        <label for="">To:</label>
-        <input type="text" placeholder="All User" class="input" readonly />
+        <label for="userSelection">To:</label>
+
+        <!-- All Users Checkbox -->
+        <div class="btn-checkbox">
+          <input
+            type="checkbox"
+            id="all-users"
+            v-model="selectAll"
+            hidden
+            @change="toggleAllUsers"
+          />
+          <label class="btn btn-outline-primary" for="all-users"
+            >All Users</label
+          >
+        </div>
+
+        <!-- Individual Checkboxes -->
+        <div
+          class="btn-group"
+          role="group"
+          aria-label="Basic checkbox toggle button group"
+        >
+          <div v-for="user in users" :key="user.user_id" class="btn-checkbox">
+            <input
+              type="checkbox"
+              class="btn-check"
+              :id="'user-' + user.user_id"
+              :value="user.user_id"
+              v-model="selectedUsers"
+              :disabled="selectAll"
+            />
+            <label
+              class="btn btn-outline-primary"
+              :for="'user-' + user.user_id"
+            >
+              {{ user.office }}
+            </label>
+          </div>
+        </div>
+        <span class="error" v-if="errorMessage">{{ errorMessage }}</span>
+
         <label for="">From:</label>
         <input
           type="text"
@@ -15,50 +54,90 @@
           value="PRO MIMAROPA Announcement"
           readonly
         />
+
         <textarea
           placeholder="Type message"
           v-model="messageContent"
         ></textarea>
-        <button type="submit">
+
+        <button class="btn btn-primary" type="submit">
           <i class="fa-solid fa-paper-plane"></i> Send
         </button>
       </form>
     </div>
-  </div>
-  <div class="modalBg" v-if="formVisible">
-    <div class="alertBox">
-      <img class="checkImg" src="./img/check2.gif" alt="" />
-      <h1 class="alertContent">Successfully Send</h1>
-      <button class="btn btn-primary" @click="closeForm">Okay</button>
+
+    <div class="modalBg" v-if="formVisible">
+      <div class="alertBox">
+        <img class="checkImg" src="./img/check2.gif" alt="" />
+        <h1 class="alertContent">Successfully Sent</h1>
+        <button class="btn btn-primary" @click="closeForm">Okay</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {
       messageContent: "",
+      selectedUsers: [],
+      selectAll: false, // Flag for "All Users"
       formVisible: false,
+      users: [], // List of users fetched from the backend
+      errorMessage: "", // Error message for validation
     };
   },
-
+  mounted() {
+    this.fetchUsers();
+  },
   methods: {
+    async fetchUsers() {
+      try {
+        const response = await axios.get("/getUsers"); // Fetch users
+        this.users = response.data;
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    },
+    toggleAllUsers() {
+      if (this.selectAll) {
+        // Select all users
+        this.selectedUsers = this.users.map((user) => user.user_id);
+      } else {
+        // Deselect all users
+        this.selectedUsers = [];
+      }
+    },
     async sendSms() {
       try {
-        const messageContent = this.messageContent; // Access messageContent directly
+        // Validation: Ensure at least one checkbox is selected
+        if (!this.selectAll && this.selectedUsers.length === 0) {
+          this.errorMessage = "Please select at least one user.";
+          return;
+        } else {
+          this.errorMessage = "";
+        }
 
-        this.sendingInProgress = true;
-        const response = await axios.post("/sendSMSToAllUser", {
+        const messageContent = this.messageContent;
+        const selectedUsers =
+          this.selectAll && this.users.length > 0
+            ? this.users.map((user) => user.user_id) // If "All Users" is selected, send all user IDs
+            : this.selectedUsers;
+
+        const response = await axios.post("/sendSMSToSelectedUsers", {
           message: messageContent,
+          users: selectedUsers,
         });
 
         if (response.status === 200) {
           console.log("SMS sent successfully.");
-          this.formVisible2 = false; // Hide the SMS form after sending
-          this.messageContent = "";
           this.formVisible = true;
+          this.messageContent = "";
+          this.selectedUsers = [];
+          this.selectAll = false;
           setTimeout(() => {
             this.formVisible = false;
           }, 5000);
@@ -67,9 +146,6 @@ export default {
         }
       } catch (error) {
         console.error("Error sending SMS:", error);
-      } finally {
-        // Set sendingInProgress to false once the process completes
-        this.sendingInProgress = false;
       }
     },
     closeForm() {

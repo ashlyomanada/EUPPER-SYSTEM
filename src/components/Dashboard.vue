@@ -28,6 +28,7 @@
 
     <div class="adminDashboardContainer">
       <AllRankingChart />
+      <PredictionChart />
     </div>
 
     <div class="adminDashboardContainer">
@@ -43,6 +44,7 @@ import AverageChart from "./Charts/AverageChart.vue";
 import axios from "axios";
 import AllRankingChart from "../components/Charts/AllRankingChart.vue";
 import RateChart from "../components/Charts/RateChart.vue";
+import PredictionChart from "../components/Charts/PredictionChart.vue";
 
 export default defineComponent({
   data() {
@@ -59,6 +61,7 @@ export default defineComponent({
     AverageChart,
     AllRankingChart,
     RateChart,
+    PredictionChart,
   },
   async mounted() {
     await this.fetchUserCount();
@@ -132,8 +135,8 @@ export default defineComponent({
   border-radius: 1rem;
   padding: 2rem;
   align-items: center;
-  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
-    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
 }
 
 @media screen and (max-width: 600px) {
@@ -142,6 +145,10 @@ export default defineComponent({
     grid-template-rows: repeat(8, 300px);
     gap: 2rem;
     justify-content: center;
+  }
+
+  .adminDashboardContainer {
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   }
 }
 </style>

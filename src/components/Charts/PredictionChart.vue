@@ -1,0 +1,206 @@
+<template>
+  <div class="adminBox shadow">
+    <h5>{{ selectedText }} Offices Ranks Prediction for {{ month }}</h5>
+
+    <table>
+      <thead>
+        <tr>
+          <th><i class="fa-solid fa-ranking-star"></i>Rank</th>
+          <th>Offices</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(rateRankings, index) in rateRanking" :key="index">
+          <td>{{ index + 1 }}</td>
+          <td>{{ rateRankings["office"] }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h6 class="text-center" v-if="rateRanking.length === 0">No data found</h6>
+
+    <div class="d-flex justify-content-center gap-2 align-items-center">
+      <select class="form-control text-center" v-model="month">
+        <option value="January">January</option>
+        <option value="February">February</option>
+        <option value="March">March</option>
+        <option value="April">April</option>
+        <option value="May">May</option>
+        <option value="June">June</option>
+        <option value="July">July</option>
+        <option value="August">August</option>
+        <option value="September">September</option>
+        <option value="October">October</option>
+        <option value="November">November</option>
+        <option value="December">December</option>
+      </select>
+      <select
+        id="selectedTable3"
+        v-model="level"
+        class="form-select"
+        name="month"
+        required
+      >
+        <option value="ppo_cpo">PPO CPO LEVEL</option>
+        <option value="rmfb_tbl">RMFB PMFC LEVEL</option>
+        <option value="occidental_cps">Occidental Mindoro MPS</option>
+        <option value="oriental_cps">Oriental Mindoro MPS</option>
+        <option value="marinduque_cps">Marinduque MPS</option>
+        <option value="romblon_cps">Romblon MPS</option>
+        <option value="palawan_cps">Palawan MPS</option>
+        <option value="puertop_cps">Puerto Princesa MPS</option>
+      </select>
+
+      <input
+        id="monthlyYear"
+        type="number"
+        class="form-control text-center"
+        v-model="year"
+      />
+
+      <button
+        class="btn btn-success"
+        @click.prevent="getRatePerRanking"
+        :disabled="isLoading"
+      >
+        <span v-if="!isLoading" class="d-flex gap-2 align-items-center">
+          <i v-if="!isLoading" class="fa-solid fa-magnifying-glass"></i>Find
+        </span>
+        <span v-if="isLoading" class="d-flex gap-2 align-items-center">
+          <i class="fa-solid fa-spinner"></i>Finding
+        </span>
+      </button>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      month: "",
+      currentMonth: "",
+      year: 0,
+      level: "ppo_cpo",
+      rateRanking: [],
+      selectedText: "PPO",
+      isLoading: false,
+      count: 0,
+      offices: [],
+    };
+  },
+
+  async mounted() {
+    await this.getRatePerRanking();
+  },
+
+  created() {
+    this.year = new Date().getFullYear();
+    let currentDate = new Date();
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    this.month = currentDate.toLocaleString("default", { month: "long" });
+  },
+
+  methods: {
+    async loadData() {
+      try {
+        const storedUserId = sessionStorage.getItem("id");
+        if (storedUserId) {
+          const response = await axios.get(`/getUserData/${storedUserId}`);
+          const userData = response.data;
+          this.officeLocation = userData.username;
+          this.userStatus = userData.status;
+          this.maxRate = userData.maxRate;
+          // console.log(userData);
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    },
+
+    async getRatePerRanking() {
+      try {
+        const selectElement = document.querySelector("#selectedTable3");
+        const selectedOption =
+          selectElement.options[selectElement.selectedIndex];
+        this.selectedText = selectedOption.text;
+        // console.log(this.selectedText);
+
+        this.isLoading = true;
+        setTimeout(() => (this.isLoading = false), 1000);
+
+        const response = await axios.get(
+          `/predictTotals/${this.month}/${this.level}/${this.year}`
+        );
+        // console.log(response.data.totalsByOffice);
+        if (response.data.predictions) {
+          const countArray = Object.entries(response.data.predictions).map(
+            ([office, value]) => {
+              return {
+                office: office.replace(/_/g, " "),
+                count: Number(value), // Convert string to number
+              };
+            }
+          );
+
+          this.rateRanking = countArray.slice(0, 6);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+};
+</script>
+
+<style>
+.adminBox {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1rem;
+  border-radius: 2rem;
+}
+
+.shadow {
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+.monthlyDashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-rows: auto 1fr;
+}
+.userDashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+.dash-box {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(1, 1fr);
+}
+.findRate {
+  background: green;
+  padding: 0.2rem 0.5rem;
+  color: white;
+}
+.year-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .userDashboard {
+    grid-template-columns: repeat(1, 300px);
+    grid-template-rows: repeat(8, 300px);
+    gap: 2rem;
+    justify-content: center;
+  }
+}
+</style>

@@ -23,7 +23,10 @@
           <h2 class="name">{{ userName }}</h2>
         </div>
         <div class="img-right">
-          <button class="edit-profile-btn" @click.prevent="openForm">
+          <button
+            class="btn btn-primary edit-profile-btn"
+            @click.prevent="openForm"
+          >
             <i class="fa-solid fa-pencil fa-lg"></i>Edit profile
           </button>
         </div>
@@ -427,10 +430,11 @@ export default {
   /* Make sure the overlay is above other elements */
 }
 .main-profile-container {
-  border-radius: 20px;
+  border-radius: 20px 0px 0px 20px;
   background: var(--light);
   padding: 24px;
   overflow-x: auto;
+  margin-top: 24px;
 }
 
 #modal-form2 {
@@ -517,7 +521,7 @@ export default {
   height: 38%;
   width: 100%;
   padding: 1rem;
-  line-height: 2rem;
+  line-height: 0.7rem;
 }
 
 .editImageContainer {
@@ -574,6 +578,7 @@ export default {
     justify-content: center;
     flex-direction: column;
     text-align: center;
+    line-height: 2rem;
   }
 
   #profile-pic {

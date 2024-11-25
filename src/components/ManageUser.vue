@@ -6,13 +6,21 @@
         <div class="manageItems"></div>
         <div class="manageItems">
           <div class="list-items d-flex gap-2">
-            <button class="find px-2" @click="openDueDate">
+            <button class="btn btn-primary px-2" @click="openDueDate">
               <i class="fa-solid fa-calendar-days"></i>Set Closing
             </button>
           </div>
-          <button class="find" @click="changeAllUserStatus">
-            <i class="fa-solid fa-power-off"></i>
-            Change All User Status
+          <button
+            class="btn btn-primary"
+            @click="changeAllUserStatus"
+            :disabled="isChanging"
+          >
+            <span v-if="!isChanging">
+              <i class="fa-solid fa-power-off"></i> Change All User Status</span
+            >
+            <span v-if="isChanging">
+              <i class="fa-solid fa-spinner"></i> Changing User Status</span
+            >
           </button>
           <div class="d-flex gap-2">
             <input
@@ -25,7 +33,7 @@
               placeholder="Enter username here..."
             />
             <button
-              class="find d-flex align-items-center px-4"
+              class="btn btn-primary d-flex align-items-center px-4"
               @click="findData"
             >
               <i class="bx bx-search"></i>Find
@@ -352,6 +360,7 @@ export default {
       checkInterval: null,
       currentDue: "",
       baseUrl: axios.defaults.baseURL,
+      isChanging: false,
     };
   },
 
@@ -490,11 +499,16 @@ export default {
 
     async changeAllUserStatus() {
       try {
+        this.isChanging = true;
         const response = await axios.post("/changeAllUserStatus");
         if (response.status === 200) {
           const responseData = response.data;
-          this.alertMessage = "All users status successfully changed.";
-          this.errorType = "success";
+
+          setTimeout(() => {
+            this.isChanging = false;
+            this.alertMessage = "All users status successfully changed.";
+            this.errorType = "success";
+          }, 500);
 
           setTimeout(() => {
             this.alertMessage = null;
