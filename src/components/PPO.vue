@@ -186,12 +186,50 @@
     >
       <div
         class="modal-content"
-        style="background: var(--light); color: var(--dark)"
+        style="
+          background: var(--light);
+          color: var(--dark);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        "
       >
         <div class="modal-header">
           <h5 class="modal-title">Preview PDF Report</h5>
         </div>
-        <div class="modal-body" style="" id="modalContent"></div>
+        <div class="modal-body" style="width: 100%" id="modalContent">
+          <div class="customization-controls">
+            <label for="pageSize">Page Size:</label>
+            <select id="pageSize" v-model="size">
+              <option value="A4">A4</option>
+              <option value="A3">A3</option>
+              <option value="Letter">Letter</option>
+            </select>
+
+            <label for="orientation">Orientation:</label>
+            <select id="orientation" v-model="orientation">
+              <option value="P">Portrait</option>
+              <option value="L">Landscape</option>
+            </select>
+
+            <button class="btn btn-primary" @click="previewGeneratePdf()">
+              Apply
+            </button>
+          </div>
+          <div
+            id="pdfViewer"
+            style="
+              width: 100%;
+              overflow-y: auto;
+              display: flex;
+              flex-direction: column;
+              gap: 1rem;
+              box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+                rgba(0, 0, 0, 0.2) 0px 7px 13px -3px,
+                rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+            "
+          ></div>
+        </div>
         <div class="modal-footer">
           <button
             type="button"
@@ -220,6 +258,8 @@
 import * as XLSX from "xlsx";
 import axios from "axios";
 import { Modal } from "bootstrap";
+import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
+GlobalWorkerOptions.workerSrc = `/pdf.worker.min.mjs`;
 
 export default {
   data() {
@@ -237,6 +277,8 @@ export default {
       isLoadingExcel: false,
       url: "",
       isPreview: false,
+      size: "A4",
+      orientation: "P",
     };
   },
   created() {
@@ -257,19 +299,85 @@ export default {
       modalInstance.show();
     },
 
-    modalPreviewPDF(blob) {
+    previewGeneratePdf() {
+      this.isPreview = true;
+      axios
+        .post(
+          "/generatePdf",
+          {
+            month: this.month,
+            year: this.year,
+            level: "ppo_cpo",
+            officeName: "PROVINCIAL/CITY POLICE OFFICES",
+            size: this.size,
+            orientation: this.orientation,
+          },
+          {
+            responseType: "blob", // Handle binary data
+          }
+        )
+        .then((response) => {
+          const pdfBlob = new Blob([response.data], {
+            type: "application/pdf",
+          });
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+
+          // Render the PDF in the viewer
+          this.renderPdf(pdfUrl);
+          this.isPreview = false;
+        })
+        .catch((error) => {
+          console.error("Error generating PDF:", error);
+          this.isPreview = false;
+        });
+    },
+
+    async renderPdf(pdfUrl) {
+      // Show the modal
       const modalElement = document.getElementById("previewPDF");
-      const modalInstance = new Modal(modalElement);
-
-      // Create a Blob URL
-      const url = URL.createObjectURL(blob);
-
-      // Set the Blob URL as the source for an iframe or object
-      const modalContent = document.getElementById("modalContent");
-      modalContent.innerHTML = `<iframe src="${url}" frameborder="0"></iframe>`;
+      let modalInstance = Modal.getInstance(modalElement);
+      if (!modalInstance) {
+        modalInstance = new Modal(modalElement);
+      }
+      // document
+      //   .querySelectorAll(".modal-backdrop")
+      //   .forEach((backdrop) => backdrop.remove());
 
       modalInstance.show();
+
+      const viewerContainer = document.getElementById("pdfViewer");
+      viewerContainer.innerHTML = "";
+
+      try {
+        const pdf = await pdfjsLib.getDocument(pdfUrl).promise;
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          // Create a canvas element for each page
+          const canvas = document.createElement("canvas");
+          canvas.style.display = "block";
+          canvas.style.width = "100%";
+          canvas.style.boxShadow =
+            "rgba(0, 0, 0, 0.3) 0px 2px 4px, rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset";
+
+          viewerContainer.appendChild(canvas);
+
+          // Render the PDF page onto the canvas
+          const context = canvas.getContext("2d");
+          const viewport = page.getViewport({ scale: 1.5 }); // Adjust scale as needed
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          await page.render({
+            canvasContext: context,
+            viewport: viewport,
+          }).promise;
+        }
+      } catch (error) {
+        console.error("Error rendering PDF:", error);
+      }
     },
+
     confirmationGeneratePdf() {
       const modalElement = document.getElementById("ppoPdfConfirmation");
       const modalInstance = new Modal(modalElement);
@@ -420,6 +528,8 @@ export default {
             year: this.year,
             level: "ppo_cpo",
             officeName: "PROVINCIAL/CITY POLICE OFFICES",
+            size: this.size,
+            orientation: this.orientation,
           },
           {
             responseType: "blob", // Set the response type to 'blob' to handle binary data
@@ -448,39 +558,32 @@ export default {
           console.error("Error generating PDF:", error);
         });
     },
-
-    previewGeneratePdf() {
-      this.isPreview = true;
-      axios
-        .post(
-          "/generatePdf",
-          {
-            month: this.month,
-            year: this.year,
-            level: "ppo_cpo",
-            officeName: "PROVINCIAL/CITY POLICE OFFICES",
-          },
-          {
-            responseType: "blob", // Handle binary data
-          }
-        )
-        .then((response) => {
-          // Create a Blob and URL for the PDF
-          const blob = new Blob([response.data], { type: "application/pdf" });
-
-          this.modalPreviewPDF(blob);
-          this.isPreview = false;
-        })
-        .catch((error) => {
-          console.error("Error generating PDF:", error);
-          this.isPreview = false;
-        });
-    },
   },
 };
 </script>
 
 <style>
+#modalContent {
+  width: 100%;
+}
+.customization-controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  /* flex-direction: column; */
+}
+
+.customization-controls label {
+  margin-right: 0.5rem;
+  display: block;
+}
+
+.customization-controls select {
+  margin-right: 1rem;
+  padding: 0.2rem;
+  border-radius: 0.4rem;
+}
+
 .modal-fullscreen {
   max-width: 100%;
   width: 100%;

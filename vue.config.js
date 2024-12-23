@@ -1,7 +1,9 @@
 const { defineConfig } = require("@vue/cli-service");
 
 module.exports = defineConfig({
-  transpileDependencies: true,
+  transpileDependencies: [
+    "pdfjs-dist", // Transpile pdfjs-dist for compatibility
+  ],
 
   pluginOptions: {
     vuetify: {
