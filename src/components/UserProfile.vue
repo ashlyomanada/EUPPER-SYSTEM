@@ -7,7 +7,15 @@
       <div class="img-container">
         <div class="img-left">
           <div class="editImageContainer">
+<<<<<<< HEAD
             <img :src="`${baseURL}${profilePic}`" alt="" id="profile-pic" />
+=======
+            <img
+              :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
+              alt=""
+              id="profile-pic"
+            />
+>>>>>>> 65fa85e1ad0a2ac0cc5b6c011d29033118f1499f
             <i
               style="
                 position: absolute;
@@ -169,7 +177,11 @@
             <img
               v-else
               style="height: 10rem; border-radius: 50%"
+<<<<<<< HEAD
               :src="`${baseURL}${profilePic}`"
+=======
+              :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`"
+>>>>>>> 65fa85e1ad0a2ac0cc5b6c011d29033118f1499f
             />
             <!-- <input
               id="editProfileInput"
@@ -379,8 +391,14 @@ export default {
 
         if (response.status === 200) {
           this.profilePic = response.data.profilePicPath;
+<<<<<<< HEAD
           this.profilePicUrl = `${this.baseURL}${response.data.profilePicPath}`;
           this.successMessage = "Profile picture uploaded successfully!";
+=======
+          this.profilePicUrl = `http://euper.infinityfreeapp.com/projectbackend/${response.data.profilePicPath}`;
+          // alert("Profile picture uploaded successfully!");
+          this.errorMessage = "Profile picture uploaded successfully!";
+>>>>>>> 65fa85e1ad0a2ac0cc5b6c011d29033118f1499f
           setTimeout(() => {
             this.successMessage = null;
           }, 5000);

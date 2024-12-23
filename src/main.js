@@ -9,8 +9,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
 
+<<<<<<< HEAD
 // axios.defaults.baseURL = "http://localhost:8080/";
 axios.defaults.baseURL = "https://e-upper.online/backend/";
+=======
+axios.defaults.baseURL = "https://e-upper.online/backend/";
+axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+>>>>>>> 65fa85e1ad0a2ac0cc5b6c011d29033118f1499f
 loadFonts();
 
 const app = createApp(App);

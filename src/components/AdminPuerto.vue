@@ -477,7 +477,11 @@ export default {
       try {
         this.isLoadingExcel = true;
         const response = await axios.post(
+<<<<<<< HEAD
           `${this.baseURL}generatePuerReport`,
+=======
+          "http://euper.infinityfreeapp.com/projectbackend/generatePuerReport",
+>>>>>>> 65fa85e1ad0a2ac0cc5b6c011d29033118f1499f
           {
             month: this.month,
             year: this.year,

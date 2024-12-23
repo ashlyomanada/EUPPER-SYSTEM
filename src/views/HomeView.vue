@@ -171,7 +171,11 @@
           id="profile"
           @click="showComponent('UserProfile')"
         >
+<<<<<<< HEAD
           <img :src="`${baseURL}${profilePic}`" />
+=======
+          <img :src="`http://euper.infinityfreeapp.com/projectbackend/${profilePic}`" />
+>>>>>>> 65fa85e1ad0a2ac0cc5b6c011d29033118f1499f
         </a>
       </div>
     </nav>
